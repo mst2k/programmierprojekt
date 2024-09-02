@@ -1,7 +1,10 @@
-name: Deploy
+name: Build and Deploy
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -14,29 +17,32 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Switch directory
-        run: cd frontend
-
       - name: Setup Node
         uses: actions/setup-node@v3
 
+      - name: List dir
+        run: ls
+
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ./frontend
 
       - name: Build project
         run: npm run build
+        working-directory: ./frontend
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
         with:
           name: production-files
-          path: ./dist
+          path: ./frontend/dist
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Download artifact
