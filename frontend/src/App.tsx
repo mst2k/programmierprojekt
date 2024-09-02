@@ -5,6 +5,7 @@ function App() {
   return (
       <HashRouter>
           <Routes>
+
               <Route path="/" element={<WelcomePage />} /> {/* Root route */}
               <Route path="/solver" element={<SolverPage />} /> {/* /solver route */}
           </Routes>
