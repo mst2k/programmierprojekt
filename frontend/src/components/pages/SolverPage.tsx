@@ -1,4 +1,15 @@
+import {Import} from "lucide-react";
+import {parseGMPL, } from "@/components/ConvertGMPLtoGLPKinterface.tsx";
+import CodeArea from "@/components/ui/custom/CodeArea.tsx";
+
 const SolverPage = () => {
+    const GMPLModel :string = "/* decision variables*/\n" +
+        "var x1 >= 0;\n" +
+        "var x2 >=0;\n" +
+        "/* Objective function */ maximize label : 4*x1 +5*x2; /* Constraints */\n" +
+        "subject to label1: x1 + 2*x2 <= 40; s.t. label2: 4*x1 + 3*x2 <= 120;\n" +
+        "end;"
+
     return (
         <div className="flex flex-col h-screen w-screen">
             <div className="flex flex-1">
