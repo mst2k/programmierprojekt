@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
 
 function WelcomePage() {
     const [count, setCount] = useState(0)
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
                 <div>
