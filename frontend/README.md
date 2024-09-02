@@ -1,50 +1,51 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Programmierprojekt
 
-Currently, two official plugins are available:
+...
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Frontend
 
-## Expanding the ESLint configuration
+...
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Technologien
 
-- Configure the top-level `parserOptions` property like this:
+- [Vite](https://vitejs.dev/): Ein modernes Build-Tool für schnellere und schlankere Webentwicklung.
+- [React](https://reactjs.org/): Eine JavaScript-Bibliothek zum Erstellen von Benutzeroberflächen.
+- [shadcn/ui](https://ui.shadcn.com/): Eine Sammlung wiederverwendbarer Komponenten, die mit Tailwind CSS erstellt wurden.
+- [react-i18next](https://react.i18next.com/): Ein leistungsstarkes Internationalisierungs-Framework für React.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Erste Schritte
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. Klonen Sie das Repository:
+   ```
+   git clone https://github.com/mst2k/programmierprojekt.git
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. Wechseln Sie in das Frontend Verzeichnis und installieren Sie die Abhängigkeiten:
+   ```
+   cd programmierprojekt/frontend
+   npm install
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+3. Starten Sie den Entwicklungsserver:
+   ```
+   npm run dev
+   ```
+
+Die lokale Version ist nun unter http://localhost:5173/ erreichbar
+
+## Contributing
+
+...
+
+### Commit-Konventionen
+
+Wir folgen den [Conventional Commits](https://www.conventionalcommits.org/)-Richtlinien für unsere Commit-Nachrichten. Dies hilft uns, einen klaren und standardisierten Verlauf der Projektänderungen zu führen.
+
+Beispiele für gültige Commit-Nachrichten:
+
+- `feat: Füge neue Benutzerauthentifizierung hinzu`
+- `fix: Behebe Darstellungsproblem in der Navigationsleiste`
+- `docs: Aktualisiere README mit Installationsanweisungen`
+- `style: Formatiere Codebase mit Prettier`
+
