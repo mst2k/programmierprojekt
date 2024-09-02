@@ -5,14 +5,12 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 import {parseGMPL, LP} from "@/components/ConvertGMPLtoGLPKinterface.tsx";
-import {Form} from "@/components/ui/form.tsx";
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
