@@ -19,7 +19,7 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        var LP:LP;
+        let LP: LP;
 
         //Convert TO General JS Object
         if (from === "GMPL"){
