@@ -35,6 +35,7 @@ export function parseGMPL(lpString: string): LP {
     }
 
     const direction = objectiveMatch[0].toLowerCase() === 'maximize' ? 1 : -1;
+    const [, ...objectiveParts] = cleanedInput.split(objectiveMatch[0]);
     const objective = objectiveParts.join('').split(';')[0].trim();
 
     const [objName, objFunction] = objective.split(':');
@@ -88,7 +89,7 @@ function parseConstraints(constraintsString: string): {
     bnds: { type: number; ub: number; lb: number };
 }[] {
     const constraints = constraintsString.split('s.t.');
-    return constraints.map((constraintStr, index) => {
+    const parsedConstraints = constraints.map((constraintStr, index) => {
         const [label, condition] = constraintStr.split(':');
         const name = label ? label.trim() : `Constraint${index + 1}`;
         const [expr, bound] = condition.split(/(<=|>=|=)/);
@@ -105,4 +106,5 @@ function parseConstraints(constraintsString: string): {
             }
         };
     });
+    return parsedConstraints;
 }
