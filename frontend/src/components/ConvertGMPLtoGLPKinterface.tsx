@@ -89,7 +89,7 @@ function parseConstraints(constraintsString: string): {
     bnds: { type: number; ub: number; lb: number };
 }[] {
     const constraints = constraintsString.split('s.t.');
-    const parsedConstraints = constraints.map((constraintStr, index) => {
+    return constraints.map((constraintStr, index) => {
         const [label, condition] = constraintStr.split(':');
         const name = label ? label.trim() : `Constraint${index + 1}`;
         const [expr, bound] = condition.split(/(<=|>=|=)/);
@@ -106,5 +106,4 @@ function parseConstraints(constraintsString: string): {
             }
         };
     });
-    return parsedConstraints;
 }
