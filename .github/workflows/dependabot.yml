@@ -1,0 +1,37 @@
+# checks 
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      npm-dependencies: 
+        patterns:
+          - "@npmcli/arbortist"
+          - "npm"
+#          - "nock" # simulate HTTP-requets for testing
+          - "react"
+          - "react-dom"
+          - "postcss" #for tailwind and css processing 
+          - "tailwindcss"
+          - "autoprefixer" #when adding vendor prefixes in css
+          - "classnames" # bib to admin CSS-classes in react
+      dev-dependencies:
+        patterns: 
+          - "eslint"
+          - "eslint-plugin-react"
+          - "prettier"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      github-actions:
+        patterns:
+          - "actions/checkout" #check repo
+          - "actions/setup-node" #setup node.js
+          - "actions-cache" #cache dependencies
