@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
-import {parseGMPL, LP} from "@/components/ConvertGMPLtoGLPKinterface.tsx";
+import {parseGMPL} from "@/components/ConvertGMPLtoGLPKinterface.tsx";
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
@@ -19,7 +19,7 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        let LP: LP;
+        let LP: any  = null;
 
         //Convert TO General JS Object
         if (from === "GMPL"){
@@ -66,7 +66,7 @@ const CodeExecutionPage: React.FC = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <Button onClick={handleExecute} className="mb-4" variant="primary">
+                <Button onClick={handleExecute} className="mb-4" variant="default">
                     Ausführen
                 </Button>
             </div>
