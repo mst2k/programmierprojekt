@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 import {test} from "@/hooks/CallConverter.tsx"
+import { MenubarDemo } from "../ui/menuebar";
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
@@ -29,6 +30,9 @@ const CodeExecutionPage: React.FC = () => {
 
     return (
         <div className="flex flex-col h-screen w-screen p-10">
+            <header>
+                <MenubarDemo></MenubarDemo>
+            </header>
             <div className="mb-4">
                 <h1 className="text-xl font-bold mb-2">Code Execution Page</h1>
                 <Textarea
