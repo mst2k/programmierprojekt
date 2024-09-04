@@ -1,6 +1,8 @@
-/*
+import { LP } from "@/interfaces/LP.tsx";
+import { Bound } from "@/interfaces/Bound.tsx";
+import { Constraint } from "@/interfaces/Constraint.tsx";
 
-function convertToMPS(lp: LP) {
+export function convertToMPS(lp: LP): string {
     let mpsString = '';
 
     // NAME section
@@ -21,7 +23,7 @@ function convertToMPS(lp: LP) {
 
     // COLUMNS section
     mpsString += 'COLUMNS\n';
-    const variableMap = {};
+    const variableMap: { [key: string]: { row: string; coef: number }[] } = {};
     lp.objective.vars.forEach(varObj => {
         if (!variableMap[varObj.name]) {
             variableMap[varObj.name] = [];
@@ -72,9 +74,9 @@ function convertToMPS(lp: LP) {
     return mpsString;
 }
 
-function parseMPS(mpsString:string) {
+export function parseMPS(mpsString: string): LP {
     const lines = mpsString.split("\n").map(line => line.trim()).filter(line => line !== '');
-    let lp:LP = {
+    let lp: LP = {
         name: "",
         objective: {
             direction: 1,
@@ -85,10 +87,8 @@ function parseMPS(mpsString:string) {
         bounds: []
     };
     let currentSection = "";
-    let rhsName = ""; // To track the name used in the RHS section
-
-    const constraintsMap = {}; // Temporary map to hold constraints
-    const rhsMap = {}; // Map to hold RHS values
+    const constraintsMap: { [key: string]: Constraint } = {}; // Temporary map to hold constraints
+    const rhsMap: { [key: string]: number } = {}; // Map to hold RHS values
 
     lines.forEach(line => {
         if (line.startsWith("NAME")) {
@@ -112,7 +112,7 @@ function parseMPS(mpsString:string) {
                     handleColumnsSection(line, lp, constraintsMap);
                     break;
                 case "RHS":
-                    handleRHSSection(line, rhsMap, rhsName);
+                    handleRHSSection(line, rhsMap);
                     break;
                 case "BOUNDS":
                     handleBoundsSection(line, lp);
@@ -124,7 +124,7 @@ function parseMPS(mpsString:string) {
     // Combine constraints and RHS values
     Object.keys(constraintsMap).forEach(constraintName => {
         if (rhsMap[constraintName] !== undefined) {
-            const constraint:any = constraintsMap[constraintName];
+            const constraint = constraintsMap[constraintName];
             constraint.bnds = inferBoundType(rhsMap[constraintName]);
             lp.subjectTo.push(constraint);
         }
@@ -133,7 +133,7 @@ function parseMPS(mpsString:string) {
     return lp;
 }
 
-function handleRowsSection(line:any, lp:any, constraintsMap:any) {
+function handleRowsSection(line: string, lp: LP, constraintsMap: { [key: string]: Constraint }) {
     const parts = line.split(/\s+/);
     const type = parts[0];
     const name = parts[1];
@@ -156,7 +156,7 @@ function handleRowsSection(line:any, lp:any, constraintsMap:any) {
     }
 }
 
-function handleColumnsSection(line:any, lp:any, constraintsMap:any) {
+function handleColumnsSection(line: string, lp: LP, constraintsMap: { [key: string]: Constraint }) {
     const parts = line.split(/\s+/);
     const variable = parts[0];
     const constraintName = parts[1];
@@ -171,37 +171,37 @@ function handleColumnsSection(line:any, lp:any, constraintsMap:any) {
     }
 }
 
-function handleRHSSection(line:any, rhsMap:any) {
+function handleRHSSection(line: string, rhsMap: { [key: string]: number }) {
     const parts = line.split(/\s+/);
     const constraintName = parts[1];
     rhsMap[constraintName] = parseFloat(parts[2]);
 }
 
-function handleBoundsSection(line:any, lp:any) {
+function handleBoundsSection(line: string, lp: LP) {
     const parts = line.split(/\s+/);
     const boundType = parts[0];
     const variable = parts[2];
     const value = parseFloat(parts[3]);
-
-    if (boundType === "LO") {
-        lp.bounds.push({ name: variable, type: 1, lb: value, ub: Infinity });
-    } else if (boundType === "UP") {
-        const existingBound = lp.bounds.find((b:any) => b.name === variable);
-        if (existingBound) {
-            existingBound.ub = value;
-        } else {
-            lp.bounds.push({ name: variable, type: 1, lb: -Infinity, ub: value });
+    if (lp.bounds) {
+        if (boundType === "LO") {
+            lp.bounds.push({name: variable, type: 1, lb: value, ub: Infinity});
+        } else if (boundType === "UP") {
+            const existingBound = lp.bounds.find(b => b.name === variable);
+            if (existingBound) {
+                existingBound.ub = value;
+            } else {
+                lp.bounds.push({name: variable, type: 1, lb: -Infinity, ub: value});
+            }
         }
     }
 }
 
-function inferBoundType(rhsValue:any) {
+function inferBoundType(rhsValue: number): Bound {
     return {
-        name:"",
+        name: "",
         type: rhsValue === 0 ? 3 : 1, // Infer type (<= or =) based on value
         lb: -Infinity,
         ub: rhsValue
     };
 }
 
- */
