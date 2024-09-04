@@ -74,12 +74,17 @@ export const lpObject: LP = {
 
 
 
-export const gmplString = '' +
-    '/* The declaration of decision variables x1, x2 */ var x1 >= 0;\n' +
-    'var x2 >=0;\n' +
-    '/* Objective function */\n' +
-    'maximize ObjectiveFunctionLabel : 4*x1 +2*x2; /* Constraints */\n' +
-    'subject to label1: x1 + x2 = 2; s.t. label2: x1 + x2 >= 4; end;'
+export const gmplString = `
+/* decision variables*/
+var x1 >= 0;
+var x2 >=0;
+/* Objective function */ 
+maximize label : 4*x1 +5*x2; 
+/* Constraints */
+subject to label1: x1 + 2*x2 <= 40; 
+s.t. label2: 4*x1 + 3*x2 <= 120;
+end;
+`
 
 // Example usage:
 // export const mpsString = `
