@@ -1,7 +1,8 @@
 import { LP } from "@/interfaces/LP.tsx";
 import { Bound } from "@/interfaces/Bound.tsx";
 import { Variable } from "@/interfaces/Variable.tsx";
-import {Bnds} from "@/interfaces/Bnds.tsx";
+import { Bnds } from "@/interfaces/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
 
 // Funktion zur Konvertierung eines LP-Objekts in das LP-Format
 export function convertToLP(lpData: LP): string {
@@ -24,15 +25,19 @@ export function convertToLP(lpData: LP): string {
             if (index > 0) lpFormat += ' + ';
             lpFormat += `${v.coef} ${v.name}`;
         });
-        const boundType = c.bnds.type === 1 ? '<=' : c.bnds.type === 2 ? '>=' : '=';
-        lpFormat += ` ${boundType} ${c.bnds.ub ?? c.bnds.lb}\n`;
+        const boundType = c.bnds.type === GLP_UP ? `<= ${c.bnds.ub}` : c.bnds.type === GLP_LO ? `>= ${c.bnds.lb}` : `= ${c.bnds.ub}`;
+        lpFormat += ` ${boundType}\n`;
     });
 
     // Schranken
     if (lpData.bounds && lpData.bounds.length > 0) {
         lpFormat += `Bounds\n`;
         lpData.bounds.forEach((b) => {
-            lpFormat += ` ${b.lb} <= ${b.name} <= ${b.ub}\n`;
+            if (b.type === GLP_FX) {
+                lpFormat += ` ${b.lb} = ${b.name}\n`;
+            } else {
+                lpFormat += ` ${b.lb !== -Infinity ? b.lb + ' <= ' : ''}${b.name}${b.ub !== Infinity ? ' <= ' + b.ub : ''}\n`;
+            }
         });
     }
 
@@ -42,7 +47,6 @@ export function convertToLP(lpData: LP): string {
     return lpFormat;
 }
 
-// Funktion zum Parsen eines LP-Strings in ein LP-Objekt
 export function parseLP(lpString: string): LP {
     const lines = lpString.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
     let mode: string = '';
@@ -109,7 +113,7 @@ function parseLPExpression(expr: string): Variable[] {
 
     while ((match = regex.exec(expr)) !== null) {
         let temp_coef = match[1].replace(/\s+/g, '').trim() || '1';
-        temp_coef = temp_coef === "-" || temp_coef === '+' ? `${temp_coef}1`: temp_coef;
+        temp_coef = temp_coef === "-" || temp_coef === '+' ? `${temp_coef}1` : temp_coef;
         const coef = parseFloat(temp_coef);
         const name = match[2];
         vars.push({ name: name, coef: coef });
@@ -127,23 +131,25 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
     }
 
     const [expr, boundStr] = constraint.split(operator);
-    const vars:Variable[] = parseLPExpression(expr.trim());
+    const vars: Variable[] = parseLPExpression(expr.trim());
     const boundValue = parseFloat(boundStr.trim());
 
-    let boundType: 1 | 2 | 3 = 1;
+    let boundType: GLP_UP | GLP_LO | GLP_FX = GLP_UP;
     if (operator === "<=") {
-        boundType = 1;
+        boundType = GLP_UP;
     } else if (operator === ">=") {
-        boundType = 2;
+        boundType = GLP_LO;
     } else if (operator === "=") {
-        boundType = 3;
+        boundType = GLP_FX;
     }
+    let lb = boundType === GLP_LO ? boundValue : -Infinity;
+    let ub = boundType === GLP_FX ? boundValue : boundType === GLP_UP ? boundValue : Infinity;
 
     const bound: Bnds = {
         type: boundType,
-        lb: boundType === 1 ? undefined : boundValue,
-        ub: boundType === 1 ? boundValue : undefined
-    };
+        lb: lb,
+        ub: ub
+    }as Bnds;
 
     return { vars, bound };
 }
@@ -159,15 +165,15 @@ function parseLPBound(boundStr: string): Bound | null {
         const varName = match[3];
         const ub = match[5] ? parseFloat(match[5]) : undefined;
 
-        let type: 1 | 2 | 3;
+        let type: GLP_UP | GLP_LO | GLP_FX;
         if (match[2] === "<=" && match[4] === "<=") {
-            type = 1; // lb <= x <= ub
+            type = GLP_UP; // lb <= x <= ub
         } else if (match[2] === ">=") {
-            type = 2; // lb >= x
+            type = GLP_LO; // lb >= x
         } else if (match[4] === "=") {
-            type = 3; // x = ub
+            type = GLP_FX; // x = ub
         } else {
-            type = 1; // Default to 1 if only one bound is present (x <= ub or lb <= x)
+            type = GLP_UP; // Default to 1 if only one bound is present (x <= ub or lb <= x)
         }
 
         return {
@@ -175,7 +181,7 @@ function parseLPBound(boundStr: string): Bound | null {
             name: varName,
             lb: lb !== undefined ? lb : -Infinity,
             ub: ub !== undefined ? ub : Infinity
-        };
+        } as Bound;
     }
     return null;
 }

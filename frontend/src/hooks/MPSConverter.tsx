@@ -1,6 +1,7 @@
 import { LP } from "@/interfaces/LP.tsx";
 import { Bound } from "@/interfaces/Bound.tsx";
 import { Constraint } from "@/interfaces/Constraint.tsx";
+import {GLP_UP, GLP_LO, GLP_FX} from "@/interfaces/Bnds.tsx";
 
 export function convertToMPS(lp: LP): string {
     let mpsString = '';
@@ -12,14 +13,15 @@ export function convertToMPS(lp: LP): string {
     mpsString += 'ROWS\n';
     mpsString += ` N  ${lp.objective.name}\n`; // Objective row
     lp.subjectTo.forEach(constraint => {
-        if (constraint.bnds.type === 1) { // <=
+        if (constraint.bnds.type === GLP_UP) { // <=
             mpsString += ` L  ${constraint.name}\n`;
-        } else if (constraint.bnds.type === 2) { // >=
+        } else if (constraint.bnds.type === GLP_LO) { // >=
             mpsString += ` G  ${constraint.name}\n`;
-        } else if (constraint.bnds.type === 3) { // =
+        } else if (constraint.bnds.type === GLP_FX) { // =
             mpsString += ` E  ${constraint.name}\n`;
         }
     });
+
 
     // COLUMNS section
     mpsString += 'COLUMNS\n';
@@ -48,9 +50,9 @@ export function convertToMPS(lp: LP): string {
     // RHS section
     mpsString += 'RHS\n';
     lp.subjectTo.forEach(constraint => {
-        if (constraint.bnds.type === 1 || constraint.bnds.type === 3) { // <= or =
+        if (constraint.bnds.type === GLP_UP || constraint.bnds.type === GLP_FX) { // <= or =
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.ub}\n`;
-        } else if (constraint.bnds.type === 2) { // >=
+        } else if (constraint.bnds.type === GLP_LO) { // >=
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.lb}\n`;
         }
     });
@@ -123,9 +125,27 @@ export function parseMPS(mpsString: string): LP {
 
     // Combine constraints and RHS values
     Object.keys(constraintsMap).forEach(constraintName => {
+        const constraint = constraintsMap[constraintName];
         if (rhsMap[constraintName] !== undefined) {
-            const constraint = constraintsMap[constraintName];
-            constraint.bnds = inferBoundType(rhsMap[constraintName]);
+            if (constraint.bnds.type === GLP_UP) { // <=
+                constraint.bnds.ub = rhsMap[constraintName];
+            } else if (constraint.bnds.type === GLP_LO) { // >=
+                constraint.bnds.lb = rhsMap[constraintName];
+            } else if (constraint.bnds.type === GLP_FX) { // =
+                constraint.bnds.lb = rhsMap[constraintName];
+                constraint.bnds.ub = rhsMap[constraintName];
+            }
+            lp.subjectTo.push(constraint);
+        } else {
+            // Falls keine RHS angegeben wurde, setze einen Standardwert
+            if (constraint.bnds.type === GLP_UP) {
+                constraint.bnds.ub = 0; // Standard für <=
+            } else if (constraint.bnds.type === GLP_LO) {
+                constraint.bnds.lb = 0; // Standard für >=
+            } else if (constraint.bnds.type === GLP_FX) {
+                constraint.bnds.lb = 0; // Standard für =
+                constraint.bnds.ub = 0;
+            }
             lp.subjectTo.push(constraint);
         }
     });
@@ -144,14 +164,14 @@ function handleRowsSection(line: string, lp: LP, constraintsMap: { [key: string]
         constraintsMap[name] = {
             name: name,
             vars: [],
-            bnds: { type: 1, lb: -Infinity, ub: Infinity } // Initialize with default
+            bnds: { type: GLP_UP, lb: -Infinity, ub: Infinity } // Initialize with default
         };
         if (type === "L") {
-            constraintsMap[name].bnds.type = 1; // Less than or equal
+            constraintsMap[name].bnds.type = GLP_UP; // Less than or equal
         } else if (type === "G") {
-            constraintsMap[name].bnds.type = 2; // Greater than or equal
+            constraintsMap[name].bnds.type = GLP_LO; // Greater than or equal
         } else if (type === "E") {
-            constraintsMap[name].bnds.type = 3; // Equal
+            constraintsMap[name].bnds.type = GLP_FX; // Equal
         }
     }
 }
@@ -184,24 +204,14 @@ function handleBoundsSection(line: string, lp: LP) {
     const value = parseFloat(parts[3]);
     if (lp.bounds) {
         if (boundType === "LO") {
-            lp.bounds.push({name: variable, type: 1, lb: value, ub: Infinity});
+            lp.bounds.push({name: variable, type: GLP_LO, lb: value, ub: Infinity});
         } else if (boundType === "UP") {
             const existingBound = lp.bounds.find(b => b.name === variable);
             if (existingBound) {
                 existingBound.ub = value;
             } else {
-                lp.bounds.push({name: variable, type: 1, lb: -Infinity, ub: value});
+                lp.bounds.push({name: variable, type: GLP_UP, lb: -Infinity, ub: value});
             }
         }
     }
 }
-
-function inferBoundType(rhsValue: number): Bound {
-    return {
-        name: "",
-        type: rhsValue === 0 ? 3 : 1, // Infer type (<= or =) based on value
-        lb: -Infinity,
-        ub: rhsValue
-    };
-}
-

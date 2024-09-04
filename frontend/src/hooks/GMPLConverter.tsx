@@ -2,6 +2,7 @@ import { LP } from "@/interfaces/LP.tsx";
 import { Constraint } from "@/interfaces/Constraint.tsx";
 import { Bound } from "@/interfaces/Bound.tsx";
 import { Variable } from "@/interfaces/Variable.tsx";
+import {GLP_UP, GLP_LO, GLP_FX} from "@/interfaces/Bnds.tsx";
 
 export function convertToGLPM(lp: LP): string {
     let glpmString = '';
@@ -16,25 +17,35 @@ export function convertToGLPM(lp: LP): string {
     // Variablen-Deklaration
     glpmString += '/* Declaration of decision variables */\n';
     variableNames.forEach((variable: string) => {
-        if(lp.bounds){
-            let bound = lp.bounds?.find(b => b.name === variable);
-            let lb = bound?.lb ?? 0;
-            let ub = bound?.ub;
+        if (lp.bounds) {
+            let bound = lp.bounds.find(b => b.name === variable);
+            if (bound) {
+                let lb= bound.lb;
+                let ub = bound.ub;
 
-            glpmString += `var ${variable}`;
-            if (lb !== undefined) {
-                glpmString += ` >= ${lb}`;
+                glpmString += `var  `;
+                if (bound.type === GLP_FX) {
+                    glpmString += `${variable}`;
+                    glpmString += ` = ${lb}`;
+                } else {
+                    if (lb !== undefined && ub !== Infinity) {
+                        glpmString += `${lb} <=`;
+                    }
+                    glpmString += `${variable}`;
+                    if (ub !== undefined && ub !== Infinity) {
+                        glpmString += ` <= ${ub}`;
+                    }else if (lb !== undefined){
+                        glpmString += ` >= ${lb}`;
+                    }
+                }
+                glpmString += ';\n';
             }
-            if (ub !== undefined && ub !== Infinity) {
-                glpmString += ` <= ${ub}`;
-            }
-            glpmString += ';\n';
         }
     });
 
     // Zielfunktion definieren
     glpmString += '/* Objective function */\n';
-    glpmString += lp.objective.direction === 1 ? 'maximize ' : 'minimize ';
+    glpmString += lp.objective.direction === GLP_LO ? 'maximize ' : 'minimize ';
     glpmString += `${lp.objective.name}: `;
     glpmString += lp.objective.vars
         .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
@@ -49,12 +60,12 @@ export function convertToGLPM(lp: LP): string {
             .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
             .join(' + ');
 
-        if (constraint.bnds.type === 1) { // >=
+        if (constraint.bnds.type === GLP_LO) { // >=
             glpmString += `${expr} >= ${constraint.bnds.lb};\n`;
-        } else if (constraint.bnds.type === 2) { // <=
+        } else if (constraint.bnds.type === GLP_UP) { // <=
             glpmString += `${expr} <= ${constraint.bnds.ub};\n`;
-        } else if (constraint.bnds.type === 3) { // =
-            glpmString += `${expr} = ${constraint.bnds.lb};\n`;
+        } else if (constraint.bnds.type === GLP_FX) { // =
+            glpmString += `${expr} = ${constraint.bnds.ub};\n`;
         }
     });
 
@@ -90,21 +101,40 @@ export function parseGMPL(lpString: string): LP {
     if (!constraintsMatch) {
         throw new Error('Constraints not found');
     }
-    const constraintsString = cleanedInput.split('subject to')[1]
+
+    let index_sub_to = cleanedInput.indexOf('subject to');
+    index_sub_to = index_sub_to === -1 ? Infinity : index_sub_to;
+    let index_st = cleanedInput.indexOf('s.t.');
+    index_st = index_st === -1 ? Infinity : index_st;
+    const index = index_sub_to < index_st ? index_sub_to + 'subject to'.length : index_st + 's.t.'.length;
+    const constraintsString = cleanedInput.slice(index)
         .split('end;')[0]
         .trim();
     const constraints = parseGMPLConstraints(constraintsString);
 
-    const boundsMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s*(>=|<=)?\s*([\d.]+)/g)];
-    const bounds:Bound[] = boundsMatches.map(match => ({
-        name: match[1],
-        type: match[2] === '>=' ? 1 : (match[2] === '<=' ? 2 : 3),
-        lb: match[2] === '>=' ? parseFloat(match[3]) : 0,
-        ub: match[2] === '<=' ? parseFloat(match[3]) : Infinity
-    }));
+    // Verbesserter Regex für verschiedene Schrankenformen
+    const boundsMatches = [...cleanedInput.matchAll(/var\s+(-?\d*\.?\d*)?\s*(<=|>=)?\s*(\w+)\s*(<=|>=)?\s*(-?\d*\.?\d*)?;/g)];
+    const bounds: Bound[] = boundsMatches.map(match => {
+        const varName = match[3];
+        let lb: number = -Infinity, ub: number = Infinity;
+
+        if (match[2] === ">=" || match[4] === ">=") {
+            lb = parseFloat(match[1]) || parseFloat(match[5]) || lb;
+        }
+        if (match[2] === "<=" || match[4] === "<=") {
+            ub = parseFloat(match[1]) || parseFloat(match[5]) || ub;
+        }
+
+        return {
+            name: varName,
+            type: lb > -Infinity && ub < Infinity ? GLP_FX : (lb > -Infinity ? GLP_LO : GLP_UP),
+            lb: lb > -Infinity ? lb : 0,
+            ub: ub < Infinity ? ub : Infinity,
+        };
+    });
 
     return {
-        name: 'LP_Model', // Model Name
+        name: 'LP_Model',
         objective: {
             direction: direction,
             name: objectiveName,
@@ -115,17 +145,28 @@ export function parseGMPL(lpString: string): LP {
     } as LP;
 }
 
+
+
+
+
+
 function parseGMPLVariables(expression: string): Variable[] {
-    const variableRegex = /([-+]?\s*\d*\.?\d*)\s*\*\s*(\w+)/g;
+    const variableRegex = /([-+]?\s*\d*\.?\d*)?\s*\*?\s*(\w+)/g;
     const vars: Variable[] = [];
     let match;
     while ((match = variableRegex.exec(expression)) !== null) {
-        const coef = parseFloat(match[1].replace(/\s+/g, '')) || 1;
+        let coefStr = match[1]?.replace(/\s+/g, '') || '1';
+        // Wenn das Vorzeichen nur "-" oder "+" ist, auf "-1" bzw. "1" setzen
+        if (coefStr === '-' || coefStr === '+') {
+            coefStr += '1';
+        }
+        const coef = parseFloat(coefStr);
         const name = match[2].trim();
         vars.push({ name, coef });
     }
     return vars;
 }
+
 
 function parseGMPLConstraints(constraintsString: string): Constraint[] {
     const constraintRegex = /([\w\d_]+)\s*:\s*(.*?)(<=|>=|=)\s*(-?\d*\.?\d+)\s*;/g;
@@ -135,15 +176,15 @@ function parseGMPLConstraints(constraintsString: string): Constraint[] {
         const name = match[1];
         const expr = match[2].trim();
         const vars = parseGMPLVariables(expr);
-        const type = match[3] === '<=' ? 2 : (match[3] === '>=' ? 1 : 3);
+        const type = match[3] === '<=' ? GLP_UP : (match[3] === '>=' ? GLP_LO : GLP_FX);
         const value = parseFloat(match[4]);
         constraints.push({
             name,
             vars,
             bnds: {
                 type,
-                ub: type === 2 ? value : undefined,
-                lb: type === 1 ? value : undefined,
+                ub: type === GLP_FX ? value : GLP_UP ? value : Infinity,
+                lb: type === GLP_LO ? value : -Infinity,
             }
         } as Constraint);
     }
