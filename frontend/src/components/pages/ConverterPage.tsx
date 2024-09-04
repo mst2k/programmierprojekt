@@ -19,14 +19,15 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        let LP: any  = null;
-
+        let LP;
         //Convert TO General JS Object
         if (from === "GMPL"){
             LP = parseGMPL(code)
         }
-        if (to === "GLPKInterface"){
-            setOutput(JSON.stringify(LP, null, 2));
+        if(typeof(LP) ==="object") {
+            if (to === "GLPKInterface") {
+                setOutput(JSON.stringify(LP, null, 2));
+            }
         }
     };
 
