@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
-import {parseGMPL} from "@/components/ConvertGMPLtoGLPKinterface.tsx";
+import {test} from "@/hooks/CallConverter.tsx"
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
@@ -19,16 +19,12 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        let LP;
-        //Convert TO General JS Object
-        if (from === "GMPL"){
-            LP = parseGMPL(code)
-        }
-        if(typeof(LP) ==="object") {
-            if (to === "GLPKInterface") {
-                setOutput(JSON.stringify(LP, null, 2));
-            }
-        }
+        test()
+        console.log("Not supported yet")
+        console.log(from)
+        console.log(to)
+        setOutput("Not supported yet")
+
     };
 
     return (

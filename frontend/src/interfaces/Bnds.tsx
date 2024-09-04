@@ -1,0 +1,1 @@
+export interface Bnds{ type: number, ub: number, lb: number }
