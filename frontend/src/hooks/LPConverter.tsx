@@ -1,36 +1,17 @@
-// Funktion zur Konvertierung in LP-Format
-//
-/*
-function convertToLP(lpData:any):string {
-    let LPObject: LP;
-    if (typeof(lpData) === "object"){
-        try{
-            LPObject = lpData
-        }catch (error) {
-            console.error("Error while parsing object", error);
-            return ""
-        }
-    }
-    else{
-        try {
-            // Konvertierung des JSON-Strings in ein JavaScript-Objekt
-            LPObject = JSON.parse(lpData);
+import { LP } from "@/interfaces/LP.tsx";
+import { Bound } from "@/interfaces/Bound.tsx";
+import { Variable } from "@/interfaces/Variable.tsx";
+import { Bnds } from "@/interfaces/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
 
-            // Hier könnte zusätzliche Validierung eingefügt werden, um sicherzustellen,
-            // dass das Objekt dem LP-Interface entspricht. Das könnte z.B. mit TypeScript
-            // Utility-Funktionen oder benutzerdefinierter Logik geschehen.
-
-            // Zurückgeben des LP-Objekts
-        } catch (error) {
-            console.error("Error while parsing JSON-Strings:", error);
-            return "";
-        }
-    }
+// Funktion zur Konvertierung eines LP-Objekts in das LP-Format
+export function convertToLP(lpData: LP): string {
     let lpFormat = '';
+
     // Objektive Funktion
-    lpFormat += `${LPObject.objective.direction === 1 ? 'Maximize' : 'Minimize'}\n`;
-    lpFormat += ` ${LPObject.objective.name}: `;
-    LPObject.objective.vars.forEach((v, index) => {
+    lpFormat += `${lpData.objective.direction === 1 ? 'Maximize' : 'Minimize'}\n`;
+    lpFormat += ` ${lpData.objective.name}: `;
+    lpData.objective.vars.forEach((v, index) => {
         if (index > 0) lpFormat += ' + ';
         lpFormat += `${v.coef} ${v.name}`;
     });
@@ -38,22 +19,41 @@ function convertToLP(lpData:any):string {
 
     // Nebenbedingungen
     lpFormat += `Subject To\n`;
-    lpData.subjectTo.forEach((c:any) => {
+    lpData.subjectTo.forEach((c) => {
         lpFormat += ` ${c.name}: `;
         c.vars.forEach((v, index) => {
             if (index > 0) lpFormat += ' + ';
             lpFormat += `${v.coef} ${v.name}`;
         });
-        const boundType = c.bnds.type === 1 ? '<=' : c.bnds.type === 2 ? '>=' : '=';
-        lpFormat += ` ${boundType} ${c.bnds.ub}\n`;
+        const boundType = c.bnds.type === GLP_UP ? `<= ${c.bnds.ub}` : c.bnds.type === GLP_LO ? `>= ${c.bnds.lb}` : `= ${c.bnds.ub}`;
+        lpFormat += ` ${boundType}\n`;
     });
 
     // Schranken
-    if (lpData.bounds) {
+    if (lpData.bounds && lpData.bounds.length > 0) {
         lpFormat += `Bounds\n`;
-        lpData.bounds.forEach((b:any) => {
-            const boundType = b.type === 1 ? ' <= ' : b.type === 2 ? ' >= ' : ' = ';
-            lpFormat += ` ${b.lb} ${boundType} ${b.name} ${boundType} ${b.ub}\n`;
+        lpData.bounds.forEach((b) => {
+            if (b.type === GLP_FX) {
+                lpFormat += ` ${b.lb} = ${b.name}\n`;
+            } else {
+                lpFormat += ` ${(b.lb !== null && b.lb !== -Infinity)? b.lb + ' <= ' : ''}${b.name}${(b.ub !== null && b.ub!== Infinity) ? ' <= ' + b.ub : ''}\n`;
+            }
+        });
+    }
+
+    // Binärvariablen
+    if (lpData.binaries && lpData.binaries.length > 0) {
+        lpFormat += `Binary\n`;
+        lpData.binaries.forEach((bin) => {
+            lpFormat += ` ${bin}\n`;
+        });
+    }
+
+    // Ganzzahlvariablen
+    if (lpData.generals && lpData.generals.length > 0) {
+        lpFormat += `General\n`;
+        lpData.generals.forEach((gen) => {
+            lpFormat += ` ${gen}\n`;
         });
     }
 
@@ -63,9 +63,9 @@ function convertToLP(lpData:any):string {
     return lpFormat;
 }
 
-export function parseLP(lpString:any) {
-    const lines = lpString.split("\n").map((line:any) => line.trim()).filter((line:any) => line.length > 0);
-    let mode = '';
+export function parseLP(lpString: string): LP {
+    const lines = lpString.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
+    let mode: string = '';
     let lp: LP = {
         name: '',
         objective: {
@@ -74,7 +74,9 @@ export function parseLP(lpString:any) {
             vars: []
         },
         subjectTo: [],
-        bounds: []
+        bounds: [],
+        binaries: [],
+        generals: []
     };
 
     for (let line of lines) {
@@ -91,6 +93,12 @@ export function parseLP(lpString:any) {
             continue;
         } else if (line.startsWith("Bounds")) {
             mode = 'bounds';
+            continue;
+        } else if (line.startsWith("Binary")) {
+            mode = 'binaries';
+            continue;
+        } else if (line.startsWith("General")) {
+            mode = 'generals';
             continue;
         } else if (line.startsWith("End")) {
             mode = 'end';
@@ -112,24 +120,29 @@ export function parseLP(lpString:any) {
             });
         } else if (mode === 'bounds') {
             const bound = parseLPBound(line.trim());
-            if (bound) {
-                if (lp.bounds) {
-                    lp.bounds.push(bound);
-                }
+            if (bound && lp.bounds) {
+                lp.bounds.push(bound);
             }
+        } else if (mode === 'binaries') {
+            lp.binaries?.push(line.trim());
+        } else if (mode === 'generals') {
+            lp.generals?.push(line.trim());
         }
     }
 
     return lp;
 }
 
-function parseLPExpression(expr:any) {
+// Hilfsfunktion zum Parsen einer LP-Expression
+function parseLPExpression(expr: string): Variable[] {
     const regex = /([+-]?\s*\d*\.?\d*)\s*([a-zA-Z_][a-zA-Z_0-9]*)/g;
     let match;
-    let vars = [];
+    let vars: Variable[] = [];
 
     while ((match = regex.exec(expr)) !== null) {
-        const coef = parseFloat(match[1].replace(/\s+/g, '') || '1');
+        let temp_coef = match[1].replace(/\s+/g, '').trim() || '1';
+        temp_coef = temp_coef === "-" || temp_coef === '+' ? `${temp_coef}1` : temp_coef;
+        const coef = parseFloat(temp_coef);
         const name = match[2];
         vars.push({ name: name, coef: coef });
     }
@@ -137,38 +150,65 @@ function parseLPExpression(expr:any) {
     return vars;
 }
 
-function parseLPConstraint(constraint:any) {
+// Hilfsfunktion zum Parsen einer LP-Nebenbedingung
+function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds } {
     const operators = ["<=", ">=", "="];
     let operator = operators.find(op => constraint.includes(op));
-    let [expr, bound] = constraint.split(operator);
-    const vars = parseLPExpression(expr.trim());
-    const boundValue = parseFloat(bound.trim());
-
-    let boundType:number = 0;
-    if (operator === "<=") {
-        boundType = 1;
-    } else if (operator === ">=") {
-        boundType = 2;
-    } else if (operator === "=") {
-        boundType = 3;
+    if (!operator) {
+        throw new Error("Invalid constraint format");
     }
 
-    return { vars, bound: { type: boundType, ub: boundValue, lb: -Infinity } };
+    const [expr, boundStr] = constraint.split(operator);
+    const vars: Variable[] = parseLPExpression(expr.trim());
+    const boundValue = parseFloat(boundStr.trim());
+
+    let boundType = GLP_UP;
+    if (operator === "<=") {
+        boundType = GLP_UP;
+    } else if (operator === ">=") {
+        boundType = GLP_LO;
+    } else if (operator === "=") {
+        boundType = GLP_FX;
+    }
+    let lb = boundType === GLP_LO ? boundValue : -Infinity;
+    let ub = boundType === GLP_FX ? boundValue : boundType === GLP_UP ? boundValue : Infinity;
+
+    const bound: Bnds = {
+        type: boundType,
+        lb: lb,
+        ub: ub
+    }as Bnds;
+
+    return { vars, bound };
 }
 
-function parseLPBound(boundStr:any) {
-    const regex = /(\d*\.?\d*)\s*<=\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*<=\s*(\d*\.?\d*)/;
+// Hilfsfunktion zum Parsen der Schranken (Bounds)
+function parseLPBound(boundStr: string): Bound | null {
+    // Regex to handle "<= x <=" and also "lb <= x" and "x <= ub"
+    const regex = /(\d*\.?\d*)?\s*(<=|>=)?\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*(<=|>=|=)?\s*(\d*\.?\d*)?/;
     const match = regex.exec(boundStr);
-    if (match) {
-        return {
-            name: match[2],
-            type: 1, // Lower and Upper bound
-            lb: parseFloat(match[1]),
-            ub: parseFloat(match[3])
-        };
-    }
 
+    if (match) {
+        const lb = match[1] ? parseFloat(match[1]) : undefined;
+        const varName = match[3];
+        const ub = match[5] ? parseFloat(match[5]) : undefined;
+        let type;
+        if (match[2] === "<=" && match[4] === "<=") {
+            type = GLP_UP; // lb <= x <= ub
+        } else if (match[2] === ">=") {
+            type = GLP_LO; // lb >= x
+        } else if (match[4] === "=") {
+            type = GLP_FX; // x = ub
+        } else {
+            type = GLP_UP; // Default to 1 if only one bound is present (x <= ub or lb <= x)
+        }
+
+        return {
+            type,
+            name: varName,
+            lb: lb !== undefined ? lb : -Infinity,
+            ub: ub !== undefined ? ub : Infinity
+        } as Bound;
+    }
     return null;
 }
-
- */
