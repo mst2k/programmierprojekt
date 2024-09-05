@@ -4,77 +4,6 @@ import { Bound } from "@/interfaces/Bound.tsx";
 import { Variable } from "@/interfaces/Variable.tsx";
 import {GLP_UP, GLP_LO, GLP_FX} from "@/interfaces/Bnds.tsx";
 
-export function convertToGLPM(lp: LP): string {
-    let glpmString = '';
-
-    // Entscheidungvariablen definieren
-    const variableNames: Set<string> = new Set();
-    lp.objective.vars.forEach((variable: Variable) => variableNames.add(variable.name));
-    lp.subjectTo.forEach((constraint: Constraint) =>
-        constraint.vars.forEach((variable: Variable) => variableNames.add(variable.name))
-    );
-
-    // Variablen-Deklaration
-    glpmString += '/* Declaration of decision variables */\n';
-    variableNames.forEach((variable: string) => {
-        if (lp.bounds) {
-            let bound = lp.bounds.find(b => b.name === variable);
-            if (bound) {
-                let lb= bound.lb;
-                let ub = bound.ub;
-
-                glpmString += `var  `;
-                if (bound.type === GLP_FX) {
-                    glpmString += `${variable}`;
-                    glpmString += ` = ${lb}`;
-                } else {
-                    if (lb !== undefined && ub !== Infinity) {
-                        glpmString += `${lb} <=`;
-                    }
-                    glpmString += `${variable}`;
-                    if (ub !== undefined && ub !== Infinity) {
-                        glpmString += ` <= ${ub}`;
-                    }else if (lb !== undefined){
-                        glpmString += ` >= ${lb}`;
-                    }
-                }
-                glpmString += ';\n';
-            }
-        }
-    });
-
-    // Zielfunktion definieren
-    glpmString += '/* Objective function */\n';
-    glpmString += lp.objective.direction === GLP_LO ? 'maximize ' : 'minimize ';
-    glpmString += `${lp.objective.name}: `;
-    glpmString += lp.objective.vars
-        .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
-        .join(' + ');
-    glpmString += ';\n';
-
-    // Nebenbedingungen definieren
-    glpmString += '/* Constraints */\n';
-    lp.subjectTo.forEach((constraint: Constraint) => {
-        glpmString += `subject to ${constraint.name}: `;
-        const expr: string = constraint.vars
-            .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
-            .join(' + ');
-
-        if (constraint.bnds.type === GLP_LO) { // >=
-            glpmString += `${expr} >= ${constraint.bnds.lb};\n`;
-        } else if (constraint.bnds.type === GLP_UP) { // <=
-            glpmString += `${expr} <= ${constraint.bnds.ub};\n`;
-        } else if (constraint.bnds.type === GLP_FX) { // =
-            glpmString += `${expr} = ${constraint.bnds.ub};\n`;
-        }
-    });
-
-    // Abschluss
-    glpmString += 'end;\n';
-
-    return glpmString;
-}
-
 export function parseGMPL(lpString: string): LP {
     const cleanedInput = lpString
         .replace(/\/\*[\s\S]*?\*\//g, '')
@@ -112,26 +41,55 @@ export function parseGMPL(lpString: string): LP {
         .trim();
     const constraints = parseGMPLConstraints(constraintsString);
 
-    // Verbesserter Regex für verschiedene Schrankenformen
-    const boundsMatches = [...cleanedInput.matchAll(/var\s+(-?\d*\.?\d*)?\s*(<=|>=)?\s*(\w+)\s*(<=|>=)?\s*(-?\d*\.?\d*)?;/g)];
+    // Regex zur Erkennung von Schranken und Binaries/Integers
+    let bound_finder = cleanedInput.replace(/integer/g, "");
+
+    bound_finder = bound_finder.replace(/binary/g, "")
+
+
+    const boundsMatches = [...bound_finder.matchAll(/var\s+(?:integer\s+|binary\s+)?(\w+)\s*(>=|<=)?\s*(-?\d*\.?\d*)?\s*(<=|>=)?\s*(-?\d*\.?\d*)?\s*;/g)];
+
     const bounds: Bound[] = boundsMatches.map(match => {
-        const varName = match[3];
+        const varName = match[1]; // Variable Name
         let lb: number = -Infinity, ub: number = Infinity;
 
-        if (match[2] === ">=" || match[4] === ">=") {
-            lb = parseFloat(match[1]) || parseFloat(match[5]) || lb;
+        if (match[2] === ">=") {
+            lb = parseFloat(match[3]) || lb;
         }
-        if (match[2] === "<=" || match[4] === "<=") {
-            ub = parseFloat(match[1]) || parseFloat(match[5]) || ub;
+        if (match[2] === "<=") {
+            ub = parseFloat(match[3]) || ub;
+        }
+        if (match[4] === ">=") {
+            lb = Math.max(lb, parseFloat(match[5]) || lb);
+        }
+        if (match[4] === "<=") {
+            ub = Math.min(ub, parseFloat(match[5]) || ub);
+        }
+
+        // Determine the type based on the bounds
+        let type;
+        if (lb > -Infinity) {
+            type = GLP_LO; // Only lower bound is specified
+        } else if (ub < Infinity) {
+            type = GLP_UP; // Only upper bound is specified
+        } else {
+            type = GLP_UP; // Default type when no bounds are given, as a fallback
         }
 
         return {
             name: varName,
-            type: lb > -Infinity && ub < Infinity ? GLP_FX : (lb > -Infinity ? GLP_LO : GLP_UP),
-            lb: lb > -Infinity ? lb : 0,
-            ub: ub < Infinity ? ub : Infinity,
+            type: type,
+            lb: lb > -Infinity ? lb : 0, // Default lower bound to 0
+            ub: ub < Infinity ? ub : Infinity, // Default upper bound to infinity
         };
     });
+
+
+
+
+    // Erkennung von Integer- und Binary-Variablen
+    const integerMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+integer\s*(?:[<>]=?\s*\d*|=\s*\d*);/g)].map(match => match[1]);
+    const binaryMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+binary\s*(?:[<>]=?\s*\d*|=\s*\d*)?;/g)].map(match => match[1]);
 
     return {
         name: 'LP_Model',
@@ -141,9 +99,92 @@ export function parseGMPL(lpString: string): LP {
             vars: objectiveVars
         },
         subjectTo: constraints,
-        bounds: bounds
+        bounds: bounds,
+        binaries: binaryMatches,
+        generals: integerMatches
     } as LP;
 }
+
+
+export function convertToGLPM(lp: LP): string {
+    let glpmString = '';
+
+    // Entscheidungvariablen definieren
+    const variableNames: Set<string> = new Set();
+    lp.objective.vars.forEach((variable: Variable) => variableNames.add(variable.name));
+    lp.subjectTo.forEach((constraint: Constraint) =>
+        constraint.vars.forEach((variable: Variable) => variableNames.add(variable.name))
+    );
+
+    // Variablen-Deklaration
+    glpmString += '/* Declaration of decision variables */\n';
+    variableNames.forEach((variable: string) => {
+        if (lp.bounds) {
+            let bound = lp.bounds.find(b => b.name === variable);
+            if (bound) {
+                let lb = bound.lb;
+                let ub = bound.ub;
+
+                // Variable Deklaration starten
+                glpmString += `var ${variable}`;
+
+                // Falls es eine binäre Variable ist, fügen wir direkt "binary" hinzu
+                if (lp.binaries && lp.binaries.includes(variable)) {
+                    glpmString += ` binary`;
+                }
+                // Falls es eine Ganzzahlvariable ist
+                else if (bound.type === GLP_FX || bound.type === GLP_LO || bound.type === GLP_UP) {
+                    // Ganzzahligkeit prüfen
+                    if (lp.generals && lp.generals.includes(variable)) {
+                        glpmString += ` integer`;
+                    }
+                    // Schranken (Bounds) hinzufügen
+                    if (lb !== null && lb !== -Infinity) {
+                        glpmString += ` >= ${lb}`;
+                    }
+                    if (ub !== null&& ub !== Infinity) {
+                        glpmString += ` <= ${ub}`;
+                    }
+                }
+
+                // Deklaration abschließen
+                glpmString += ';\n';
+            }
+        }
+    });
+
+    // Zielfunktion definieren
+    glpmString += '/* Objective function */\n';
+    glpmString += lp.objective.direction === GLP_LO ? 'maximize ' : 'minimize ';
+    glpmString += `${lp.objective.name}: `;
+    glpmString += lp.objective.vars
+        .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
+        .join(' + ');
+    glpmString += ';\n';
+
+    // Nebenbedingungen definieren
+    glpmString += '/* Constraints */\n';
+    lp.subjectTo.forEach((constraint: Constraint) => {
+        glpmString += `subject to ${constraint.name}: `;
+        const expr: string = constraint.vars
+            .map((varObj: Variable) => `${varObj.coef} * ${varObj.name}`)
+            .join(' + ');
+
+        if (constraint.bnds.type === GLP_LO) { // >=
+            glpmString += `${expr} >= ${constraint.bnds.lb};\n`;
+        } else if (constraint.bnds.type === GLP_UP) { // <=
+            glpmString += `${expr} <= ${constraint.bnds.ub};\n`;
+        } else if (constraint.bnds.type === GLP_FX) { // =
+            glpmString += `${expr} = ${constraint.bnds.ub};\n`;
+        }
+    });
+
+    // Abschluss
+    glpmString += 'end;\n';
+
+    return glpmString;
+}
+
 
 
 

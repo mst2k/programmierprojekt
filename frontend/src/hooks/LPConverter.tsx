@@ -36,8 +36,24 @@ export function convertToLP(lpData: LP): string {
             if (b.type === GLP_FX) {
                 lpFormat += ` ${b.lb} = ${b.name}\n`;
             } else {
-                lpFormat += ` ${b.lb !== -Infinity ? b.lb + ' <= ' : ''}${b.name}${b.ub !== Infinity ? ' <= ' + b.ub : ''}\n`;
+                lpFormat += ` ${(b.lb !== null && b.lb !== -Infinity)? b.lb + ' <= ' : ''}${b.name}${(b.ub !== null && b.ub!== Infinity) ? ' <= ' + b.ub : ''}\n`;
             }
+        });
+    }
+
+    // Binärvariablen
+    if (lpData.binaries && lpData.binaries.length > 0) {
+        lpFormat += `Binary\n`;
+        lpData.binaries.forEach((bin) => {
+            lpFormat += ` ${bin}\n`;
+        });
+    }
+
+    // Ganzzahlvariablen
+    if (lpData.generals && lpData.generals.length > 0) {
+        lpFormat += `General\n`;
+        lpData.generals.forEach((gen) => {
+            lpFormat += ` ${gen}\n`;
         });
     }
 
@@ -58,7 +74,9 @@ export function parseLP(lpString: string): LP {
             vars: []
         },
         subjectTo: [],
-        bounds: []
+        bounds: [],
+        binaries: [],
+        generals: []
     };
 
     for (let line of lines) {
@@ -75,6 +93,12 @@ export function parseLP(lpString: string): LP {
             continue;
         } else if (line.startsWith("Bounds")) {
             mode = 'bounds';
+            continue;
+        } else if (line.startsWith("Binary")) {
+            mode = 'binaries';
+            continue;
+        } else if (line.startsWith("General")) {
+            mode = 'generals';
             continue;
         } else if (line.startsWith("End")) {
             mode = 'end';
@@ -99,6 +123,10 @@ export function parseLP(lpString: string): LP {
             if (bound && lp.bounds) {
                 lp.bounds.push(bound);
             }
+        } else if (mode === 'binaries') {
+            lp.binaries?.push(line.trim());
+        } else if (mode === 'generals') {
+            lp.generals?.push(line.trim());
         }
     }
 
@@ -134,7 +162,7 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
     const vars: Variable[] = parseLPExpression(expr.trim());
     const boundValue = parseFloat(boundStr.trim());
 
-    let boundType: GLP_UP | GLP_LO | GLP_FX = GLP_UP;
+    let boundType = GLP_UP;
     if (operator === "<=") {
         boundType = GLP_UP;
     } else if (operator === ">=") {
@@ -164,8 +192,7 @@ function parseLPBound(boundStr: string): Bound | null {
         const lb = match[1] ? parseFloat(match[1]) : undefined;
         const varName = match[3];
         const ub = match[5] ? parseFloat(match[5]) : undefined;
-
-        let type: GLP_UP | GLP_LO | GLP_FX;
+        let type;
         if (match[2] === "<=" && match[4] === "<=") {
             type = GLP_UP; // lb <= x <= ub
         } else if (match[2] === ">=") {

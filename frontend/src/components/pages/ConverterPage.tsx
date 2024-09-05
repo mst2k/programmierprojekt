@@ -17,7 +17,7 @@ import {convertToMPS, parseMPS} from "@/hooks/MPSConverter.tsx";
 
 const convertOptions = [
     {name: "glpkInterface",
-        from:   (code):LP => {return JSON.parse(code)},
+        from:   (code:string):LP => {return JSON.parse(code)},
         to:     (lpObject:LP):string => {return JSON.stringify(lpObject, null, 2)}},
     {name: "gmpl", from: parseGMPL, to: convertToGLPM},
     {name: "lp", from: parseLP, to: convertToLP},
@@ -36,7 +36,7 @@ const CodeExecutionPage: React.FC = () => {
             setOutput(code)
             return
         }
-        let lpObject:LP;
+        let lpObject: LP | undefined = undefined;
 
         //Convert input Value into
         let fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
@@ -45,7 +45,10 @@ const CodeExecutionPage: React.FC = () => {
         }
         let toFunction = convertOptions.find(c => c.name === to) ?? undefined;
         if(toFunction){
-            setOutput(toFunction.to(lpObject));
+            if(lpObject){
+                setOutput(toFunction.to(lpObject));
+            }else
+                throw "No Valid lpObject to Create Output"
         }
 
 

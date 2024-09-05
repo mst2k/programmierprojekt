@@ -1,7 +1,6 @@
 import { LP } from "@/interfaces/LP.tsx";
-import { Bound } from "@/interfaces/Bound.tsx";
 import { Constraint } from "@/interfaces/Constraint.tsx";
-import {GLP_UP, GLP_LO, GLP_FX} from "@/interfaces/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
 
 export function convertToMPS(lp: LP): string {
     let mpsString = '';
@@ -21,7 +20,6 @@ export function convertToMPS(lp: LP): string {
             mpsString += ` E  ${constraint.name}\n`;
         }
     });
-
 
     // COLUMNS section
     mpsString += 'COLUMNS\n';
@@ -70,11 +68,28 @@ export function convertToMPS(lp: LP): string {
         });
     }
 
+    // BINARY section
+    if (lp.binaries && lp.binaries.length > 0) {
+        mpsString += 'BINARY\n';
+        lp.binaries.forEach(bin => {
+            mpsString += `    ${bin}\n`;
+        });
+    }
+
+    // GENERAL section
+    if (lp.generals && lp.generals.length > 0) {
+        mpsString += 'GENERAL\n';
+        lp.generals.forEach(gen => {
+            mpsString += `    ${gen}\n`;
+        });
+    }
+
     // ENDATA section
     mpsString += 'ENDATA\n';
 
     return mpsString;
 }
+
 
 export function parseMPS(mpsString: string): LP {
     const lines = mpsString.split("\n").map(line => line.trim()).filter(line => line !== '');
@@ -86,7 +101,9 @@ export function parseMPS(mpsString: string): LP {
             vars: []
         },
         subjectTo: [],
-        bounds: []
+        bounds: [],
+        binaries: [],
+        generals: []
     };
     let currentSection = "";
     const constraintsMap: { [key: string]: Constraint } = {}; // Temporary map to hold constraints
@@ -103,6 +120,10 @@ export function parseMPS(mpsString: string): LP {
             currentSection = "RHS";
         } else if (line === "BOUNDS") {
             currentSection = "BOUNDS";
+        } else if (line === "BINARY") {
+            currentSection = "BINARY";
+        } else if (line === "GENERAL") {
+            currentSection = "GENERAL";
         } else if (line === "ENDATA") {
             currentSection = "ENDATA";
         } else {
@@ -118,6 +139,12 @@ export function parseMPS(mpsString: string): LP {
                     break;
                 case "BOUNDS":
                     handleBoundsSection(line, lp);
+                    break;
+                case "BINARY":
+                    handleBinarySection(line, lp);
+                    break;
+                case "GENERAL":
+                    handleGeneralSection(line, lp);
                     break;
             }
         }
@@ -204,14 +231,29 @@ function handleBoundsSection(line: string, lp: LP) {
     const value = parseFloat(parts[3]);
     if (lp.bounds) {
         if (boundType === "LO") {
-            lp.bounds.push({name: variable, type: GLP_LO, lb: value, ub: Infinity});
+            lp.bounds.push({ name: variable, type: GLP_LO, lb: value, ub: Infinity });
         } else if (boundType === "UP") {
             const existingBound = lp.bounds.find(b => b.name === variable);
             if (existingBound) {
                 existingBound.ub = value;
             } else {
-                lp.bounds.push({name: variable, type: GLP_UP, lb: -Infinity, ub: value});
+                lp.bounds.push({ name: variable, type: GLP_UP, lb: -Infinity, ub: value });
             }
         }
     }
 }
+
+function handleBinarySection(line: string, lp: LP) {
+    const variable = line.trim();
+    if (lp.binaries) {
+        lp.binaries.push(variable);
+    }
+}
+
+function handleGeneralSection(line: string, lp: LP) {
+    const variable = line.trim();
+    if (lp.generals) {
+        lp.generals.push(variable);
+    }
+}
+
