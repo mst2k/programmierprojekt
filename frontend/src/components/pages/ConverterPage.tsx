@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 import {test} from "@/hooks/CallConverter.tsx"
+import GLPK_TEST from "@/hooks/Callglpk.tsx";
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
@@ -70,6 +71,7 @@ const CodeExecutionPage: React.FC = () => {
             <div>
                 <CodeArea data={output} />
             </div>
+            <GLPK_TEST></GLPK_TEST>
         </div>
     );
 };
