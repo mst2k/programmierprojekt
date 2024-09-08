@@ -74,43 +74,61 @@ End
 
 
 
-export const gmplString = '' +
-    '/* The declaration of decision variables x1, x2 */ var x1 >= 0;\n' +
-    'var x2 >=0;\n' +
-    '/* Objective function */\n' +
-    'maximize ObjectiveFunctionLabel : 4*x1 +2*x2; /* Constraints */\n' +
-    'subject to label1: x1 + x2 = 2; s.t. label2: x1 + x2 >= 4; end;'
+export const gmplString = `
+/* decision variables*/
+var x1 >= 0;
+var x2 >=0;
+/* Objective function */ 
+maximize label : 4*x1 +5*x2; 
+/* Constraints */
+subject to label1: x1 + 2*x2 <= 40; 
+s.t. label2: 4*x1 + 3*x2 <= 120;
+end;
+`
+
+export const gmpl2String = `
+var x11 integer >=0;
+var x12 integer >=0;
+var x21 integer >=0;
+var x22 binary >=0; 
+
+minimize transportkosten: 4*x11 + 6*x12 + 5*x21 + 3*x22;
+subject to lager1kap: x11+x12 <= 60;
+s.t. lager2kap: x21+x22 <= 40.5;
+s.t. ziel1bedarf: x21+x11 = 50;
+s.t. ziel2bedarf: x12+x22 = 50; 
+`
 
 // Example usage:
-// export const mpsString = `
-// NAME          ExampleLP
-// ROWS
-//  N  obj
-//  L  c1
-//  L  c2
-//  E  c3
-// COLUMNS
-//     x1  obj  1
-//     x2  obj  2
-//     x3  obj  3
-//     x4  obj  1
-//     x1  c1  -1
-//     x2  c1  1
-//     x3  c1  1
-//     x4  c1  10
-//     x1  c2  1
-//     x2  c2  -3
-//     x3  c2  1
-//     x2  c3  1
-//     x4  c3  -3.5
-// RHS
-//     RHS1  c1  20
-//     RHS1  c2  30
-//     RHS1  c3  0
-// BOUNDS
-//  LO BND1  x1  0
-//  UP BND1  x1  40
-//  LO BND1  x4  2
-//  UP BND1  x4  3
-// ENDATA
-// `;
+export const mpsString = `
+NAME          ExampleLP
+ROWS
+ N  obj
+ L  c1
+ L  c2
+ E  c3
+COLUMNS
+    x1  obj  1
+    x2  obj  2
+    x3  obj  3
+    x4  obj  1
+    x1  c1  -1
+    x2  c1  1
+    x3  c1  1
+    x4  c1  10
+    x1  c2  1
+    x2  c2  -3
+    x3  c2  1
+    x2  c3  1
+    x4  c3  -3.5
+RHS
+    RHS1  c1  20
+    RHS1  c2  30
+    RHS1  c3  0
+BOUNDS
+ LO BND1  x1  0
+ UP BND1  x1  40
+ LO BND1  x4  2
+ UP BND1  x4  3
+ENDATA
+`;
