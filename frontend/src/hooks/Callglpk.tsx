@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const GLPK_TEST = () => {
     const [log, setLog] = useState('');
     const [result, setResult] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
-
-    let worker = null;
-
-    const runGLPK = (mip) => {
-        const problem = `
+    const runGLPK = (mip: boolean) => {
+    const problem = `
       \\* Problem: todd *\\
 
 Maximize
@@ -90,7 +87,7 @@ End`;
     return (
         <div>
             <h1>GLPK React Example</h1>
-    <textarea rows="10" cols="80" value={log} readOnly></textarea>
+    <textarea rows={10} cols={80} value={log} readOnly></textarea>
     <button onClick={() => runGLPK(false)} disabled={isRunning}>
         {isRunning ? 'Running...' : 'Run with MIP'}
         </button>

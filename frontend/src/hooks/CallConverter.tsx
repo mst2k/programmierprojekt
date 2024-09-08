@@ -20,7 +20,7 @@ console.log(convertToMPS(LPObject));
 
 
 import {parseGMPL, convertToGLPM} from "@/hooks/GMPLConverter.tsx";
-import {gmplString, lpObject, lpString} from "@/interfaces/TestData.tsx"
+import {gmplString, lpObject} from "@/interfaces/TestData.tsx"
 import {LP} from "@/interfaces/LP.tsx";
 import GLPK_TEST from "@/hooks/Callglpk.tsx";
 
