@@ -1,6 +1,8 @@
-/*
+import { LP } from "@/interfaces/LP.tsx";
+import { Constraint } from "@/interfaces/Constraint.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
 
-function convertToMPS(lp: LP) {
+export function convertToMPS(lp: LP): string {
     let mpsString = '';
 
     // NAME section
@@ -10,18 +12,18 @@ function convertToMPS(lp: LP) {
     mpsString += 'ROWS\n';
     mpsString += ` N  ${lp.objective.name}\n`; // Objective row
     lp.subjectTo.forEach(constraint => {
-        if (constraint.bnds.type === 1) { // <=
+        if (constraint.bnds.type === GLP_UP) { // <=
             mpsString += ` L  ${constraint.name}\n`;
-        } else if (constraint.bnds.type === 2) { // >=
+        } else if (constraint.bnds.type === GLP_LO) { // >=
             mpsString += ` G  ${constraint.name}\n`;
-        } else if (constraint.bnds.type === 3) { // =
+        } else if (constraint.bnds.type === GLP_FX) { // =
             mpsString += ` E  ${constraint.name}\n`;
         }
     });
 
     // COLUMNS section
     mpsString += 'COLUMNS\n';
-    const variableMap = {};
+    const variableMap: { [key: string]: { row: string; coef: number }[] } = {};
     lp.objective.vars.forEach(varObj => {
         if (!variableMap[varObj.name]) {
             variableMap[varObj.name] = [];
@@ -46,9 +48,9 @@ function convertToMPS(lp: LP) {
     // RHS section
     mpsString += 'RHS\n';
     lp.subjectTo.forEach(constraint => {
-        if (constraint.bnds.type === 1 || constraint.bnds.type === 3) { // <= or =
+        if (constraint.bnds.type === GLP_UP || constraint.bnds.type === GLP_FX) { // <= or =
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.ub}\n`;
-        } else if (constraint.bnds.type === 2) { // >=
+        } else if (constraint.bnds.type === GLP_LO) { // >=
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.lb}\n`;
         }
     });
@@ -66,15 +68,32 @@ function convertToMPS(lp: LP) {
         });
     }
 
+    // BINARY section
+    if (lp.binaries && lp.binaries.length > 0) {
+        mpsString += 'BINARY\n';
+        lp.binaries.forEach(bin => {
+            mpsString += `    ${bin}\n`;
+        });
+    }
+
+    // GENERAL section
+    if (lp.generals && lp.generals.length > 0) {
+        mpsString += 'GENERAL\n';
+        lp.generals.forEach(gen => {
+            mpsString += `    ${gen}\n`;
+        });
+    }
+
     // ENDATA section
     mpsString += 'ENDATA\n';
 
     return mpsString;
 }
 
-function parseMPS(mpsString:string) {
+
+export function parseMPS(mpsString: string): LP {
     const lines = mpsString.split("\n").map(line => line.trim()).filter(line => line !== '');
-    let lp:LP = {
+    let lp: LP = {
         name: "",
         objective: {
             direction: 1,
@@ -82,13 +101,13 @@ function parseMPS(mpsString:string) {
             vars: []
         },
         subjectTo: [],
-        bounds: []
+        bounds: [],
+        binaries: [],
+        generals: []
     };
     let currentSection = "";
-    let rhsName = ""; // To track the name used in the RHS section
-
-    const constraintsMap = {}; // Temporary map to hold constraints
-    const rhsMap = {}; // Map to hold RHS values
+    const constraintsMap: { [key: string]: Constraint } = {}; // Temporary map to hold constraints
+    const rhsMap: { [key: string]: number } = {}; // Map to hold RHS values
 
     lines.forEach(line => {
         if (line.startsWith("NAME")) {
@@ -101,6 +120,10 @@ function parseMPS(mpsString:string) {
             currentSection = "RHS";
         } else if (line === "BOUNDS") {
             currentSection = "BOUNDS";
+        } else if (line === "BINARY") {
+            currentSection = "BINARY";
+        } else if (line === "GENERAL") {
+            currentSection = "GENERAL";
         } else if (line === "ENDATA") {
             currentSection = "ENDATA";
         } else {
@@ -112,10 +135,16 @@ function parseMPS(mpsString:string) {
                     handleColumnsSection(line, lp, constraintsMap);
                     break;
                 case "RHS":
-                    handleRHSSection(line, rhsMap, rhsName);
+                    handleRHSSection(line, rhsMap);
                     break;
                 case "BOUNDS":
                     handleBoundsSection(line, lp);
+                    break;
+                case "BINARY":
+                    handleBinarySection(line, lp);
+                    break;
+                case "GENERAL":
+                    handleGeneralSection(line, lp);
                     break;
             }
         }
@@ -123,9 +152,27 @@ function parseMPS(mpsString:string) {
 
     // Combine constraints and RHS values
     Object.keys(constraintsMap).forEach(constraintName => {
+        const constraint = constraintsMap[constraintName];
         if (rhsMap[constraintName] !== undefined) {
-            const constraint:any = constraintsMap[constraintName];
-            constraint.bnds = inferBoundType(rhsMap[constraintName]);
+            if (constraint.bnds.type === GLP_UP) { // <=
+                constraint.bnds.ub = rhsMap[constraintName];
+            } else if (constraint.bnds.type === GLP_LO) { // >=
+                constraint.bnds.lb = rhsMap[constraintName];
+            } else if (constraint.bnds.type === GLP_FX) { // =
+                constraint.bnds.lb = rhsMap[constraintName];
+                constraint.bnds.ub = rhsMap[constraintName];
+            }
+            lp.subjectTo.push(constraint);
+        } else {
+            // Falls keine RHS angegeben wurde, setze einen Standardwert
+            if (constraint.bnds.type === GLP_UP) {
+                constraint.bnds.ub = 0; // Standard für <=
+            } else if (constraint.bnds.type === GLP_LO) {
+                constraint.bnds.lb = 0; // Standard für >=
+            } else if (constraint.bnds.type === GLP_FX) {
+                constraint.bnds.lb = 0; // Standard für =
+                constraint.bnds.ub = 0;
+            }
             lp.subjectTo.push(constraint);
         }
     });
@@ -133,7 +180,7 @@ function parseMPS(mpsString:string) {
     return lp;
 }
 
-function handleRowsSection(line:any, lp:any, constraintsMap:any) {
+function handleRowsSection(line: string, lp: LP, constraintsMap: { [key: string]: Constraint }) {
     const parts = line.split(/\s+/);
     const type = parts[0];
     const name = parts[1];
@@ -144,19 +191,19 @@ function handleRowsSection(line:any, lp:any, constraintsMap:any) {
         constraintsMap[name] = {
             name: name,
             vars: [],
-            bnds: { type: 1, lb: -Infinity, ub: Infinity } // Initialize with default
+            bnds: { type: GLP_UP, lb: -Infinity, ub: Infinity } // Initialize with default
         };
         if (type === "L") {
-            constraintsMap[name].bnds.type = 1; // Less than or equal
+            constraintsMap[name].bnds.type = GLP_UP; // Less than or equal
         } else if (type === "G") {
-            constraintsMap[name].bnds.type = 2; // Greater than or equal
+            constraintsMap[name].bnds.type = GLP_LO; // Greater than or equal
         } else if (type === "E") {
-            constraintsMap[name].bnds.type = 3; // Equal
+            constraintsMap[name].bnds.type = GLP_FX; // Equal
         }
     }
 }
 
-function handleColumnsSection(line:any, lp:any, constraintsMap:any) {
+function handleColumnsSection(line: string, lp: LP, constraintsMap: { [key: string]: Constraint }) {
     const parts = line.split(/\s+/);
     const variable = parts[0];
     const constraintName = parts[1];
@@ -171,37 +218,42 @@ function handleColumnsSection(line:any, lp:any, constraintsMap:any) {
     }
 }
 
-function handleRHSSection(line:any, rhsMap:any) {
+function handleRHSSection(line: string, rhsMap: { [key: string]: number }) {
     const parts = line.split(/\s+/);
     const constraintName = parts[1];
     rhsMap[constraintName] = parseFloat(parts[2]);
 }
 
-function handleBoundsSection(line:any, lp:any) {
+function handleBoundsSection(line: string, lp: LP) {
     const parts = line.split(/\s+/);
     const boundType = parts[0];
     const variable = parts[2];
     const value = parseFloat(parts[3]);
-
-    if (boundType === "LO") {
-        lp.bounds.push({ name: variable, type: 1, lb: value, ub: Infinity });
-    } else if (boundType === "UP") {
-        const existingBound = lp.bounds.find((b:any) => b.name === variable);
-        if (existingBound) {
-            existingBound.ub = value;
-        } else {
-            lp.bounds.push({ name: variable, type: 1, lb: -Infinity, ub: value });
+    if (lp.bounds) {
+        if (boundType === "LO") {
+            lp.bounds.push({ name: variable, type: GLP_LO, lb: value, ub: Infinity });
+        } else if (boundType === "UP") {
+            const existingBound = lp.bounds.find(b => b.name === variable);
+            if (existingBound) {
+                existingBound.ub = value;
+            } else {
+                lp.bounds.push({ name: variable, type: GLP_UP, lb: -Infinity, ub: value });
+            }
         }
     }
 }
 
-function inferBoundType(rhsValue:any) {
-    return {
-        name:"",
-        type: rhsValue === 0 ? 3 : 1, // Infer type (<= or =) based on value
-        lb: -Infinity,
-        ub: rhsValue
-    };
+function handleBinarySection(line: string, lp: LP) {
+    const variable = line.trim();
+    if (lp.binaries) {
+        lp.binaries.push(variable);
+    }
 }
 
- */
+function handleGeneralSection(line: string, lp: LP) {
+    const variable = line.trim();
+    if (lp.generals) {
+        lp.generals.push(variable);
+    }
+}
+
