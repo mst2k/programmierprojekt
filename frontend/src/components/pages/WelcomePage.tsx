@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
 
 import {useState} from "react";
+import { GLPKSolver } from '../Solver';
 
 
 
@@ -42,6 +43,11 @@ function WelcomePage() {
 
                 <h1>{t('Welcome to React')}</h1>
             <Link to={"/solver"}>solver</Link>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <GLPKSolver />
         </>
     )
 }
