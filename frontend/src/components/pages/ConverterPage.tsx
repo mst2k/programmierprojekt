@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 
-import {test} from "@/hooks/CallConverter.tsx"
+// import {test} from "@/hooks/CallConverter.tsx"
 import { NavigationMenuDemo } from "../ui/navbar";
 
 import {LP} from "@/interfaces/LP.tsx";
@@ -44,11 +44,11 @@ const CodeExecutionPage: React.FC = () => {
         let lpObject: LP | undefined = undefined;
 
         //Convert input Value into
-        let fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
+        const fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
         if(fromFunction){
             lpObject = fromFunction.from(code);
         }
-        let toFunction = convertOptions.find(c => c.name === to) ?? undefined;
+        const toFunction = convertOptions.find(c => c.name === to) ?? undefined;
         if(toFunction){
             if(lpObject){
                 setOutput(toFunction.to(lpObject));
