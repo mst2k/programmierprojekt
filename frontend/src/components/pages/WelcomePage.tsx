@@ -1,14 +1,19 @@
-import { useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom';
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
+
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
+
+import {useState} from "react";
+
+
 
 function WelcomePage() {
     const [count, setCount] = useState(0)
     const { t } = useTranslation();
+
     return (
         <>
         <header>
@@ -37,7 +42,6 @@ function WelcomePage() {
 
                 <h1>{t('Welcome to React')}</h1>
             <Link to={"/solver"}>solver</Link>
-
         </>
     )
 }
