@@ -1,6 +1,6 @@
-import { LP } from "@/interfaces/LP.tsx";
-import { Constraint } from "@/interfaces/Constraint.tsx";
-import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
+import { LP } from "@/interfaces/glpkJavil/LP.tsx";
+import { Constraint } from "@/interfaces/glpkJavil/Constraint.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/glpkJavil/Bnds.tsx";
 
 export function convertToMPS(lp: LP): string {
     let mpsString = '';

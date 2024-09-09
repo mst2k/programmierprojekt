@@ -1,4 +1,4 @@
-import {LP} from "@/interfaces/LP.tsx";
+import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 
 
 export const lpObject: LP = {

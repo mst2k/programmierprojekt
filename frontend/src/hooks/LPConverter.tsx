@@ -1,8 +1,8 @@
-import { LP } from "@/interfaces/LP.tsx";
-import { Bound } from "@/interfaces/Bound.tsx";
-import { Variable } from "@/interfaces/Variable.tsx";
-import { Bnds } from "@/interfaces/Bnds.tsx";
-import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/Bnds.tsx";
+import { LP } from "@/interfaces/glpkJavil/LP.tsx";
+import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
+import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
+import { Bnds } from "@/interfaces/glpkJavil/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/glpkJavil/Bnds.tsx";
 
 // Funktion zur Konvertierung eines LP-Objekts in das LP-Format
 export function convertToLP(lpData: LP): string {

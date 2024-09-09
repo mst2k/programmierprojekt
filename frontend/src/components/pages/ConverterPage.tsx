@@ -14,7 +14,7 @@ import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 // import {test} from "@/hooks/CallConverter.tsx"
 import { NavigationMenuDemo } from "../ui/navbar";
 
-import {LP} from "@/interfaces/LP.tsx";
+import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToGLPM, parseGMPL} from "@/hooks/GMPLConverter.tsx";
 import {convertToLP, parseLP} from "@/hooks/LPConverter.tsx";
 import {convertToMPS, parseMPS} from "@/hooks/MPSConverter.tsx";

@@ -5,7 +5,6 @@ import '@/App.css'
 import { useTranslation } from 'react-i18next';
 import GLPKSolverComponent from '@/hooks/useSolverALT';
 
-
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
 
 import {useState} from "react";

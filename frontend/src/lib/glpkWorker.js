@@ -1,64 +1,67 @@
-// glpkWorker.js
 importScripts('./glpk.js');
 
 self.onmessage = function (e) {
-    console.log("TEST")
-    const log = (value) => {
-        // Post log messages back to the main thread
-        self.postMessage({ action: 'log', message: value });
+    const log = (message) => {
+        self.postMessage({ action: 'log', message });
     };
 
-    const obj = e.data;
+    const { problem, problemType, solverOptions } = e.data;
     const result = {};
     let objective;
 
     try {
+        const lp = glpk.glp_create_prob();
 
-        // Create the problem
-        const tran = glp_mpl_alloc_wksp();
-        console.log(obj.data)
-        readC
+        if (problemType === 'LP') {
+            readLPFromString(lp, problem);
+        } else if (problemType === 'GMPL') {
+            const tran = glpk.glp_mpl_alloc_wksp();
+            readGMPLFromString(tran, problem);
+            glpk.glp_mpl_build_prob(tran, lp);
+        } else if (problemType === 'MPS') {
+            readMPSFromString(lp, problem);
+        }
 
-        glp_mpl_read_model(tran, null,
-            function(){
-                if (pos < str.length){
-                    //console.log(str[pos+1]);
-                    return str[pos++];
-                } else
-                    return -1;
-            },
-            false
-        )
-        glp_scale_prob(lp, GLP_SF_AUTO);
+        // Apply simplex
+        const smcp = new glpk.SMCP({ presolve: glpk.GLP_ON });
+        glpk.glp_simplex(lp, smcp);
 
-        // Solve the problem using simplex
-        const smcp = new SMCP({ presolve: GLP_ON });
-        glp_simplex(lp, smcp);
-
-        // If MIP is selected, solve it as an integer optimization
-        if (obj.mip) {
-            glp_intopt(lp);
-            objective = glp_mip_obj_val(lp); // Get the MIP objective value
-            for (let i = 1; i <= glp_get_num_cols(lp); i++) {
-                result[glp_get_col_name(lp, i)] = glp_mip_col_val(lp, i);
+        // Solve as MIP if requested
+        if (solverOptions.mip) {
+            glpk.glp_intopt(lp);
+            objective = glpk.glp_mip_obj_val(lp);
+            for (let i = 1; i <= glpk.glp_get_num_cols(lp); i++) {
+                result[glpk.glp_get_col_name(lp, i)] = glpk.glp_mip_col_val(lp, i);
             }
         } else {
-            // Get the objective value from simplex method
-            objective = glp_get_obj_val(lp);
-            for (let i = 1; i <= glp_get_num_cols(lp); i++) {
-                result[glp_get_col_name(lp, i)] = glp_get_col_prim(lp, i);
+            objective = glpk.glp_get_obj_val(lp);
+            for (let i = 1; i <= glpk.glp_get_num_cols(lp); i++) {
+                result[glpk.glp_get_col_name(lp, i)] = glpk.glp_get_col_prim(lp, i);
             }
         }
 
-        // Log success message
         log('Optimization completed successfully.');
     } catch (err) {
-        // Log any errors that occur
         log(`Error: ${err.message}`);
-        console.log( err.message)
     } finally {
-        // Send the final result and objective value back to the main thread
         self.postMessage({ action: 'done', result, objective });
-        console.log("FINALLY")
     }
 };
+
+// Function to read LP from string
+function readLPFromString(lp, problemString) {
+    let pos = 0;
+    glpk.glp_read_lp(lp, null, () => (pos < problemString.length ? problemString[pos++] : -1));
+}
+
+// Function to read GMPL from string
+function readGMPLFromString(tran, problemString) {
+    let pos = 0;
+    glpk.glp_mpl_read_model(tran, null, () => (pos < problemString.length ? problemString[pos++] : -1), false);
+}
+
+// Function to read MPS from string
+function readMPSFromString(lp, problemString) {
+    let pos = 0;
+    glpk.glp_read_mps(lp, glpk.GLP_MPS_FILE, null, () => (pos < problemString.length ? problemString[pos++] : -1));
+}

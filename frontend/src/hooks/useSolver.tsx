@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 import GLPK from 'glpk.js';
+import {LP} from "@/interfaces/glpkJavil/LP.tsx";
+import {Options} from "@/interfaces/glpkJavil/Options.tsx";
 
 // Singleton for GLPK instance
 let glpkInstance: any = null;
@@ -11,35 +13,13 @@ export const getGLPK = async () => {
   return glpkInstance;
 };
 
-interface Problem {
-  name: string;
-  objective: {
-    direction: string;
-    name: string;
-    vars: { name: string; coef: number }[];
-  };
-  subjectTo: {
-    name: string;
-    vars: { name: string; coef: number }[];
-    bnds: { type: string; ub: number; lb: number };
-  }[];
-}
-
-interface SolverOptions {
-  msglev?: string;
-  presol?: boolean;
-  cb?: {
-    call: (progress: any) => void;
-    each: number;
-  };
-}
 
 export const useSolver = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [result, setResult] = useState<any>(null);
 
-  const solve = useCallback(async (problem: Problem, solverOptions: SolverOptions = {}) => {
+  const solve = useCallback(async (problem: LP, solverOptions: Options = {}) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -67,3 +47,54 @@ export const useSolver = () => {
 
   return { solve, result, isLoading, error };
 };
+
+/*
+
+import { useState, useCallback } from 'react';
+
+// Define supported problem types
+export type ProblemType = 'LP' | 'GMPL' | 'MPS';
+
+export const useSolver = (solverUrl: string) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [result, setResult] = useState<any>(null);
+
+  const solve = useCallback(async (problem: string, problemType: ProblemType, solverOptions: any = {}) => {
+    setIsLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const worker = new Worker(solverUrl);
+
+      worker.onmessage = (e) => {
+        const { action, result, objective, message } = e.data;
+        if (action === 'done') {
+          setResult({ result, objective });
+          setIsLoading(false);
+          worker.terminate();
+        } else if (action === 'log') {
+          console.log('Worker log:', message);
+        }
+      };
+
+      worker.onerror = (e) => {
+        setError(new Error(e.message));
+        setIsLoading(false);
+        worker.terminate();
+      };
+
+      // Send the problem and options to the worker
+      worker.postMessage({ action: 'solve', problem, problemType, solverOptions });
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('An unknown error occurred'));
+      setIsLoading(false);
+    }
+  }, [solverUrl]);
+
+  return { solve, result, isLoading, error };
+};
+
+
+ */
