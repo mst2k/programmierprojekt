@@ -1,6 +1,11 @@
+import { NavigationMenuDemo } from "../ui/navbar";
+
 const SolverPage = () => {
     return (
         <div className="flex flex-col h-screen w-screen">
+            <header>
+                <NavigationMenuDemo></NavigationMenuDemo>
+            </header>
             <div className="flex flex-1">
                 <aside className="w-1/4 bg-gray-200 p-4">
                     <ul>
