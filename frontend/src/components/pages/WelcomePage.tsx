@@ -3,7 +3,11 @@ import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom';
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
+
+import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
+
 import {useState} from "react";
+
 
 
 function WelcomePage() {
@@ -12,6 +16,9 @@ function WelcomePage() {
 
     return (
         <>
+        <header>
+            <NavigationMenuDemo></NavigationMenuDemo>
+        </header>
                 <div>
                     <a href="https://vitejs.dev" target="_blank">
                         <img src={viteLogo} className="logo" alt="Vite logo" />
