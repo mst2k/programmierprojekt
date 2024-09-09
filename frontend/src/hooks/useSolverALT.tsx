@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSolver } from './useSolver.tsx';
+import { gmpl2String, gmplString } from '@/interfaces/TestData.tsx';
 
 const GLPKSolverComponent: React.FC = () => {
   // const { solve, result, isLoading, error } = useSolver();
@@ -41,20 +42,19 @@ const GLPKSolverComponent: React.FC = () => {
 
 
 const lpString = `
-  Maximize
+Maximize
    obj: x1 + 2 x2 + 3 x3 + x4
-  Subject To
+Subject To
    c1: - x1 + x2 + x3 + 10 x4 <= 20
    c2: x1 - 3 x2 + x3 <= 30
    c3: x2 - 3.5 x4 = 0
-  Bounds
+Bounds
    0 <= x1 <= 40
    2 <= x4 <= 3
-  End
+End
   `;
 
 
-  
 
   const { result, isLoading, error } = useSolver(lpString, "LP", 'GLPK12jahre');
 
