@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom';
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
-import { MenubarDemo } from "@/components/ui/menuebar.tsx"
+import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
 
 function WelcomePage() {
     const [count, setCount] = useState(0)
@@ -12,7 +12,7 @@ function WelcomePage() {
     return (
         <>
         <header>
-            <MenubarDemo></MenubarDemo>
+            <NavigationMenuDemo></NavigationMenuDemo>
         </header>
                 <div>
                     <a href="https://vitejs.dev" target="_blank">
