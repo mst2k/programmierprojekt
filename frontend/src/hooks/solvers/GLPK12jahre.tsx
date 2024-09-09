@@ -1,54 +1,36 @@
-import { use } from "i18next";
 import { useCallback, useEffect, useState } from "react";
 
+export const solve12jahre = async (prob: string, probtype: string): Promise<{ result: any; error: Error | null; log: string[] }> => {
+    return new Promise((resolve) => {
+        let result: any = null;
+        let error: Error | null = null;
+        let log: string[] = [];
 
+        const worker = new Worker(new URL('../../lib/glpkWorker.js', import.meta.url));
 
-export const solve12jahre = async (prob: string, probtype: string) => {
-
-    const [error, setError] = useState<Error | null>(null);
-    const [result, setResult] = useState<any>(null);
-    const [log, setLog] = useState<any>(null);
-
-    //TODO: konvertiert zu problemtyp der passt
-
-    const solve = useCallback(async (prob: string, probtype: string) => {
-        setError(null);
-        setResult(null);
-    
-        try {
-          const worker = new Worker("@/lib/glpkWorker.js");
-    
-          worker.onmessage = (e) => {
-            const { action, result, objective, message } = e.data;
+        worker.onmessage = (e) => {
+            const { action, result: workerResult, objective, message } = e.data;
             if (action === 'done') {
-              setResult({ result, objective });
-              worker.terminate();
+                console.log({ result: workerResult, objective });
+                result = { result: workerResult, objective };
+                worker.terminate();
+                resolve({ result, error, log });
             } else if (action === 'log') {
-              console.log('Worker log:', message);
-                setLog([...log, message]);
+                console.log('Worker log:', message);
+                log.push(message);
             }
-          };
-    
-          worker.onerror = (e) => {
-            setError(new Error(e.message));
+        };
+
+        worker.onerror = (e) => {
+            error = new Error(e.message);
+            console.log('Worker error:', e.message);
             worker.terminate();
-          };
-    
-          // Send the problem and options to the worker
-          worker.postMessage({ action: 'solve', prob, probtype});
-        } catch (err) {
-          setError(err instanceof Error ? err : new Error('An unknown error occurred'));
-        }
-      }, []);
+            resolve({ result, error, log });
+        };
 
-      useEffect(() => {
-        solve(prob, probtype);
-      }, [prob, probtype]);
-
-    
-      //TODO: konvertieren result zu einheitlichen result dings & error auch
-
-      return { result, error, log}
-}
+        // Send the problem and options to the worker
+        worker.postMessage({ action: 'solve', prob, probtype });
+    });
+};
 
 export default solve12jahre;
