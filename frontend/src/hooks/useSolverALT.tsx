@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSolver } from './useSolver.tsx';
-import { gmpl2String, gmplString } from '@/interfaces/TestData.tsx';
+import {gmpl2String, gmplString, gmplStringTransp} from '@/interfaces/TestData.tsx';
 
 const GLPKSolverComponent: React.FC = () => {
   // const { solve, result, isLoading, error } = useSolver();
@@ -56,7 +56,7 @@ End
 
 
 
-  const { result, isLoading, error } = useSolver(lpString, "LP", 'GLPK12jahre');
+  const { result, isLoading, error , solve, log} = useSolver(lpString, "LP", 'GLPK12jahre');
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -64,7 +64,9 @@ End
   return (
     <div>
       <h1>GLPK Solver Result</h1>
-      <pre>{JSON.stringify(result, null, 2)}</pre>
+      <p>{JSON.stringify(result, null, 2)}</p>
+
+        <pre>{JSON.stringify(log, null, 2)}</pre>
     </div>
   );
 };

@@ -5,23 +5,25 @@ export const useSolver = (initialProb: any, initialProbType: any, initialSolver:
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [result, setResult] = useState<any>(null);
+  const [log, setLog] = useState<any>(null);
 
   const solve = useCallback(async (prob: any, probtype: any, solver: any) => {
     setIsLoading(true);
     setError(null);
     setResult(null);
+    setLog(null);
 
     try {
       switch (solver) {
         case "GLPK12jahre":
           const { result: solveResult, error: solveError, log } = await solve12jahre(prob, probtype);
-          console.log("RESULT: ", solveResult);
           if (solveResult) {
             setResult(solveResult);
           }
           if (solveError) {
             setError(solveError);
           }
+          setLog(log)
           // Optionally, do something with the log
           break;
         // Add other solvers here
@@ -40,7 +42,7 @@ export const useSolver = (initialProb: any, initialProbType: any, initialSolver:
     solve(initialProb, initialProbType, initialSolver);
   }, [initialProb, initialProbType, initialSolver, solve]);
 
-  return { result, isLoading, error, solve };
+  return { result, isLoading, error, solve, log};
 };
 
 export default useSolver;

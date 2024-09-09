@@ -9,17 +9,17 @@ export const solve12jahre = async (prob: string, probtype: string): Promise<{ re
         const worker = new Worker(new URL('../../lib/glpkWorker.js', import.meta.url));
 
         worker.onmessage = (e) => {
-            const { action, result: workerResult, objective, message, error: workerError } = e.data;
+            const { action, result: workerResult, objective, message, error: workerError , output} = e.data;
             if (action === 'done') {
                 if (workerError) {
                     error = new Error(workerError);
                     console.error('Worker error:', workerError);
                 } else {
-                    console.log({ result: workerResult, objective });
-                    result = { result: workerResult, objective };
+                    console.log({ result: workerResult, objective, output });
+                    result = workerResult ;
                 }
                 worker.terminate();
-                resolve({ result, error, log });
+                resolve({ result, error, log});
             } else if (action === 'log') {
                 console.log('Worker log:', message);
                 log.push(message);
