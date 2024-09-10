@@ -1,7 +1,7 @@
 import {Variable} from "@/interfaces/Variable.tsx";
-import {Bnds} from "@/interfaces/Bnds.tsx";
 import {Bound} from "@/interfaces/Bound.tsx";
 import {Options} from "autoprefixer";
+import {Constraint} from "@/interfaces/Constraint.tsx";
 
 export interface LP {
     name: string,
@@ -10,11 +10,7 @@ export interface LP {
         name: string,
         vars: Variable[]
     },
-    subjectTo: {
-        name: string,
-        vars: Variable[],
-        bnds: Bnds
-    }[],
+    subjectTo: Constraint[],
     bounds?: Bound[],
     binaries?: string[],
     generals?: string[],
