@@ -67,6 +67,9 @@ export const useSolver = (
         case "Highs":
             solveResult = await solveHiGHS(prob, probtype);
             break;
+        case "GLPKJavil":
+            solveResult = await solveGLPKJavil(prob,probtype)
+            break;
         default:
             throw new Error(`Unsupported solver: ${solver}`);
     }
