@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import solveGLPKHgourvest from './GLPKHgourvest .tsx';
 import { SolverResult } from "@/interfaces/Result.tsx";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import solveHiGHS from './HiGHS.tsx';
 
 /**
  * Custom Hook to handle solving problems using different solvers.
@@ -57,22 +58,27 @@ export const useSolver = (
     setLog("");
 
     try {
+      let solveResult;
       switch (solver) {
         case "GLPKHgourvest":
-          const { result: solveResult, error: solveError, log } = await solveGLPKHgourvest(prob, probtype);
-          if (solveResult) {
-            setResult(solveResult);
-          }
-          if (solveError) {
-            setError(solveError);
-          }
-          setLog(log);
-          break;
-          // Additional solvers can be added here
+            solveResult = await solveGLPKHgourvest(prob, probtype);
+            break;
+        case "Highs":
+            solveResult = await solveHiGHS(prob, probtype);
+            break;
         default:
-          setError(Error(`Unsupported solver: ${solver}`));
-      }
-    } catch (err) {
+            throw new Error(`Unsupported solver: ${solver}`);
+    }
+
+  if (solveResult.result) {
+      setResult(solveResult.result);
+  }
+  if (solveResult.error) {
+      setError(solveResult.error);
+  }
+  setLog(solveResult.log);
+
+  } catch (err) {
       console.error("An error occurred:", err);
       setError(err instanceof Error ? err : new Error('An unknown error occurred'));
     } finally {
