@@ -1,0 +1,18 @@
+{
+    "title": "Homepage",
+    "language": "Language",
+    "solver": "Solver",
+    "about": "About",
+    "converter": "Converter",
+    "descEn": "Changes the language settings to english",
+    "descDe": "Changes the language settings to german",
+    "langTitleDe": "German",
+    "langTitleEn": "English",
+    "homeTitleDesc": "Installation tips and tool tips",
+    "installationTitle": "Installation",
+    "general": "General",
+    "simplex": "Simplex",
+    "otherProbs": "Other standard problems",
+    "toggleSolver": "Toggle Solver"
+  }
+  

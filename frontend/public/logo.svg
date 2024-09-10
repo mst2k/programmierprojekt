@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="#f0f0f0"/>
+  
+  <!-- Simplex triangle -->
+  <polygon points="100,30 170,150 30,150" fill="none" stroke="#2c3e50" stroke-width="4"/>
+  
+  <!-- Optimization curve -->
+  <path d="M30,150 Q100,50 170,150" fill="none" stroke="#e74c3c" stroke-width="4"/>
+  
+  <!-- Nodes -->
+  <circle cx="100" cy="30" r="8" fill="#3498db"/>
+  <circle cx="170" cy="150" r="8" fill="#3498db"/>
+  <circle cx="30" cy="150" r="8" fill="#3498db"/>
+  
+  <!-- OR text -->
+  <text x="100" y="185" font-family="Arial, sans-serif" font-size="24" fill="#2c3e50" text-anchor="middle">OR Solver</text>
+</svg>
