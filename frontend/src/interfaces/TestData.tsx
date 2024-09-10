@@ -99,6 +99,16 @@ s.t. ziel1bedarf: x21+x11 = 50;
 s.t. ziel2bedarf: x12+x22 = 50; 
 `
 
+export const glpmString3 = `
+/* Declaration of decision variables */
+/* Objective function */
+maximize obj: 0.6 * x1 + 0.5 * x2;
+/* Constraints */
+subject to cons1: 1 * x1 + 2 * x2 <= 1;
+subject to cons2: 3 * x1 + 1 * x2 <= 2;
+end;
+`
+
 // Example usage:
 export const mpsString = `
 NAME          ExampleLP

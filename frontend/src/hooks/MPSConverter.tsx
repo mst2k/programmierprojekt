@@ -1,6 +1,6 @@
 import { LP } from "@/interfaces/glpkJavil/LP.tsx";
 import { Constraint } from "@/interfaces/glpkJavil/Constraint.tsx";
-import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/glpkJavil/Bnds.tsx";
+import {GLP_UP, GLP_LO, GLP_FX, GLP_MAX} from "@/interfaces/glpkJavil/Bnds.tsx";
 
 export function convertToMPS(lp: LP): string {
     let mpsString = '';
@@ -96,7 +96,7 @@ export function parseMPS(mpsString: string): LP {
     let lp: LP = {
         name: "",
         objective: {
-            direction: 1,
+            direction: GLP_MAX,
             name: "",
             vars: []
         },

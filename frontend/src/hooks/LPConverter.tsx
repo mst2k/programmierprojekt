@@ -1,7 +1,7 @@
 import { LP } from "@/interfaces/glpkJavil/LP.tsx";
 import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
 import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
-import { Bnds } from "@/interfaces/glpkJavil/Bnds.tsx";
+import {Bnds, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
 import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/glpkJavil/Bnds.tsx";
 
 // Funktion zur Konvertierung eines LP-Objekts in das LP-Format
@@ -9,7 +9,7 @@ export function convertToLP(lpData: LP): string {
     let lpFormat = '';
 
     // Objektive Funktion
-    lpFormat += `${lpData.objective.direction === 1 ? 'Maximize' : 'Minimize'}\n`;
+    lpFormat += `${lpData.objective.direction === GLP_MAX ? 'Maximize' : 'Minimize'}\n`;
     lpFormat += ` ${lpData.objective.name}: `;
     lpData.objective.vars.forEach((v, index) => {
         if (index > 0) lpFormat += ' + ';
@@ -25,7 +25,7 @@ export function convertToLP(lpData: LP): string {
             if (index > 0) lpFormat += ' + ';
             lpFormat += `${v.coef} ${v.name}`;
         });
-        const boundType = c.bnds.type === GLP_UP ? `<= ${c.bnds.ub}` : c.bnds.type === GLP_LO ? `>= ${c.bnds.lb}` : `= ${c.bnds.ub}`;
+        const boundType = c.bnds.type === GLP_UP ? `<= ${c.bnds.ub}` : c.bnds.type === GLP_LO ? `>= ${c.bnds.lb}` : `= ${c.bnds.lb}`;
         lpFormat += ` ${boundType}\n`;
     });
 
@@ -69,7 +69,7 @@ export function parseLP(lpString: string): LP {
     let lp: LP = {
         name: '',
         objective: {
-            direction: 1, // 1 for maximize, -1 for minimize
+            direction: GLP_MAX, // 1 for maximize, -1 for minimize
             name: '',
             vars: []
         },
@@ -81,11 +81,11 @@ export function parseLP(lpString: string): LP {
 
     for (let line of lines) {
         if (line.startsWith("Maximize")) {
-            lp.objective.direction = 1;
+            lp.objective.direction = GLP_MAX;
             mode = 'objective';
             continue;
         } else if (line.startsWith("Minimize")) {
-            lp.objective.direction = -1;
+            lp.objective.direction = GLP_MIN;
             mode = 'objective';
             continue;
         } else if (line.startsWith("Subject To")) {
@@ -170,8 +170,8 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
     } else if (operator === "=") {
         boundType = GLP_FX;
     }
-    let lb = boundType === GLP_LO ? boundValue : -Infinity;
-    let ub = boundType === GLP_FX ? boundValue : boundType === GLP_UP ? boundValue : Infinity;
+    let lb = boundType === GLP_FX ? boundValue : boundType === GLP_LO ? boundValue : -Infinity;
+    let ub = boundType === GLP_UP ? boundValue : Infinity;
 
     const bound: Bnds = {
         type: boundType,

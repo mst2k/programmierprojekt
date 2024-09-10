@@ -22,11 +22,8 @@ console.log(convertToMPS(LPObject));
 import {parseGMPL, convertToGLPM} from "@/hooks/GMPLConverter.tsx";
 import {gmplString, lpObject} from "@/interfaces/TestData.tsx"
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
-import GLPK_TEST from "@/hooks/Callglpk.tsx";
-
 
 export function test(){
-    <GLPK_TEST></GLPK_TEST>
 
     console.log("Teste die Converter Funktionen")
     let lpInterface:LP = parseGMPL(gmplString);

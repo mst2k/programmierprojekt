@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSolver } from '../hooks/solvers/useSolver.tsx';
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
+import {glpmString3, gmpl2String, gmplString} from "@/interfaces/TestData.tsx";
 
 const GLPKSolverComponent: React.FC = () => {
   // const { solve, result, isLoading, error } = useSolver();
@@ -20,7 +21,7 @@ End
 
 
 
-  const { result, isLoading, error, log} = useSolver(lpString, "LP", 'GLPKHgourvest');
+  const { result, isLoading, error, log} = useSolver(gmpl2String, "GMPL", 'GLPKJavil');
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
