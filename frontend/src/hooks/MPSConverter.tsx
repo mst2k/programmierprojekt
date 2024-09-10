@@ -48,9 +48,9 @@ export function convertToMPS(lp: LP): string {
     // RHS section
     mpsString += 'RHS\n';
     lp.subjectTo.forEach(constraint => {
-        if (constraint.bnds.type === GLP_UP || constraint.bnds.type === GLP_FX) { // <= or =
+        if (constraint.bnds.type === GLP_UP ) { // <= or =
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.ub}\n`;
-        } else if (constraint.bnds.type === GLP_LO) { // >=
+        } else if (constraint.bnds.type === GLP_LO || constraint.bnds.type === GLP_FX) { // >=
             mpsString += `    RHS1  ${constraint.name}  ${constraint.bnds.lb}\n`;
         }
     });
@@ -159,8 +159,8 @@ export function parseMPS(mpsString: string): LP {
             } else if (constraint.bnds.type === GLP_LO) { // >=
                 constraint.bnds.lb = rhsMap[constraintName];
             } else if (constraint.bnds.type === GLP_FX) { // =
-                constraint.bnds.lb = rhsMap[constraintName];
                 constraint.bnds.ub = rhsMap[constraintName];
+                constraint.bnds.lb = rhsMap[constraintName];
             }
             lp.subjectTo.push(constraint);
         } else {

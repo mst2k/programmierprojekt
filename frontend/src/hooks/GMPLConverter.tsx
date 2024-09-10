@@ -50,20 +50,37 @@ export function parseGMPL(lpString: string): LP {
     const boundsMatches = [...bound_finder.matchAll(/var\s+(?:integer\s+|binary\s+)?(\w+)\s*(>=|<=)?\s*(-?\d*\.?\d*)?\s*(<=|>=)?\s*(-?\d*\.?\d*)?\s*;/g)];
 
     const bounds: Bound[] = boundsMatches.map(match => {
+        let parsedValue;
         const varName = match[1]; // Variable Name
         let lb: number = -Infinity, ub: number = Infinity;
 
         if (match[2] === ">=") {
-            lb = parseFloat(match[3]) || lb;
+            parsedValue = parseFloat(match[3]);
+            if (!isNaN(parsedValue)) {
+                lb = parsedValue;
+            }
         }
         if (match[2] === "<=") {
-            ub = parseFloat(match[3]) || ub;
+            parsedValue = parseFloat(match[3]);
+            if (!isNaN(parsedValue)) {
+                ub = parsedValue;
+            }
         }
+
         if (match[4] === ">=") {
-            lb = Math.max(lb, parseFloat(match[5]) || lb);
+            let parsedValue = parseFloat(match[5]);
+            if (!isNaN(parsedValue)) {
+                lb = Math.max(lb, parsedValue);
+            }
         }
         if (match[4] === "<=") {
-            ub = Math.min(ub, parseFloat(match[5]) || ub);
+            let parsedValue = parseFloat(match[5]);
+            if (!isNaN(parsedValue)) {
+                ub = Math.min(ub, parsedValue);
+            }
+        }
+        if (!match[2] && !match[3] && !match[4] && !match[5]){
+            lb = 0
         }
 
         // Determine the type based on the bounds
@@ -141,10 +158,10 @@ export function convertToGLPM(lp: LP): string {
                         glpmString += ` integer`;
                     }
                     // Schranken (Bounds) hinzufügen
-                    if (lb !== null && lb !== -Infinity) {
+                    if (!isNaN(lb) && lb !== -Infinity) {
                         glpmString += ` >= ${lb}`;
                     }
-                    if (ub !== null&& ub !== Infinity) {
+                    if (!isNaN(ub) && ub !== Infinity) {
                         glpmString += ` <= ${ub}`;
                     }
                 }
