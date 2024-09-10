@@ -1,5 +1,7 @@
 importScripts('./glpk.js');
 
+
+
 self.onmessage = function (e) {
     const log = (message) => {
         self.postMessage({ action: 'log', message });
@@ -36,7 +38,8 @@ self.onmessage = function (e) {
         } else if (probtype === 'MPS') {
             readMPSFromString(lp, prob);
         } else {
-            throw new Error(`Unsupported problem type: ${probtype}`);
+            //Problem Type Not supported
+            self.postMessage({ action: 'done', result:output_result, objective , output, error: Error(`Unsupported problem type: ${probtype}`).message});
         }
 
         // Apply simplex

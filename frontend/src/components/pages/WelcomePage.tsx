@@ -3,7 +3,7 @@ import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom';
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
-import GLPKSolverComponent from '@/hooks/useSolverALT';
+import GLPKSolverComponent from '@/components/TESTCallSolver.tsx';
 
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
 

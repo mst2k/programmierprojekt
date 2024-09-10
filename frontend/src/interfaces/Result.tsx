@@ -1,12 +1,12 @@
-interface SolverResult {
+export interface SolverResult {
     Status: 'Optimal' | 'Infeasible' | 'Unbounded' | 'Error' | 'Unknown';
     ObjectiveValue: number;
     Columns: { [key: string]: ColumnData };
     Rows: RowData[];
-    Output:string;
+    Output?:string;
 }
 
-interface ColumnData {
+export interface ColumnData {
     Index: number;
     Status: 'Basic' | 'Lower Bound' | 'Upper Bound' | 'Free' | 'Fixed' | 'Unknown';
     Lower: number;
@@ -17,7 +17,7 @@ interface ColumnData {
     Name: string;
 }
 
-interface RowData {
+export interface RowData {
     Index: number;
     Name: string;
     Status: 'Basic' | 'Lower Bound' | 'Upper Bound' | 'Free' | 'Fixed' | 'Unknown';
