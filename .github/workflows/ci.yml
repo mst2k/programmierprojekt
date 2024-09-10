@@ -1,7 +1,8 @@
 name: Continuous Integration
 
-on:
-  push:
+
+on:  
+  push: 
     branches-ignore:
       - main # deploy.yml checks 
   pull_request:
@@ -62,7 +63,9 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with: 
-        languages: [javascript, typescript]
+        languages: 
+          - javascript
+          - typescript
   
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
