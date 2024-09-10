@@ -10,7 +10,6 @@ import {useState} from "react";
 function WelcomePage() {
     const [count, setCount] = useState(0)
     const { t } = useTranslation();
-
     return (
         <div className="flex flex-col h-screen w-screen">
             <header>
@@ -28,7 +27,6 @@ function WelcomePage() {
             </div>
 
         </div>
-
     )
 }
 
