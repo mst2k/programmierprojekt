@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import useSolver from './solvers/useSolver';
 
 const GLPKSolverComponent: React.FC = () => {

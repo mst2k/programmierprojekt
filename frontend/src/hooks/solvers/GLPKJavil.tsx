@@ -36,7 +36,7 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
                 msglev: glpk.GLP_MSG_ERR,  // Jetzt ist GLP_MSG_ALL verfügbar
                 presol: true,
                 cb: {
-                    call: (progress: any) => function (progress) {log = log + progress},
+                    call: (progress: any) => console.log(progress),
                     each: 1
                 }
             } as Options;
