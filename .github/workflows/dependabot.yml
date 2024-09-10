@@ -6,6 +6,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
+      #defines groups - to organize and update pakages 
     groups:
       npm-dependencies: 
         patterns:
