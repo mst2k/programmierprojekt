@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+
 import { NavigationMenuDemo } from "../ui/navbar";
 
 const SolverPage = () => {
