@@ -4,13 +4,31 @@ import {
     Select,
     SelectContent,
     SelectGroup,
-    SelectItem,
+    SelectItem, SelectLabel,
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
-import {test} from "@/hooks/CallConverter.tsx"
+
+// import {test} from "@/hooks/CallConverter.tsx"
+import { NavigationMenuDemo } from "../ui/navbar";
+
+import {LP} from "@/interfaces/LP.tsx";
+import {convertToGLPM, parseGMPL} from "@/hooks/GMPLConverter.tsx";
+import {convertToLP, parseLP} from "@/hooks/LPConverter.tsx";
+import {convertToMPS, parseMPS} from "@/hooks/MPSConverter.tsx";
+
+const convertOptions = [
+    {name: "glpkInterface",
+        from:   (code:string):LP => {return JSON.parse(code)},
+        to:     (lpObject:LP):string => {return JSON.stringify(lpObject, null, 2)}},
+    {name: "gmpl", from: parseGMPL, to: convertToGLPM},
+    {name: "lp", from: parseLP, to: convertToLP},
+    {name: "mps", from: parseMPS, to: convertToMPS},
+]
+
+
 
 const CodeExecutionPage: React.FC = () => {
     const [code, setCode] = useState<string>('');
@@ -19,16 +37,33 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        test()
-        console.log("Not supported yet")
-        console.log(from)
-        console.log(to)
-        setOutput("Not supported yet")
+        if(from === to){
+            setOutput(code)
+            return
+        }
+        let lpObject: LP | undefined = undefined;
+
+        //Convert input Value into
+        const fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
+        if(fromFunction){
+            lpObject = fromFunction.from(code);
+        }
+        const toFunction = convertOptions.find(c => c.name === to) ?? undefined;
+        if(toFunction){
+            if(lpObject){
+                setOutput(toFunction.to(lpObject));
+            }else
+                throw "No Valid lpObject to Create Output"
+        }
+
 
     };
 
     return (
         <div className="flex flex-col h-screen w-screen p-10">
+            <header>
+                <NavigationMenuDemo></NavigationMenuDemo>
+            </header>
             <div className="mb-4">
                 <h1 className="text-xl font-bold mb-2">Code Execution Page</h1>
                 <Textarea
@@ -41,24 +76,28 @@ const CodeExecutionPage: React.FC = () => {
 
                     <Select onValueChange={(e) => setOptionFrom(e)}>
                         <SelectTrigger className="w-[280px]">
-                            <SelectValue placeholder="Modus" />
+                            <SelectValue placeholder="From" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="GMPL">GMPL</SelectItem>
-                                <SelectItem value="Value2(TEST)">Value2(TEST)</SelectItem>
+                                <SelectLabel>From</SelectLabel>
+                                {convertOptions.map((converter, index) => (
+                                    <SelectItem key={index} value={converter.name}>{converter.name}</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
 
                     <Select value={to} onValueChange={(e) => setOptionTo(e)}>
                         <SelectTrigger className="w-[280px]">
-                            <SelectValue placeholder="Modus" />
+                            <SelectValue placeholder="To" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="GLPKInterface">GLPK Interface</SelectItem>
-                                <SelectItem value="Value2">Value2(TEST)</SelectItem>
+                                <SelectLabel>To</SelectLabel>
+                                {convertOptions.map((converter, index) => (
+                                    <SelectItem key={index} value={converter.name}>{converter.name}</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
