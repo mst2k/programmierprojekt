@@ -35,8 +35,6 @@ self.onmessage = function (e) {
             glp_mpl_generate(tran, null, captureOutput);
             glp_mpl_build_prob(tran, lp);
             glp_mpl_postsolve(tran, lp, GLP_MIP);
-        } else if (probtype === 'MPS') {
-            readMPSFromString(lp, prob);
         } else {
             //Problem Type Not supported
             self.postMessage({ action: 'done', result:output_result, objective , output, error: Error(`Unsupported problem type: ${probtype}`).message});

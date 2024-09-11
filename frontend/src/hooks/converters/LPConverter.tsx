@@ -79,6 +79,10 @@ export function parseLP(lpString: string): LP {
         generals: []
     };
 
+    let objectiveExpr = ''; // Sammelvariable für das gesamte Objektiv
+    let constraintExpr = ''; // Sammelvariable für eine Nebenbedingung
+    let currentConstraintName = ''; // Der aktuelle Nebenbedingungsname
+
     for (let line of lines) {
         if (line.startsWith("Maximize")) {
             lp.objective.direction = GLP_MAX;
@@ -89,9 +93,25 @@ export function parseLP(lpString: string): LP {
             mode = 'objective';
             continue;
         } else if (line.startsWith("Subject To")) {
+            // Verarbeite das gesammelte Ziel, bevor wir zu den Nebenbedingungen wechseln
+            if (objectiveExpr.length > 0) {
+                lp.objective.vars = parseLPExpression(objectiveExpr.trim());
+                objectiveExpr = ''; // Zurücksetzen für den nächsten Modus
+            }
             mode = 'subjectTo';
             continue;
         } else if (line.startsWith("Bounds")) {
+            // Verarbeite alle gesammelten Nebenbedingungen, bevor wir zu "Bounds" wechseln
+            if (constraintExpr.length > 0 && currentConstraintName.length > 0) {
+                const { vars, bound } = parseLPConstraint(constraintExpr.trim());
+                lp.subjectTo.push({
+                    name: currentConstraintName,
+                    vars: vars,
+                    bnds: bound
+                });
+                constraintExpr = ''; // Zurücksetzen für den nächsten Modus
+                currentConstraintName = ''; // Zurücksetzen
+            }
             mode = 'bounds';
             continue;
         } else if (line.startsWith("Binary")) {
@@ -107,17 +127,33 @@ export function parseLP(lpString: string): LP {
 
         // Parse based on current mode
         if (mode === 'objective') {
-            const [name, expr] = line.split(":");
-            lp.objective.name = name.trim();
-            lp.objective.vars = parseLPExpression(expr.trim());
+            const splitLine = line.split(":");
+            if (splitLine.length === 2) {
+                lp.objective.name = splitLine[0].trim(); // Falls der Name in der ersten Zeile steht
+                objectiveExpr += splitLine[1].trim() + ' ';
+            } else {
+                objectiveExpr += line.trim() + ' '; // Mehrzeilige Erweiterung der Funktion
+            }
         } else if (mode === 'subjectTo') {
-            const [name, expr] = line.split(":");
-            const { vars, bound } = parseLPConstraint(expr.trim());
-            lp.subjectTo.push({
-                name: name.trim(),
-                vars: vars,
-                bnds: bound
-            });
+            // Split the line by ":"
+            const splitLine = line.split(":");
+            if (splitLine.length === 2) {
+                // If we encounter a new constraint, first save the previous one
+                if (constraintExpr.length > 0 && currentConstraintName.length > 0) {
+                    const { vars, bound } = parseLPConstraint(constraintExpr.trim());
+                    lp.subjectTo.push({
+                        name: currentConstraintName,
+                        vars: vars,
+                        bnds: bound
+                    });
+                }
+                // Now, start collecting the new constraint
+                currentConstraintName = splitLine[0].trim();
+                constraintExpr = splitLine[1].trim() + ' ';
+            } else {
+                // Continue collecting the expression if it's multi-line
+                constraintExpr += line.trim() + ' ';
+            }
         } else if (mode === 'bounds') {
             const bound = parseLPBound(line.trim());
             if (bound && lp.bounds) {
@@ -128,6 +164,21 @@ export function parseLP(lpString: string): LP {
         } else if (mode === 'generals') {
             lp.generals?.push(line.trim());
         }
+    }
+
+    // Verarbeite das gesammelte Ziel am Ende, falls "Subject To" nicht vorher kam
+    if (objectiveExpr.length > 0) {
+        lp.objective.vars = parseLPExpression(objectiveExpr.trim());
+    }
+
+    // Verarbeite die letzte Nebenbedingung am Ende, falls "Bounds" oder "End" nicht vorher kam
+    if (constraintExpr.length > 0 && currentConstraintName.length > 0) {
+        const { vars, bound } = parseLPConstraint(constraintExpr.trim());
+        lp.subjectTo.push({
+            name: currentConstraintName,
+            vars: vars,
+            bnds: bound
+        });
     }
 
     return lp;
@@ -177,7 +228,7 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
         type: boundType,
         lb: lb,
         ub: ub
-    }as Bnds;
+    } as Bnds;
 
     return { vars, bound };
 }

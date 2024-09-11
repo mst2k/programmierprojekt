@@ -1,4 +1,8 @@
 import {SolverResult} from "@/interfaces/Result.tsx";
+import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
+import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
+import {LP} from "@/interfaces/glpkJavil/LP.tsx";
+import {convertToGLPM} from "@/hooks/converters/GMPLConverter.tsx";
 
 
 /**
@@ -20,7 +24,7 @@ import {SolverResult} from "@/interfaces/Result.tsx";
  * In case of an error, the worker is terminated and an error message is returned.
  */
 
-export const solveGLPKHgourvest = async (prob: string, probtype: string):
+export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats):
     Promise<{ result: SolverResult | null; error: Error | null; log: string}> => {
     return new Promise((resolve) => {
 
@@ -57,6 +61,13 @@ export const solveGLPKHgourvest = async (prob: string, probtype: string):
             resolve({ result, error, log });
         };
 
+        //worker can only handle LP an GMPL => Parse MPS bevorehand!
+        if(probtype === "MPS"){
+            const lpProblem:LP = parseMPS(prob);
+            prob = convertToGLPM(lpProblem);
+            probtype = "GMPL";
+
+        }
         // Send the problem and options to the worker
         worker.postMessage({ action: 'solve', prob, probtype });
     });

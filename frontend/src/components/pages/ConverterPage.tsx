@@ -15,9 +15,10 @@ import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 import { NavigationMenuDemo } from "../ui/navbar";
 
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
-import {convertToGLPM, parseGMPL} from "@/hooks/GMPLConverter.tsx";
-import {convertToLP, parseLP} from "@/hooks/LPConverter.tsx";
-import {convertToMPS, parseMPS} from "@/hooks/MPSConverter.tsx";
+import {convertToGLPM, parseGMPL} from "@/hooks/converters/GMPLConverter.tsx";
+import {convertToLP, parseLP} from "@/hooks/converters/LPConverter.tsx";
+import {convertToMPS, parseMPS} from "@/hooks/converters/MPSConverter.tsx";
+import {test} from "@/hooks/converters/CallConverter.tsx";
 
 const convertOptions = [
     {name: "glpkInterface",
@@ -37,6 +38,7 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
+        test()
         if(from === to){
             setOutput(code)
             return

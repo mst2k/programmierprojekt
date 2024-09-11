@@ -73,19 +73,6 @@ End
 `;
 
 
-
-export const gmplString = `
-/* decision variables*/
-var x1 >= 0;
-var x2 >=0;
-/* Objective function */ 
-maximize label : 4*x1 +5*x2; 
-/* Constraints */
-subject to label1: x1 + 2*x2 <= 40; 
-s.t. label2: 4*x1 + 3*x2 <= 120;
-end;
-`
-
 export const gmpl2String = `
 var x11 integer >=0;
 var x12 integer >=0;
@@ -97,6 +84,19 @@ subject to lager1kap: x11+x12 <= 60;
 s.t. lager2kap: x21+x22 <= 40.5;
 s.t. ziel1bedarf: x21+x11 = 50;
 s.t. ziel2bedarf: x12+x22 = 50; 
+`
+
+
+export const gmplString = `
+/* decision variables*/
+var x1 >= 0;
+var x2 >=0;
+/* Objective function */ 
+maximize label : 4*x1 +5*x2; 
+/* Constraints */
+subject to label1: x1 + 2*x2 <= 40; 
+s.t. label2: 4*x1 + 3*x2 <= 120;
+end;
 `
 
 export const glpmString3 = `

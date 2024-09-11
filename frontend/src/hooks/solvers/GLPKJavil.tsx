@@ -2,9 +2,11 @@ import GLPK from 'glpk.js'
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {ColumnData, RowData, SolverResult} from "@/interfaces/Result.tsx";
 import {Options} from "@/interfaces/glpkJavil/Options.tsx";
-import {parseGMPL} from "@/hooks/GMPLConverter.tsx";
 import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
 import {Result} from "@/interfaces/glpkJavil/Result.tsx";
+import {parseGLPMAdvanced} from "@/hooks/converters/GLPKConverter.tsx";
+import {parseLP} from "@/hooks/converters/LPConverter.tsx";
+import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 
 // Singleton for GLPK instance
 let glpkInstance: any = null;
@@ -39,14 +41,19 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
             let LPProblem: LP | undefined = undefined;
             switch (probtype) {
                 case "GMPL":
-                    LPProblem = parseGMPL(prob);
+                    LPProblem = await parseGLPMAdvanced(prob);
+                    break;
+                case "LP":
+                    LPProblem = parseLP(prob)
+                    break;
+                case "MPS":
+                    LPProblem = parseMPS(prob)
                     break;
                 default:
                     error = Error("Unsupported problem type");
             }
             if(LPProblem){
                 const res = await glpk.solve(LPProblem, options);
-                console.log(JSON.stringify(res, null, 2))
                 result = transformSolverResult(LPProblem, res)
             }else {
                 error = Error("No problem provided for solving. Probably the conversion was not successful");
