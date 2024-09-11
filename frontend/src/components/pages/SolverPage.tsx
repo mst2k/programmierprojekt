@@ -1,6 +1,10 @@
+import { useTranslation } from "react-i18next";
+
 import { NavigationMenuDemo } from "../ui/navbar";
 
 const SolverPage = () => {
+    const {t} = useTranslation();
+
     return (
         <div className="flex flex-col h-screen w-screen">
             <header>
@@ -9,10 +13,10 @@ const SolverPage = () => {
             <div className="flex flex-1">
                 <aside className="w-1/4 bg-gray-200 p-4">
                     <ul>
-                        <li>General</li>
-                        <li>Simplex</li>
-                        <li>Andere Standard Probleme</li>
-                        <li>Toggle Solver</li>
+                        <li>{t('general')}</li>
+                        <li>{t('simplex')}</li>
+                        <li>{t('otherProbs')}</li>
+                        <li>{t('toggleSolver')}</li>
                     </ul>
                 </aside>
                 <main className="flex-1 p-4">
