@@ -1,0 +1,18 @@
+{
+    "title": "Startseite",
+    "language": "Sprache",
+    "solver": "Löser",
+    "about": "Über uns",
+    "converter": "Konvertierer",
+    "descEn": "Ändert die Spracheinstellungen auf englisch",
+    "descDe": "Ändert die Spracheinstellungen auf deutsch",
+    "langTitleDe": "Deutsch",
+    "langTitleEn": "Englisch",
+    "homeTitleDesc": "Tipps zur Installation und anderen Hilfsmitteln",
+    "installationTitle": "Installation",
+    "general": "Allgemein",
+    "simplex": "Simplex",
+    "otherProbs": "Andere Standard Probleme",
+    "toggleSolver": "Umschalt-Löser"
+  }
+  

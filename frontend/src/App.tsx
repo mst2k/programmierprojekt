@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import WelcomePage from "@/components/pages/WelcomePage.tsx";
 import SolverPage from "@/components/pages/SolverPage.tsx";
 import ConverterPage from "@/components/pages/ConverterPage.tsx";
+
 function App() {
   return (
       <HashRouter>
