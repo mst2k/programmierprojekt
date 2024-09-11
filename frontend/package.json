@@ -1,14 +1,17 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "npm run lint:fix",
     "preview": "vite preview",
     "serve": "vite serve"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
