@@ -70,7 +70,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         }
         // Send the problem and options to the worker
         worker.postMessage({ action: 'solve', prob, probtype });
-    });
+    }) as Promise<{ result: SolverResult | null; error: Error | null; log: string }>;
 };
 
 export default solveGLPKHgourvest;
