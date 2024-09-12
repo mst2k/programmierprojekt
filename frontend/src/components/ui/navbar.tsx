@@ -79,8 +79,7 @@ import {
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
-              </NavigationMenuItem>
-              //TODO: Nach demo wieder Aktivieren
+              </NavigationMenuItem>{ /*TODO: Nach demo wieder Aktivieren */}
              {/* <NavigationMenuItem>
               <NavigationMenuSingleTrigger onClick={() => navigate('/converter/')}> {t('converter')}</NavigationMenuSingleTrigger>
               </NavigationMenuItem>*/}
