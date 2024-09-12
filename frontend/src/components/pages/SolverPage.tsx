@@ -20,8 +20,8 @@ const SolverPage = () => {
 
 
     useEffect(() => {
-        setResultComponent(<TESTCallSolver lpProblem={currentProblem} problemType={currentLpFormat} lpSolver={currentSolver}></TESTCallSolver>);
-        console.log(solveTrigger)
+        if(currentSolver && currentLpFormat && currentProblem != "")
+            setResultComponent(<TESTCallSolver lpProblem={currentProblem} problemType={currentLpFormat} lpSolver={currentSolver}></TESTCallSolver>);
     }, [solveTrigger]);
 
     return (

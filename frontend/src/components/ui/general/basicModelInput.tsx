@@ -33,13 +33,13 @@ type Item = {
 }
 
 
-export default function EnhancedStatusSelect(states) {
+export default function EnhancedStatusSelect(states:any) {
     const {
         currentSolver,
-        setCurrentSolver,
-        currentLpFormat,
+//        setCurrentSolver,
+//        currentLpFormat,
         setCurrentLpFormat,
-        currentProblem,
+//        currentProblem,
         setCurrentProblem,
         solveTrigger,
         setSolveTrigger
@@ -57,7 +57,8 @@ export default function EnhancedStatusSelect(states) {
 
     const [selectedItem, setSelectedItem] = useState<Item | null>(null)
     const [modelInput, setmodelInput] = useState('')
-    const [showAlert, setShowAlert] = useState(false)
+    const [showConverstionAltert, setShowConverstionAltert] = useState(false)
+    const [showNoModelTypeAltert, setShowNoModelTypeAltert] = useState(false)
     const [gmplState, setGmplState] = useState<Item["status"]>("unsupported");
     const [lpState, setLpState] = useState<Item["status"]>("unsupported");
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
@@ -121,14 +122,17 @@ export default function EnhancedStatusSelect(states) {
         }
     }
 
-    function triggerSolving(e, solveAnyway?: boolean) {
+    function triggerSolving(_:any, solveAnyway?: boolean) {
+
         if (solveAnyway != undefined || selectedItem && selectedItem.status !== 'nativ') {
-            setShowAlert(true)
+            setShowConverstionAltert(true);
         } else {
             if(selectedItem?.content){
-                setCurrentLpFormat(selectedItem.content)
-                setCurrentProblem(modelInput)
-                setSolveTrigger(solveTrigger + 1)
+                setCurrentLpFormat(selectedItem.content);
+                setCurrentProblem(modelInput);
+                setSolveTrigger(solveTrigger + 1);
+            }else {
+                setShowNoModelTypeAltert(true);
             }
         }
     }
@@ -177,19 +181,35 @@ export default function EnhancedStatusSelect(states) {
                     <Button onClick={triggerSolving}>Abschicken</Button>
                 </div>
             </div>
-            <Dialog open={showAlert} onOpenChange={setShowAlert}>
+            <Dialog open={showConverstionAltert} onOpenChange={setShowConverstionAltert}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Achtung</DialogTitle>
                         <DialogDescription>
-                            Das ausgewählte Element ist nicht aktiv. Möchten Sie wirklich fortfahren?
+                            Es ist eine Konvertierung notwendig. Trotzdem fortfahren?
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowAlert(false)}>Abbrechen</Button>
+                        <Button variant="outline" onClick={() => setShowConverstionAltert(false)}>Abbrechen</Button>
                         <Button variant="destructive" onClick={() => {
-                            setShowAlert(false)
-                            console.log('Fortgefahren trotz inaktivem Status:', { selectedItem, modelInput })
+                            setShowConverstionAltert(false)
+                            console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput })
+                        }}>Fortfahren</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Achtung</DialogTitle>
+                        <DialogDescription>
+                            Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="destructive" onClick={() => {
+                            setShowNoModelTypeAltert(false)
+                            console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput })
                         }}>Fortfahren</Button>
                     </DialogFooter>
                 </DialogContent>
