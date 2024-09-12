@@ -71,7 +71,7 @@ jobs:
       uses: github/codeql-action/analyze@v2
 
     - name: Run Dependency Review
-      uses: actions/dependency-review-action@v3
+      uses: actions/dependency-review-action@v4
 
   coverage:
     name: Code coverage report
