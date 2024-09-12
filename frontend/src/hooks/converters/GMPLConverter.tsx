@@ -125,7 +125,7 @@ export function parseGMPL(lpString: string): LP {
 }
 
 
-export function convertToGLPM(lp: LP): string {
+export function convertToGMPL(lp: LP): string {
     let glpmString = '';
 
     // Entscheidungvariablen definieren
