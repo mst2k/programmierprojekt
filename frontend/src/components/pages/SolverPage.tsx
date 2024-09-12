@@ -1,34 +1,43 @@
 import { useTranslation } from "react-i18next";
+import React, { useState } from 'react';
 
 import { NavigationMenuDemo } from "../ui/navbar";
+import  Sidebar from "@/components/ui/custom/sidebar";
 
 const SolverPage = () => {
     const {t} = useTranslation();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     return (
-        <div className="flex flex-col h-screen w-screen">
-            <header>
-                <NavigationMenuDemo></NavigationMenuDemo>
+        <div className="flex flex-col h-screen">
+            <header className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-16'}`}>
+                <NavigationMenuDemo/>
             </header>
-            <div className="flex flex-1">
-                <aside className="w-1/4 bg-gray-200 p-4">
-                    <ul>
+            <div className="flex flex-1 overflow-hidden">
+                <Sidebar 
+                    isOpen={isSidebarOpen}
+                    onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+                />
+                {/* <aside className="w-1/4 bg-gray-200 p-4">
+                   <ul>
                         <li>{t('general')}</li>
                         <li>{t('simplex')}</li>
                         <li>{t('otherProbs')}</li>
                         <li>{t('toggleSolver')}</li>
                     </ul>
-                </aside>
+                </aside>  */}
+            <div className={`flex flex-col flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-16'}`}>
                 <main className="flex-1 p-4">
                     <div className="h-1/2 border-b-2 border-gray-300 p-4">
-                        <h2 className="text-xl font-bold">Eingabe des Modells</h2>
-                        <p>Unterschiedliche Layout je nach Problem</p>
+                        <h2 className="text-xl font-bold">{t('modelInput')}</h2>
+                        <p>{t('differentLayout')}</p>
                     </div>
 
                     <div className="h-1/2 p-4">
-                        <h2 className="text-xl font-bold">Anzeige der Lösung / Erklärungen möglicher Fehler</h2>
+                        <h2 className="text-xl font-bold">{t('displaySolution')}</h2>
                     </div>
                 </main>
+                </div>
             </div>
 
             <footer className="bg-gray-800 text-white p-4 text-center">

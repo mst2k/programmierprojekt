@@ -13,6 +13,18 @@
     "general": "Allgemein",
     "simplex": "Simplex",
     "otherProbs": "Andere Standard Probleme",
-    "toggleSolver": "Umschalt-Löser"
+    "toggleSolver": "Umschalt-Löser",
+    "modelInput": "Eingabe des Models",
+    "differentLayout": "Unterschiedliches Layout je nach Problem",
+    "displaySolution": "Anzeige der Lösung / Erklärungen möglicher Fehler",
+    "orProblem": "Optimierungsproblem",
+    "orTyp": "Optimierungstyp",
+    "Max": "Maximiere",
+    "Min": "Minimiere",
+    "orFunction": "Zielfunktion",
+    "rest": "Restriktionen",
+    "Res": "Restriktion",
+    "enterOFunc": "Zielfunktion eingeben",
+    "chooseOrType": "Wähle einen Opimierungstyp"
   }
   
