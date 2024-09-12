@@ -1,24 +1,30 @@
 import React from 'react';
-import { useSolver } from '../../../hooks/solvers/useSolver.tsx';
-import CodeArea from "@/components/ui/custom/CodeArea.tsx";
-import {gmplString} from "@/interfaces/TestData.tsx";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import useSolver from "@/hooks/solvers/useSolver.tsx";
+import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 
-const GLPKSolverComponent: React.FC = (data) => {
-  const {lpProblem, problemType, lpSolver} = data
-  const { result, isLoading, error, log} = useSolver(lpProblem, problemType, lpSolver);
+// Definiere das Interface für die Props
+interface GLPKSolverProps {
+  lpProblem: string;
+  problemType: ProblemFormats;  // Definiere den Typ 'ProblemFormats'
+  lpSolver: Solvers;            // Definiere den Typ 'Solvers'
+}
+
+const GLPKSolverComponent: React.FC<GLPKSolverProps> = ({ lpProblem, problemType, lpSolver }) => {
+  // Verwende den useSolver Hook, um das Solver-Ergebnis zu erhalten
+  const { result, isLoading, error, log } = useSolver(lpProblem, problemType, lpSolver);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      <h1>GLPK Solver Result</h1>
-        <div className={"width-100"}>
-        <CodeArea data={JSON.stringify(result, null, 2)}></CodeArea>
+      <div>
+        <h1>GLPK Solver Result</h1>
+        <div className="width-100">
+          <CodeArea data={JSON.stringify(result, null, 2)}></CodeArea>
           {log && <CodeArea data={log}></CodeArea>}
         </div>
-    </div>
+      </div>
   );
 };
 
