@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 
 // import {test} from "@/hooks/CallConverter.tsx"
-import { NavigationMenuDemo } from "../ui/navbar";
 
 import {LP} from "@/interfaces/LP.tsx";
 import {convertToGLPM, parseGMPL} from "@/hooks/GMPLConverter.tsx";
@@ -61,9 +60,6 @@ const CodeExecutionPage: React.FC = () => {
 
     return (
         <div className="flex flex-col h-screen w-screen p-10">
-            <header>
-                <NavigationMenuDemo></NavigationMenuDemo>
-            </header>
             <div className="mb-4">
                 <h1 className="text-xl font-bold mb-2">Code Execution Page</h1>
                 <Textarea
