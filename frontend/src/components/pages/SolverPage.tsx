@@ -1,9 +1,28 @@
 import { useTranslation } from "react-i18next";
 
 import { NavigationMenuDemo } from "../ui/navbar";
+import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
+import {useEffect, useState} from "react";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import TESTCallSolver from "@/components/ui/general/TESTCallSolver.tsx";
 
 const SolverPage = () => {
     const {t} = useTranslation();
+    const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
+    const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
+    const [currentProblem, setCurrentProblem] = useState<string>("");
+    const [solveTrigger, setSolveTrigger] = useState<number>(0);
+    const [resultComponent, setResultComponent] = useState(<></>)
+    const allStates =  {  currentSolver, setCurrentSolver,
+                            currentLpFormat, setCurrentLpFormat,
+                            currentProblem, setCurrentProblem,
+                            solveTrigger, setSolveTrigger}
+
+
+    useEffect(() => {
+        setResultComponent(<TESTCallSolver lpProblem={currentProblem} problemType={currentLpFormat} lpSolver={currentSolver}></TESTCallSolver>);
+        console.log(solveTrigger)
+    }, [solveTrigger]);
 
     return (
         <div className="flex flex-col h-screen w-screen">
@@ -20,13 +39,12 @@ const SolverPage = () => {
                     </ul>
                 </aside>
                 <main className="flex-1 p-4">
-                    <div className="h-1/2 border-b-2 border-gray-300 p-4">
-                        <h2 className="text-xl font-bold">Eingabe des Modells</h2>
-                        <p>Unterschiedliche Layout je nach Problem</p>
+                    <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                        <BasicModelInput states={allStates}></BasicModelInput>
                     </div>
 
                     <div className="h-1/2 p-4">
-                        <h2 className="text-xl font-bold">Anzeige der Lösung / Erklärungen möglicher Fehler</h2>
+                        {resultComponent}
                     </div>
                 </main>
             </div>
