@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-
-import { NavigationMenuDemo } from "../ui/navbar";
 import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
