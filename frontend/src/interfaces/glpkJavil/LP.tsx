@@ -1,7 +1,7 @@
-import {Variable} from "@/interfaces/Variable.tsx";
-import {Bound} from "@/interfaces/Bound.tsx";
+import {Variable} from "@/interfaces/glpkJavil/Variable.tsx";
+import {Bound} from "@/interfaces/glpkJavil/Bound.tsx";
 import {Options} from "autoprefixer";
-import {Constraint} from "@/interfaces/Constraint.tsx";
+import {Constraint} from "@/interfaces/glpkJavil/Constraint.tsx";
 
 export interface LP {
     name: string,

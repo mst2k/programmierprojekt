@@ -11,4 +11,19 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        glpk: 'src/lib/glpk.js',
+        glpkWorker: 'src/lib/glpkWorker.js',
+        glpkWorkerConverter: 'src/lib/glpkWorkerConverter.js',
+        highs: 'src/lib/highs.js',
+        highsWorker: 'src/lib/highsWorker.js'
+      }
+    }
+  },
+  optimizeDeps: {
+    exclude: ['highs.wasm'] // oder andere WASM-Dateien
+  }
 })
