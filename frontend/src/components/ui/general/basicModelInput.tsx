@@ -24,6 +24,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import {useTranslation} from "react-i18next";
 
 type Item = {
     id: number;
@@ -33,7 +34,8 @@ type Item = {
 }
 
 
-export default function EnhancedStatusSelect(states:any) {
+export default function BasicModelInput(states:any) {a
+    const { t } = useTranslation()
     const {
         currentSolver,
 //        setCurrentSolver,
@@ -78,9 +80,9 @@ export default function EnhancedStatusSelect(states:any) {
     }, [currentSolver]);
 
     const items:Item[]=[
-        { id: 1, content: 'GMPL', status: gmplState, description: 'Description GMPL' },
-        { id: 2, content: 'LP', status: lpState, description: 'Description LP' },
-        { id: 3, content: 'MPS', status: mpsState, description: 'Description MPS' },
+        { id: 1, content: 'GMPL', status: gmplState, description: t('description_gmpl') },
+        { id: 2, content: 'LP', status: lpState, description: t('description_lp') },
+        { id: 3, content: 'MPS', status: mpsState, description: t('description_mps') },
     ]
 
     const setSolverHighs = () =>{
@@ -103,11 +105,11 @@ export default function EnhancedStatusSelect(states:any) {
     const getStatusLabel = (status: Item['status']) => {
         switch (status) {
             case 'nativ':
-                return 'Native';
+                return t('status_native');
             case 'conversion':
-                return 'Conversion';
+                return t('status_conversion');
             case 'unsupported':
-                return 'Unsupported';
+                return t('status_unsupported');
         }
     }
 
@@ -144,7 +146,7 @@ export default function EnhancedStatusSelect(states:any) {
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
                     <div className="relative">
                         <Textarea
-                            placeholder="Geben Sie hier Ihren Text ein"
+                            placeholder={t('input_placeholder')}
                             value={modelInput}
                             onChange={(e) => setmodelInput(e.target.value)}
                             className="min-h-[200px] pr-24"
@@ -163,15 +165,15 @@ export default function EnhancedStatusSelect(states:any) {
                             )}
                             <Select onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Wählen" />
+                                    <SelectValue placeholder={t('select_placeholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {items.map((item) => (
                                         <SelectItem key={item.id} value={item.id.toString()} className="flex justify-between items-center">
                                             <span>{item.content}</span>
                                             <span className={`ml-2 px-2 py-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
-                    {getStatusLabel(item.status)}
-                  </span>
+                                                {getStatusLabel(item.status)}
+                                            </span>
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -179,7 +181,7 @@ export default function EnhancedStatusSelect(states:any) {
                         </div>
                     </div>
                     <div className="flex justify-end">
-                        <Button onClick={triggerSolving}>Abschicken</Button>
+                        <Button onClick={triggerSolving}>{t('submit_button')}</Button>
                     </div>
                 </div>
             </div>
@@ -188,17 +190,17 @@ export default function EnhancedStatusSelect(states:any) {
             <Dialog open={showConverstionAltert} onOpenChange={setShowConverstionAltert}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
+                        <DialogTitle>{t('conversion_dialog_title')}</DialogTitle>
                         <DialogDescription>
-                            Es ist eine Konvertierung notwendig. Trotzdem fortfahren?
+                            {t('conversion_dialog_description')}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowConverstionAltert(false)}>Abbrechen</Button>
+                        <Button variant="outline" onClick={() => setShowConverstionAltert(false)}>{t('cancel_button')}</Button>
                         <Button variant="destructive" onClick={() => {
                             setShowConverstionAltert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
-                        }}>Fortfahren</Button>
+                        }}>{t('proceed_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -206,21 +208,19 @@ export default function EnhancedStatusSelect(states:any) {
             <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
+                        <DialogTitle>{t('no_model_dialog_title')}</DialogTitle>
                         <DialogDescription>
-                            Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)
+                            {t('no_model_dialog_description')}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button variant="destructive" onClick={() => {
                             setShowNoModelTypeAltert(false);
                             console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput });
-                        }}>Fortfahren</Button>
+                        }}>{t('proceed_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
         </TooltipProvider>
-
-
     )
 }

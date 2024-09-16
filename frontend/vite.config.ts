@@ -21,6 +21,10 @@ export default defineConfig({
       }
     }
   },
+  test: {
+    environment: 'jsdom',  // Stellt das DOM in den Tests zur Verfügung
+  },
+
   optimizeDeps: {
     exclude: ['highs.wasm'] // oder andere WASM-Dateien
   }
