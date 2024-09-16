@@ -114,3 +114,83 @@ const CollapsableSidebar: React.FC<CollapsableSidebarProps> = ({ isOpen, onToggl
 };
 
 export default CollapsableSidebar;
+
+
+/*
+
+
+import React, { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+export default function MinimalistCollapsibleSidebar() {
+  const [isOpen, setIsOpen] = useState(true)
+  const [inputMode, setInputMode] = useState('general')
+  const [selectedSolver, setSelectedSolver] = useState('solver1')
+
+  return (
+    <div
+      className={`h-screen bg-gray-100 transition-all duration-300 ease-in-out ${
+        isOpen ? 'w-64' : 'w-12'
+      } relative overflow-hidden`}
+    >
+      <div className={`p-4 ${isOpen ? 'space-y-6' : 'flex justify-center'}`}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`bg-white rounded-full shadow-md transition-all duration-300 ease-in-out ${
+            isOpen ? 'absolute top-4 right-4' : 'mt-4'
+          }`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        </Button>
+
+        <div className={`transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+          {isOpen && (
+            <>
+              <div className="mt-10">
+                <h2 className="text-lg font-semibold mb-2">Eingabevarianten</h2>
+                <div className="space-y-2">
+                  <Button
+                    variant={inputMode === 'general' ? 'default' : 'outline'}
+                    onClick={() => setInputMode('general')}
+                    className="w-full"
+                  >
+                    General
+                  </Button>
+                  <Button
+                    variant={inputMode === 'easy' ? 'default' : 'outline'}
+                    onClick={() => setInputMode('easy')}
+                    className="w-full"
+                  >
+                    Easy Input
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <h2 className="text-lg font-semibold mb-2">Solver</h2>
+                <Select value={selectedSolver} onValueChange={setSelectedSolver}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle einen Solver" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="solver1">Solver 1</SelectItem>
+                    <SelectItem value="solver2">Solver 2</SelectItem>
+                    <SelectItem value="solver3">Solver 3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+
+ */
