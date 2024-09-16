@@ -1,27 +1,53 @@
----
-name: Issue template
-about: This template provides a basic structure for user story issues.
+description: This template provides a structure for user story issues.
+title: "[User Story]: "
+name: Standard Issue
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this user story!
+  
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Please provide the user story in the format "As a ..., I want to ..., so I can ..."
+      placeholder: As a ..., I want to ..., so I can ...
+    validations:
+      required: true
 
----
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List the acceptance criteria for this user story
+      value: "- [ ] "
+    validations:
+      required: true
 
-# User story
-As a ..., I want to ..., so I can ...
+  - type: checkboxes
+    id: sprint-ready-checklist
+    attributes:
+      label: Sprint Ready Checklist
+      description: Please check all that apply
+      options:
+        - label: Acceptance criteria defined
+        - label: Team understands acceptance criteria
+        - label: Team has defined solution / steps to satisfy acceptance criteria
+        - label: Acceptance criteria is verifiable / testable
+        - label: External / 3rd Party dependencies identified
 
-# Acceptance criteria
-
-- [ ] 
-
-# Sprint Ready Checklist 
-1. - [ ] Acceptance criteria defined 
-2. - [ ] Team understands acceptance criteria 
-3. - [ ] Team has defined solution / steps to satisfy acceptance criteria 
-4. - [ ] Acceptance criteria is verifiable / testable 
-5. - [ ] External / 3rd Party dependencies identified 
-
-# Complexity
-- [ ] XS
-- [ ] S
-- [ ] M
-- [ ] L
-- [ ] XL
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexity
+      description: Select the complexity of this user story
+      options:
+        - XS
+        - S
+        - M
+        - L
+        - XL
+    validations:
+      required: true
 
