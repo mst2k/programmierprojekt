@@ -1,5 +1,6 @@
 description: This template provides a structure for user story issues.
 title: "[User Story]: "
+name: Standard Issue
 body:
   - type: markdown
     attributes:
