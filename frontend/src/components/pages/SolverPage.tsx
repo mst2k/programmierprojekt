@@ -10,11 +10,13 @@ const SolverPage = () => {
     const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
+    const [currentInputVariant, setCurrentInputVariant] = useState<"general" | "easy">("general");
     const [solveTrigger, setSolveTrigger] = useState<number>(0);
     const [resultComponent, setResultComponent] = useState(<></>)
     const allStates =  {  currentSolver, setCurrentSolver,
                             currentLpFormat, setCurrentLpFormat,
                             currentProblem, setCurrentProblem,
+                            currentInputVariant, setCurrentInputVariant,
                             solveTrigger, setSolveTrigger}
 
 
