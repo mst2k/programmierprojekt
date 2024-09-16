@@ -59,20 +59,11 @@ export default function GLPKSolverComponent({ lpProblem, problemType, lpSolver }
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-2xl font-bold">GLPK Solver Result</CardTitle>
                 <div className="flex items-center space-x-2">
-          <span className={`px-2 py-1 rounded text-white text-sm ${statusColors[result.Status]}`}>
-            {result.Status}
-          </span>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        aria-label={isExpanded ? "Collapse" : "Expand"}
-                    >
-                        {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                    </Button>
+                      <span className={`px-2 py-1 rounded text-white text-sm ${statusColors[result.Status]}`}>
+                        {result.Status}
+                      </span>
                 </div>
             </CardHeader>
-            {isExpanded && (
                 <CardContent>
                     {result.Status === 'Optimal' && (
                         <p className="text-lg font-semibold mb-4">Objective Value: {result.ObjectiveValue}</p>
@@ -154,7 +145,6 @@ export default function GLPKSolverComponent({ lpProblem, problemType, lpSolver }
                         </TabsContent>
                     </Tabs>
                 </CardContent>
-            )}
         </Card>
     )
 }

@@ -96,11 +96,12 @@ function createJSONReport(lp) {
     // Status der Lösung
     const status = glp_get_status(lp);
     const statusMapping = {
-        1: 'Optimal',
-        2: 'Infeasible',
-        3: 'Unbounded',
-        4: 'Error',
-        5: 'Unknown'
+        GLP_OPT: 'Optimal',
+        GLP_FEAS: 'Feasible',
+        GLP_INFEAS: 'Infeasible',
+        GLP_NOFEAS: 'No Feasible',
+        GLP_UNBND: 'Unbounded',
+        GLP_UNDEF: 'Undefined'
     };
 
     // Zielfunktionswert
@@ -151,11 +152,11 @@ function createJSONReport(lp) {
         const status = glp_get_row_stat(lp, i);
 
         const statusMapping = {
-            1: 'Basic',
-            2: 'Lower Bound',
-            3: 'Upper Bound',
-            4: 'Free',
-            5: 'Fixed'
+            GLP_BS: 'Basic',
+            GLP_NL: 'Lower Bound',
+            GLP_NU: 'Upper Bound',
+            GLP_NF: 'Free',
+            GLP_NS: 'Fixed'
         };
 
         rows.push({
