@@ -49,5 +49,5 @@ body:
         - L
         - XL
     validations:
-      required: true```
+      required: true
 
