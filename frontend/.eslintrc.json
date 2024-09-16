@@ -1,0 +1,23 @@
+// defines linting-rules and configs
+{
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:jsx-a11y/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "ignorePatterns": ["!.*"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "react", "react-hooks", "jsx-a11y", "prettier"],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "error",
+
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    }
+  }
+  
+
+  

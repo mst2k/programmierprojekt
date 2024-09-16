@@ -1,6 +1,9 @@
 import { useTranslation } from "react-i18next";
-import React, { useState } from 'react';
 
+import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
+import {useEffect, useState} from "react";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import TESTCallSolver from "@/components/ui/general/displayRestult.tsx";
 import { NavigationMenuDemo } from "../ui/navbar";
 import  CollapsableSidebar from "@/components/ui/custom/sidebar";
 
@@ -10,38 +13,30 @@ const SolverPage = () => {
 
     return (
         <div className="flex flex-col h-screen w-screen">
-            {/* <header className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-16'}`}> */}
-                <NavigationMenuDemo/>
-            {/* </header> */}
+            <div className="flex flex-1">
             <div className="flex-1 relative">
-                <CollapsableSidebar 
+                <CollapsableSidebar
                     isOpen={isSidebarOpen}
                     onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
                 />
-                {/* <aside className="w-1/4 bg-gray-200 p-4">
-                   <ul>
-                        <li>{t('general')}</li>
-                        <li>{t('simplex')}</li>
-                        <li>{t('otherProbs')}</li>
-                        <li>{t('toggleSolver')}</li>
-                    </ul>
-                </aside>  */}
-           <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
-                    <main className="p-4">
-                        <div className="h-1/2 border-b-2 border-gray-300 p-4">
-                            <h2 className="text-xl font-bold">{t('modelInput')}</h2>
-                            <p>{t('differentLayout')}</p>
-                        </div>
-                        <div className="h-1/2 p-4">
-                            <h2 className="text-xl font-bold">{t('displaySolution')}</h2>
-                        </div>
-                    </main>
-                </div>
             </div>
+                <main className="flex-1 p-4">
+                    <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                        <BasicModelInput states={allStates}></BasicModelInput>
+                    </div>
+
+                    <div className="h-1/2 p-4">
+                        {resultComponent}
+                    </div>
+                </main>
+            </div>
+
             <footer className="bg-gray-800 text-white p-4 text-center">
                 Footer (About Page z.B.)
             </footer>
         </div>
+
+
     );
 };
 

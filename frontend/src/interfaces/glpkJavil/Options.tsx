@@ -1,4 +1,4 @@
-import {Result} from "@/interfaces/Result.tsx";
+import {Result} from "@/interfaces/glpkJavil/Result.tsx";
 
 export interface Options {
     mipgap?: number,    /* set relative mip gap tolerance to mipgap, default 0.0 */
