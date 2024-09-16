@@ -2,7 +2,7 @@ import {SolverResult} from "@/interfaces/Result.tsx";
 import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
 import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
-import {convertToGLPM} from "@/hooks/converters/GMPLConverter.tsx";
+import {convertToGMPL} from "@/hooks/converters/GMPLConverter.tsx";
 
 
 /**
@@ -68,7 +68,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         //worker can only handle LP an GMPL => Parse MPS bevorehand!
         if(probtype === "MPS"){
             const lpProblem:LP = parseMPS(prob);
-            prob = convertToGLPM(lpProblem);
+            prob = convertToGMPL(lpProblem);
             probtype = "GMPL";
 
         }
