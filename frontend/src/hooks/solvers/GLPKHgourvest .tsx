@@ -33,6 +33,10 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         let log: string = "";
         const worker = new Worker(new URL('@/lib/glpkWorker.js', import.meta.url));
 
+        console.log(`META URL${import.meta.url}`)
+        console.log(new URL('@/lib/glpkWorker.js', import.meta.url))
+
+
         //To receive information provided by the worker
         worker.onmessage = (e) => {
             const { action, result: workerResult, objective, message, error: workerError , output} = e.data;
@@ -42,7 +46,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
                     console.error('Worker error:', workerError);
                 } else {
                     console.log({ result: workerResult, objective, output });
-                    workerResult.output = output
+                    workerResult.Output = output
                     result = workerResult as SolverResult | null;
                 }
                 worker.terminate();
@@ -70,7 +74,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         }
         // Send the problem and options to the worker
         worker.postMessage({ action: 'solve', prob, probtype });
-    });
+    }) as Promise<{ result: SolverResult | null; error: Error | null; log: string }>;
 };
 
 export default solveGLPKHgourvest;

@@ -1,4 +1,4 @@
-importScripts('./glpk.js');
+importScripts("./glpk.js")
 
 
 
@@ -20,7 +20,7 @@ self.onmessage = function (e) {
     glp_set_print_func(captureOutput);
 
     const solverOptions = { mip: false };
-    
+
     try {
         // Setze die eigene Print-Funktion
         glp_set_print_func(log);
@@ -86,21 +86,16 @@ function readGMPLFromString(tran, problemString) {
 }
 
 // Function to read MPS from string
-function readMPSFromString(lp, problemString) {
-    let pos = 0;
-    glp_read_mps(lp, GLP_MPS_FILE, null, () => (pos < problemString.length ? problemString[pos++] : -1));
-}
-
-
 function createJSONReport(lp) {
     // Status der Lösung
     const status = glp_get_status(lp);
     const statusMapping = {
         1: 'Optimal',
-        2: 'Infeasible',
-        3: 'Unbounded',
-        4: 'Error',
-        5: 'Unknown'
+        2: 'Feasible',
+        3: 'Infeasible',
+        4: 'No Feasible',
+        5: 'Unbounded',
+        6: 'Undefined'
     };
 
     // Zielfunktionswert

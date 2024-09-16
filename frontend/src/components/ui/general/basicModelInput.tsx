@@ -140,47 +140,51 @@ export default function EnhancedStatusSelect(states:any) {
 
     return (
         <TooltipProvider>
-            <div className="p-0 flex flex-col space-y-4">
-                <div className="relative">
-                    <Textarea
-                        placeholder="Geben Sie hier Ihren Text ein"
-                        value={modelInput}
-                        onChange={(e) => setmodelInput(e.target.value)}
-                        className="min-h-[200px] pr-24"
-                    />
-                    <div className="absolute top-2 right-2 flex items-center space-x-2">
-                        {selectedItem && (
-                            <Tooltip>
-                                <TooltipTrigger className="p-1">
-                                    <InfoIcon className="h-4 w-4" />
-                                    <span className="sr-only">Info</span>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{selectedItem.description}</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        )}
-                        <Select onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Wählen" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {items.map((item) => (
-                                    <SelectItem key={item.id} value={item.id.toString()} className="flex justify-between items-center">
-                                        <span>{item.content}</span>
-                                        <span className={`ml-2 px-2 py-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
-                      {getStatusLabel(item.status)}
-                                        </span>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+            <div className="flex items-center justify-center">
+                <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
+                    <div className="relative">
+                        <Textarea
+                            placeholder="Geben Sie hier Ihren Text ein"
+                            value={modelInput}
+                            onChange={(e) => setmodelInput(e.target.value)}
+                            className="min-h-[200px] pr-24"
+                        />
+                        <div className="absolute top-2 right-2 flex items-center space-x-2">
+                            {selectedItem && (
+                                <Tooltip>
+                                    <TooltipTrigger className="p-1">
+                                        <InfoIcon className="h-4 w-4" />
+                                        <span className="sr-only">Info</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{selectedItem.description}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )}
+                            <Select onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Wählen" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {items.map((item) => (
+                                        <SelectItem key={item.id} value={item.id.toString()} className="flex justify-between items-center">
+                                            <span>{item.content}</span>
+                                            <span className={`ml-2 px-2 py-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
+                    {getStatusLabel(item.status)}
+                  </span>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className="flex justify-end">
+                        <Button onClick={triggerSolving}>Abschicken</Button>
                     </div>
                 </div>
-                <div className="flex justify-end">
-                    <Button onClick={triggerSolving}>Abschicken</Button>
-                </div>
             </div>
+
+            {/* Dialoge */}
             <Dialog open={showConverstionAltert} onOpenChange={setShowConverstionAltert}>
                 <DialogContent>
                     <DialogHeader>
@@ -192,12 +196,13 @@ export default function EnhancedStatusSelect(states:any) {
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setShowConverstionAltert(false)}>Abbrechen</Button>
                         <Button variant="destructive" onClick={() => {
-                            setShowConverstionAltert(false)
-                            console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput })
+                            setShowConverstionAltert(false);
+                            console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
                         }}>Fortfahren</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
             <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
                 <DialogContent>
                     <DialogHeader>
@@ -208,13 +213,14 @@ export default function EnhancedStatusSelect(states:any) {
                     </DialogHeader>
                     <DialogFooter>
                         <Button variant="destructive" onClick={() => {
-                            setShowNoModelTypeAltert(false)
-                            console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput })
+                            setShowNoModelTypeAltert(false);
+                            console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput });
                         }}>Fortfahren</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
         </TooltipProvider>
+
 
     )
 }

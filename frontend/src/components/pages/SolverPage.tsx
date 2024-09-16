@@ -3,18 +3,20 @@ import { useTranslation } from "react-i18next";
 import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
-import TESTCallSolver from "@/components/ui/general/TESTCallSolver.tsx";
+import TESTCallSolver from "@/components/ui/general/displayRestult.tsx";
 
 const SolverPage = () => {
     const {t} = useTranslation();
     const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
+    const [currentInputVariant, setCurrentInputVariant] = useState<"general" | "easy">("general");
     const [solveTrigger, setSolveTrigger] = useState<number>(0);
     const [resultComponent, setResultComponent] = useState(<></>)
     const allStates =  {  currentSolver, setCurrentSolver,
                             currentLpFormat, setCurrentLpFormat,
                             currentProblem, setCurrentProblem,
+                            currentInputVariant, setCurrentInputVariant,
                             solveTrigger, setSolveTrigger}
 
 
@@ -30,7 +32,6 @@ const SolverPage = () => {
                     <ul>
                         <li>{t('general')}</li>
                         <li>{t('simplex')}</li>
-                        <li>{t('otherProbs')}</li>
                         <li>{t('toggleSolver')}</li>
                     </ul>
                 </aside>
