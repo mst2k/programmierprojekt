@@ -4,7 +4,7 @@ import { NavigationMenuDemo } from "../ui/navbar";
 import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
-import TESTCallSolver from "@/components/ui/general/TESTCallSolver.tsx";
+import TESTCallSolver from "@/components/ui/general/displayRestult.tsx";
 
 const SolverPage = () => {
     const {t} = useTranslation();
@@ -34,7 +34,6 @@ const SolverPage = () => {
                     <ul>
                         <li>{t('general')}</li>
                         <li>{t('simplex')}</li>
-                        <li>{t('otherProbs')}</li>
                         <li>{t('toggleSolver')}</li>
                     </ul>
                 </aside>

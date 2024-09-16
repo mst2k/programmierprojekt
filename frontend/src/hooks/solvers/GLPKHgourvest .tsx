@@ -42,7 +42,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
                     console.error('Worker error:', workerError);
                 } else {
                     console.log({ result: workerResult, objective, output });
-                    workerResult.output = output
+                    workerResult.Output = output
                     result = workerResult as SolverResult | null;
                 }
                 worker.terminate();

@@ -69,11 +69,12 @@ export default function GLPKSolverComponent({ lpProblem, problemType, lpSolver }
                         <p className="text-lg font-semibold mb-4">Objective Value: {result.ObjectiveValue}</p>
                     )}
                     <Tabs value={activeTab} onValueChange={setActiveTab}>
-                        <TabsList className="grid w-full grid-cols-4">
+                        <TabsList className="grid w-full grid-cols-5">
                             <TabsTrigger value="columns">Columns</TabsTrigger>
                             <TabsTrigger value="rows">Rows</TabsTrigger>
                             <TabsTrigger value="json">JSON</TabsTrigger>
                             <TabsTrigger value="logs">Logs</TabsTrigger>
+                            <TabsTrigger value="output">Output</TabsTrigger>
                         </TabsList>
                         <TabsContent value="columns">
                             <ScrollArea className="h-[400px]">
@@ -141,6 +142,11 @@ export default function GLPKSolverComponent({ lpProblem, problemType, lpSolver }
                         <TabsContent value="logs">
                             <ScrollArea className="h-[400px] w-full border rounded-md p-4">
                                 <pre>{log}</pre>
+                            </ScrollArea>
+                        </TabsContent>
+                        <TabsContent value="output">
+                            <ScrollArea className="h-[400px] w-full border rounded-md p-4">
+                                <pre>{result.Output}</pre>
                             </ScrollArea>
                         </TabsContent>
                     </Tabs>
