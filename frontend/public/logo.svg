@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
   <!-- Background circle -->
-  <circle cx="100" cy="100" r="90" fill="#f0f0f0"/>
+  <circle cx="80" cy="80" r="72" fill="#f0f0f0"/>
   
   <!-- Simplex triangle -->
-  <polygon points="100,30 170,150 30,150" fill="none" stroke="#2c3e50" stroke-width="4"/>
+  <polygon points="80,24 136,120 24,120" fill="none" stroke="#2c3e50" stroke-width="3.2"/>
   
   <!-- Optimization curve -->
-  <path d="M30,150 Q100,50 170,150" fill="none" stroke="#e74c3c" stroke-width="4"/>
+  <path d="M24,120 Q80,40 136,120" fill="none" stroke="#e74c3c" stroke-width="3.2"/>
   
   <!-- Nodes -->
-  <circle cx="100" cy="30" r="8" fill="#3498db"/>
-  <circle cx="170" cy="150" r="8" fill="#3498db"/>
-  <circle cx="30" cy="150" r="8" fill="#3498db"/>
+  <circle cx="80" cy="24" r="6.4" fill="#3498db"/>
+  <circle cx="136" cy="120" r="6.4" fill="#3498db"/>
+  <circle cx="24" cy="120" r="6.4" fill="#3498db"/>
   
   <!-- OR text -->
-  <text x="100" y="185" font-family="Arial, sans-serif" font-size="24" fill="#2c3e50" text-anchor="middle">OR Solver</text>
+  <text x="80" y="148" font-family="Arial, sans-serif" font-size="19.2" fill="#2c3e50" text-anchor="middle">OR Solver</text>
 </svg>
