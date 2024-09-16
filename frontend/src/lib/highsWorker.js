@@ -1,4 +1,5 @@
-importScripts("./highs.js");
+importScripts('./highs.js');
+
 
 onmessage = async function ({ data }) {
     console.log(data.prob)
