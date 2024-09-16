@@ -1,10 +1,7 @@
 name: Continuous Integration
 
 
-on:  
-  push: 
-    branches-ignore:
-      - main # deploy.yml checks 
+on:
   pull_request:
     branches:
       - main
@@ -31,8 +28,11 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Run tests
+      run: npm run test
+
     - name: Run tests with coverage
-      run: npm run test:coverage
+      run: npm run coverage
 
     - name: Run type check
       run: npm run type-check
