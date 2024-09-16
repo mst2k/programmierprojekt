@@ -1,7 +1,7 @@
 import '@/App.css'
 import { useTranslation } from 'react-i18next';
 
-import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
+// import { NavigationMenuDemo } from "@/components/ui/navbar.tsx"
 
 import {useState} from "react";
 import { GMPLEditor } from '@/grammar/GMPLEditor';
@@ -15,9 +15,7 @@ function WelcomePage() {
     const [code, setCode] = useState(gmpl2String)
     return (
         <div className="flex flex-col h-screen w-screen">
-            <header>
-                <NavigationMenuDemo></NavigationMenuDemo>
-            </header>
+            
             <div className="flex flex-1">
                 <main className="flex-1 p-4">
                     {t('title')}

@@ -12,10 +12,9 @@ import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
 
 // import {test} from "@/hooks/CallConverter.tsx"
-import { NavigationMenuDemo } from "../ui/navbar";
 
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
-import {convertToGLPM, parseGMPL} from "@/hooks/converters/GMPLConverter.tsx";
+import {convertToGMPL, parseGMPL} from "@/hooks/converters/GMPLConverter.tsx";
 import {convertToLP, parseLP} from "@/hooks/converters/LPConverter.tsx";
 import {convertToMPS, parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 import {test} from "@/hooks/converters/CallConverter.tsx";
@@ -24,7 +23,7 @@ const convertOptions = [
     {name: "glpkInterface",
         from:   (code:string):LP => {return JSON.parse(code)},
         to:     (lpObject:LP):string => {return JSON.stringify(lpObject, null, 2)}},
-    {name: "gmpl", from: parseGMPL, to: convertToGLPM},
+    {name: "gmpl", from: parseGMPL, to: convertToGMPL},
     {name: "lp", from: parseLP, to: convertToLP},
     {name: "mps", from: parseMPS, to: convertToMPS},
 ]
@@ -63,9 +62,6 @@ const CodeExecutionPage: React.FC = () => {
 
     return (
         <div className="flex flex-col h-screen w-screen p-10">
-            <header>
-                <NavigationMenuDemo></NavigationMenuDemo>
-            </header>
             <div className="mb-4">
                 <h1 className="text-xl font-bold mb-2">Code Execution Page</h1>
                 <Textarea

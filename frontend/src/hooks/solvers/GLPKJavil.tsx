@@ -63,7 +63,7 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
             error = err as Error;
             resolve({ result, error, log });
         }
-    });
+    }) as Promise<{ result: SolverResult | null; error: Error | null; log: string }>;
 };
 
 
