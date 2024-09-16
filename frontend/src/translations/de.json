@@ -11,6 +11,7 @@
     "homeTitleDesc": "Tipps zur Installation und anderen Hilfsmitteln",
     "installationTitle": "Installation",
     "general": "Allgemein",
+    "easy": "Einfach",
     "simplex": "Simplex",
     "otherProbs": "Anderes",
     "toggleSolver": "Umschalt-Löser",
@@ -25,6 +26,8 @@
     "rest": "Restriktionen",
     "Res": "Restriktion",
     "enterOFunc": "Zielfunktion eingeben",
-    "chooseOrType": "Wähle einen Opimierungstyp"
+    "chooseOrType": "Wähle einen Opimierungstyp",
+    "nnb": "Nichtnegativitätsbedingung",
+    "mode": "Modus"
   }
   

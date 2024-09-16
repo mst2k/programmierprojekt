@@ -11,6 +11,7 @@
     "homeTitleDesc": "Installation tips and tool tips",
     "installationTitle": "Installation",
     "general": "General",
+    "easy": "Easy",
     "simplex": "Simplex",
     "otherProbs": "Others",
     "toggleSolver": "Toggle Solver",
@@ -25,6 +26,8 @@
     "rest": "Restrictions",
     "Res": "Restriction",
     "enterOFunc": "Enter objective function",
-    "chooseOrType": "Choose the Optimization Type"
+    "chooseOrType": "Choose the Optimization Type",
+    "nnb": "Non Negativity Condition",
+    "mode": "Mode"
   }
   
