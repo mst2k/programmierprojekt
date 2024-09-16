@@ -1,4 +1,4 @@
-importScripts('./glpk.js');
+importScripts("./glpk.js")
 
 
 
@@ -20,7 +20,7 @@ self.onmessage = function (e) {
     glp_set_print_func(captureOutput);
 
     const solverOptions = { mip: false };
-    
+
     try {
         // Setze die eigene Print-Funktion
         glp_set_print_func(log);
@@ -86,22 +86,16 @@ function readGMPLFromString(tran, problemString) {
 }
 
 // Function to read MPS from string
-function readMPSFromString(lp, problemString) {
-    let pos = 0;
-    glp_read_mps(lp, GLP_MPS_FILE, null, () => (pos < problemString.length ? problemString[pos++] : -1));
-}
-
-
 function createJSONReport(lp) {
     // Status der Lösung
     const status = glp_get_status(lp);
     const statusMapping = {
-        GLP_OPT: 'Optimal',
-        GLP_FEAS: 'Feasible',
-        GLP_INFEAS: 'Infeasible',
-        GLP_NOFEAS: 'No Feasible',
-        GLP_UNBND: 'Unbounded',
-        GLP_UNDEF: 'Undefined'
+        1: 'Optimal',
+        2: 'Feasible',
+        3: 'Infeasible',
+        4: 'No Feasible',
+        5: 'Unbounded',
+        6: 'Undefined'
     };
 
     // Zielfunktionswert
@@ -152,11 +146,11 @@ function createJSONReport(lp) {
         const status = glp_get_row_stat(lp, i);
 
         const statusMapping = {
-            GLP_BS: 'Basic',
-            GLP_NL: 'Lower Bound',
-            GLP_NU: 'Upper Bound',
-            GLP_NF: 'Free',
-            GLP_NS: 'Fixed'
+            1: 'Basic',
+            2: 'Lower Bound',
+            3: 'Upper Bound',
+            4: 'Free',
+            5: 'Fixed'
         };
 
         rows.push({

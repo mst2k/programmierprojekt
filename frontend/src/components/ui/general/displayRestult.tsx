@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {ChevronDown, ChevronUp, Loader2} from "lucide-react"
+import {Loader2} from "lucide-react"
 import useSolver from "@/hooks/solvers/useSolver.tsx";
-import {Button} from "@/components/ui/button.tsx";
-
-// Definieren Sie diese Typen entsprechend Ihrer tatsächlichen Implementierung
-type ProblemFormats = string // Ersetzen Sie dies durch den tatsächlichen Typ
-type Solvers = string // Ersetzen Sie dies durch den tatsächlichen Typ
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 
 interface GLPKSolverProps {
     lpProblem: string
@@ -19,7 +15,6 @@ interface GLPKSolverProps {
 export default function GLPKSolverComponent({ lpProblem, problemType, lpSolver }: GLPKSolverProps) {
     const { result, isLoading, error, log } = useSolver(lpProblem, problemType, lpSolver)
     const [activeTab, setActiveTab] = useState("columns")
-    const [isExpanded, setIsExpanded] = useState(true)
 
     if (isLoading) {
         return (
