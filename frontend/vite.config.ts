@@ -22,7 +22,17 @@ export default defineConfig({
     }
   },
   test: {
-    environment: 'jsdom',  // Stellt das DOM in den Tests zur Verfügung
+    environment: 'jsdom',
+    globals: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/hooks/**/*'],
+      exclude: [
+        'src/hooks/**/*.test.{js,ts,jsx,tsx}',
+        'src/hooks/**/*.spec.{js,ts,jsx,tsx}',
+      ],
+    },
   },
 
   optimizeDeps: {
