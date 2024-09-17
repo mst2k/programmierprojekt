@@ -33,9 +33,9 @@ type Item = {
     description: string;
 }
 
-
 export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
+
     const {
         currentSolver,
 //        setCurrentSolver,
