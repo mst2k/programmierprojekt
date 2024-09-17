@@ -85,21 +85,29 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   };
  
   return (
-    <>
+    <div className="flex flex-col h-full">
+        <div className="flex-grow">
       <Editor
         onMount={handleEditorDidMount}
-        height="60vh"
         defaultLanguage={props.problemFormat}
         value={props.value}
         onChange={(value) => props.onChange(value || '')}
         beforeMount={handleEditorWillMount}
+        options={{
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            renderLineHighlight: "none"
+          }}
+          
       />
-      <div className='flex justify-around'>
-        {/*Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))*/}
-        <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon color='green' /> : <Cross1Icon color='red' />}</p>
-        <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon color='green' /> : <Cross1Icon color='red' />}</p>
-        <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon color='green' /> : <Cross1Icon color='red' />}</p>
       </div>
-    </>
+      <div className='flex justify-around mt-2'>
+        {/*Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))*/}
+        <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+        <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+        <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+      </div>
+    </div>
   );
 };
