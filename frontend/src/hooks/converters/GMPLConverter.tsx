@@ -3,7 +3,6 @@ import { Constraint } from "@/interfaces/glpkJavil/Constraint.tsx";
 import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
 import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
 import {GLP_UP, GLP_LO, GLP_FX, GLP_DB, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
-import {gmplString} from "@/interfaces/TestData.tsx";
 
 export function parseGMPL(lpString: string): LP {
     const cleanedInput = lpString
