@@ -1,19 +1,12 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Textarea } from "@/components/ui/textarea"
 import { InfoIcon } from 'lucide-react'
 import {
     Dialog,
@@ -25,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import {useTranslation} from "react-i18next";
+import { ProblemEditor } from '../custom/ProblemEditor/ProblemEditor'
 
 type Item = {
     id: number;
@@ -38,10 +32,7 @@ export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
     const {
         currentSolver,
-//        setCurrentSolver,
-//        currentLpFormat,
         setCurrentLpFormat,
-//        currentProblem,
         setCurrentProblem,
         solveTrigger,
         setSolveTrigger
@@ -53,28 +44,27 @@ export default function BasicModelInput(states:any) {
         currentProblem: string;
         setCurrentProblem: (problem: string) => void;
         solveTrigger: number,
-        setSolveTrigger: (problem:number) => void
+        setSolveTrigger: (problem: number) => void
     } = states.states;
 
-
-    const [selectedItem, setSelectedItem] = useState<Item | null>(null)
-    const [modelInput, setmodelInput] = useState('')
-    const [showConverstionAltert, setShowConverstionAltert] = useState(false)
-    const [showNoModelTypeAltert, setShowNoModelTypeAltert] = useState(false)
+    const [selectedItem, setSelectedItem] = useState<Item | null>({ id: 1, content: "GMPL", status: "nativ", description: "Description GMPL" })
+    const [modelInput, setModelInput] = useState('')
+    const [showConverstionAlert, setShowConverstionAlert] = useState(false)
+    const [showNoModelTypeAlert, setShowNoModelTypeAlert] = useState(false)
     const [gmplState, setGmplState] = useState<Item["status"]>("unsupported");
     const [lpState, setLpState] = useState<Item["status"]>("unsupported");
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
 
     useEffect(() => {
-        switch (currentSolver){
+        switch (currentSolver) {
             case "Highs":
                 setSolverHighs();
                 break;
             case "GLPKJavil":
-                setSolverrGlpkJavil();
+                setSolverGlpkJavil();
                 break;
             case "GLPKHgourvest":
-                setSolverrGlpkHgourvest();
+                setSolverGlpkHgourvest();
                 break;
         }
     }, [currentSolver]);
@@ -85,18 +75,17 @@ export default function BasicModelInput(states:any) {
         { id: 3, content: 'MPS', status: mpsState, description: t('description_mps') },
     ]
 
-    const setSolverHighs = () =>{
+    const setSolverHighs = () => {
         setGmplState('conversion');
         setLpState('nativ');
         setMpsState('conversion');
     }
-    const setSolverrGlpkJavil = () =>{
+    const setSolverGlpkJavil = () => {
         setGmplState('conversion');
         setLpState('conversion');
         setMpsState('conversion');
     }
-
-    const setSolverrGlpkHgourvest = () =>{
+    const setSolverGlpkHgourvest = () => {
         setGmplState('nativ');
         setLpState('nativ');
         setMpsState('conversion');
@@ -124,70 +113,70 @@ export default function BasicModelInput(states:any) {
         }
     }
 
-    function triggerSolving(_:any, solveAnyway?: boolean) {
-
+    function triggerSolving(_: any, solveAnyway?: boolean) {
         if (solveAnyway != undefined || selectedItem && selectedItem.status !== 'nativ') {
-            setShowConverstionAltert(true);
+            setShowConverstionAlert(true);
         } else {
-            if(selectedItem?.content){
+            if (selectedItem?.content) {
                 setCurrentLpFormat(selectedItem.content);
                 setCurrentProblem(modelInput);
                 setSolveTrigger(solveTrigger + 1);
-            }else {
-                setShowNoModelTypeAltert(true);
+            } else {
+                setShowNoModelTypeAlert(true);
             }
         }
     }
 
-
     return (
         <TooltipProvider>
             <div className="flex items-center justify-center">
-                <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
-                    <div className="relative">
-                        <Textarea
-                            placeholder={t('input_placeholder')}
+                <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[60vh]">
+                    <Tabs 
+                        value={selectedItem?.id.toString() || "1"}
+                        onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
+                        className="w-full"
+                    >
+                        <TabsList className="grid w-full grid-cols-3 rounded-b-none bg-background">
+                            {items.map((item) => (
+                                <TabsTrigger 
+                                    key={item.id} 
+                                    value={item.id.toString()}
+                                    className="relative data-[state=inactive]:bg-muted data-[state=inactive]:text-muted-foreground"
+                                >
+                                    {item.content}
+                                    <span className={`absolute top-0 right-0 mt-1 mr-1 px-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
+                                        {getStatusLabel(item.status)}
+                                    </span>
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </Tabs>
+                    <div className="relative flex-grow border border-t-0 rounded-b-lg">
+                        <ProblemEditor
+                            problemFormat={selectedItem?.content || 'GMPL'}
                             value={modelInput}
-                            onChange={(e) => setmodelInput(e.target.value)}
-                            className="min-h-[200px] pr-24"
+                            onChange={(value: React.SetStateAction<string>) => setModelInput(value)}
                         />
-                        <div className="absolute top-2 right-2 flex items-center space-x-2">
-                            {selectedItem && (
-                                <Tooltip>
-                                    <TooltipTrigger className="p-1">
-                                        <InfoIcon className="h-4 w-4" />
-                                        <span className="sr-only">Info</span>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{selectedItem.description}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            )}
-                            <Select onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}>
-                                <SelectTrigger>
-                                    <SelectValue data-testid="select-button" placeholder={t('select_placeholder')} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {items.map((item) => (
-                                        <SelectItem key={item.id} value={item.id.toString()} className="flex justify-between items-center">
-                                            <span>{item.content}</span>
-                                            <span className={`ml-2 px-2 py-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
-                                                {getStatusLabel(item.status)}
-                                            </span>
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        {selectedItem && (
+                            <Tooltip>
+                                <TooltipTrigger className="absolute top-2 right-6 p-1 text-muted-foreground hover:text-foreground">
+                                    <InfoIcon className="h-4 w-4" />
+                                    <span className="sr-only">Info</span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{selectedItem.description}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                     </div>
-                    <div className="flex justify-end">
-                        <Button onClick={triggerSolving}>{t('submit_button')}</Button>
+                    <div className="flex justify-end mt-4">
+                        <Button onClick={triggerSolving}>Abschicken</Button>
                     </div>
                 </div>
             </div>
 
-            {/* Dialoge */}
-            <Dialog open={showConverstionAltert} onOpenChange={setShowConverstionAltert}>
+            {/* Dialogs */}
+            <Dialog open={showConverstionAlert} onOpenChange={setShowConverstionAlert}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{t('conversion_dialog_title')}</DialogTitle>
@@ -196,9 +185,9 @@ export default function BasicModelInput(states:any) {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowConverstionAltert(false)}>{t('cancel_button')}</Button>
+                        <Button variant="outline" onClick={() => setShowConverstionAlert(false)}>Abbrechen</Button>
                         <Button variant="destructive" onClick={() => {
-                            setShowConverstionAltert(false);
+                            setShowConverstionAlert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
                             triggerSolving(undefined, true);
                         }}>{t('proceed_button')}</Button>
@@ -206,7 +195,7 @@ export default function BasicModelInput(states:any) {
                 </DialogContent>
             </Dialog>
 
-            <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
+            <Dialog open={showNoModelTypeAlert} onOpenChange={setShowNoModelTypeAlert}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{t('no_model_dialog_title')}</DialogTitle>
@@ -216,7 +205,7 @@ export default function BasicModelInput(states:any) {
                     </DialogHeader>
                     <DialogFooter>
                         <Button variant="destructive" onClick={() => {
-                            setShowNoModelTypeAltert(false);
+                            setShowNoModelTypeAlert(false);
                             console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput });
                         }}>{t('proceed_button')}</Button>
                     </DialogFooter>
