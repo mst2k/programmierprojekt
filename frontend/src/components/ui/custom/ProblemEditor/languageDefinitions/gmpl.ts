@@ -1,3 +1,5 @@
+import { EditorErrorInfo } from "../ProblemEditor";
+
 export const GMPLTokens = {
     defaultToken: '',
     tokenPostfix: '.gmpl',
@@ -57,14 +59,16 @@ export const GMPLTokens = {
   };
 
 
-  export function checkGMPLErrors(code: string): { message: string; line: number }[] {
+  export function checkGMPLErrors(code: string): EditorErrorInfo {
     const errors: { message: string; line: number }[] = [];
     const lines = code.split('\n');
   
     const keywordRequiringSemicolon = ['set', 'param', 'var'];
     const validIdentifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
     let inDataSection = false;
-    let hasObjectiveFunction = false;
+    let hasObjective = false;
+    let hasRestrictions = false;
+    let hasNonNegativity = false;
     let inComment = false;
     let openDeclaration: string | null = null;
   
@@ -77,9 +81,7 @@ export const GMPLTokens = {
       if (inComment) return;
   
       // Ignore single-line comments
-      if (line.trim().startsWith('#')) {
-        return;
-      } 
+      if (line.trim().startsWith('#')) return;
   
       // Check for data section
       if (tokens.some(token => token.type === 'keyword' && token.value === 'data')) {
@@ -93,6 +95,12 @@ export const GMPLTokens = {
         // Check for declarations without semicolons
         const declarationKeyword = tokens.find(token => keywordRequiringSemicolon.includes(token.value));
         if (declarationKeyword) {
+          if (openDeclaration) {
+            errors.push({
+              message: `${openDeclaration} declaration is not properly closed with a semicolon`,
+              line: index,
+            });
+          }
           openDeclaration = declarationKeyword.value;
         }
         if (openDeclaration && tokens.some(token => token.type === 'delimiter' && token.value === ';')) {
@@ -101,7 +109,23 @@ export const GMPLTokens = {
   
         // Check for objective function
         if (tokens.some(token => token.type === 'keyword' && (token.value === 'maximize' || token.value === 'minimize'))) {
-          hasObjectiveFunction = true;
+          hasObjective = true;
+        }
+  
+        // Check for restrictions (constraints)
+        if (tokens.some(token => token.type === 'keyword' && (token.value === 's.t.' || token.value === 'subject to'))) {
+          hasRestrictions = true;
+          if (!tokens.some(token => token.type === 'identifier')) {
+            errors.push({
+              message: 'Constraint must have a name',
+              line: index + 1,
+            });
+          }
+        }
+  
+        // Check for non-negativity constraints
+        if (line.toLowerCase().includes('>= 0') || line.toLowerCase().includes('&gt;= 0')) {
+          hasNonNegativity = true;
         }
   
         // Check for invalid identifiers
@@ -113,16 +137,6 @@ export const GMPLTokens = {
             });
           }
         });
-  
-        // Check for valid constraint declarations
-        if (tokens.some(token => token.type === 'keyword' && (token.value === 's.t.' || token.value === 'subject to'))) {
-          if (!tokens.some(token => token.type === 'identifier')) {
-            errors.push({
-              message: 'Constraint must have a name',
-              line: index + 1,
-            });
-          }
-        }
       } else {
         // Data section checks
         // Add specific checks for data section if needed
@@ -138,14 +152,19 @@ export const GMPLTokens = {
     }
   
     // Check if the model has an objective function
-    if (!hasObjectiveFunction && !inDataSection) {
-      errors.push({
-        message: 'Model must have an objective function (maximize or minimize)',
-        line: lines.length,
-      });
-    }
+    // if (!hasObjective && !inDataSection) {
+    //   errors.push({
+    //     message: 'Model must have an objective function (maximize or minimize)',
+    //     line: lines.length,
+    //   });
+    // }
   
-    return errors;
+    return {
+      errors,
+      hasObjective,
+      hasRestrictions,
+      hasNonNegativity
+    };
   }
   
 function tokenizeLine(line: string): { type: string; value: string }[] {
@@ -209,3 +228,4 @@ function tokenizeLine(line: string): { type: string; value: string }[] {
   
     return tokens;
   }
+
