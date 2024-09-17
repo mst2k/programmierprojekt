@@ -53,10 +53,6 @@ export default function EnhancedStatusSelect(states: any) {
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
 
     useEffect(() => {
-        console.log(selectedItem);
-    }, [selectedItem])
-
-    useEffect(() => {
         switch (currentSolver) {
             case "Highs":
                 setSolverHighs();

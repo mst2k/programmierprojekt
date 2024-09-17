@@ -63,12 +63,10 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   };
  
   const handleEditorDidMount = (editor: any, monaco: any) => {
-    console.log("Editor mounted");
     const updateErrors = () => {
       const code = editor.getValue();
       const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code);
       const model = editor.getModel();
-      console.log("errors", errors);
       monaco.editor.setModelMarkers(model, props.problemFormat, errors.map(err => ({
         severity: monaco.MarkerSeverity.Error,
         message: err.message,
@@ -79,7 +77,6 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       })));
       setModelProperties({ hasObjective, hasRestrictions, hasNonNegativity });
     };
-    console.log("errorcheck")
     editor.onDidChangeModelContent(updateErrors);
     updateErrors(); // Initial error check
   };
