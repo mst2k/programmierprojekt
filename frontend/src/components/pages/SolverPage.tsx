@@ -39,7 +39,7 @@ const SolverPage = () => {
         if(currentInputVariant === 'general') setInputComponent(<BasicModelInput states={allStates}></BasicModelInput>);
         else if(currentInputVariant === 'easy') setInputComponent(<EasyModelInput states={allStates}></EasyModelInput>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
-    }, [currentInputVariant]);
+    }, [currentInputVariant, currentSolver, solveTrigger]);
 
 
 
