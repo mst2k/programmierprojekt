@@ -10,14 +10,10 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import CodeArea from "@/components/ui/custom/CodeArea.tsx";
-
-// import {test} from "@/hooks/CallConverter.tsx"
-
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToGMPL, parseGMPL} from "@/hooks/converters/GMPLConverter.tsx";
 import {convertToLP, parseLP} from "@/hooks/converters/LPConverter.tsx";
 import {convertToMPS, parseMPS} from "@/hooks/converters/MPSConverter.tsx";
-import {test} from "@/hooks/converters/CallConverter.tsx";
 
 const convertOptions = [
     {name: "glpkInterface",
@@ -37,7 +33,6 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = () => {
-        test()
         if(from === to){
             setOutput(code)
             return

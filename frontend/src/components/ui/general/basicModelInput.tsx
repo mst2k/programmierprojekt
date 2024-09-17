@@ -16,7 +16,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import {useTranslation} from "react-i18next";
 import { ProblemEditor } from '../custom/ProblemEditor/ProblemEditor'
 
 type Item = {
@@ -26,7 +27,9 @@ type Item = {
     description: string;
 }
 
-export default function EnhancedStatusSelect(states: any) {
+
+export default function BasicModelInput(states:any) {
+    const { t } = useTranslation()
     const {
         currentSolver,
         setCurrentLpFormat,
@@ -66,10 +69,10 @@ export default function EnhancedStatusSelect(states: any) {
         }
     }, [currentSolver]);
 
-    const items: Item[] = [
-        { id: 1, content: 'GMPL', status: gmplState, description: 'Description GMPL' },
-        { id: 2, content: 'LP', status: lpState, description: 'Description LP' },
-        { id: 3, content: 'MPS', status: mpsState, description: 'Description MPS' },
+    const items:Item[]=[
+        { id: 1, content: 'GMPL', status: gmplState, description: t('description_gmpl') },
+        { id: 2, content: 'LP', status: lpState, description: t('description_lp') },
+        { id: 3, content: 'MPS', status: mpsState, description: t('description_mps') },
     ]
 
     const setSolverHighs = () => {
@@ -91,11 +94,11 @@ export default function EnhancedStatusSelect(states: any) {
     const getStatusLabel = (status: Item['status']) => {
         switch (status) {
             case 'nativ':
-                return 'Native';
+                return t('status_native');
             case 'conversion':
-                return 'Conversion';
+                return t('status_conversion');
             case 'unsupported':
-                return 'Unsupported';
+                return t('status_unsupported');
         }
     }
 
@@ -176,9 +179,9 @@ export default function EnhancedStatusSelect(states: any) {
             <Dialog open={showConverstionAlert} onOpenChange={setShowConverstionAlert}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
+                        <DialogTitle>{t('conversion_dialog_title')}</DialogTitle>
                         <DialogDescription>
-                            Es ist eine Konvertierung notwendig. Trotzdem fortfahren?
+                            {t('conversion_dialog_description')}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
@@ -186,7 +189,8 @@ export default function EnhancedStatusSelect(states: any) {
                         <Button variant="destructive" onClick={() => {
                             setShowConverstionAlert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
-                        }}>Fortfahren</Button>
+                            triggerSolving(undefined, true);
+                        }}>{t('proceed_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -194,16 +198,16 @@ export default function EnhancedStatusSelect(states: any) {
             <Dialog open={showNoModelTypeAlert} onOpenChange={setShowNoModelTypeAlert}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
+                        <DialogTitle>{t('no_model_dialog_title')}</DialogTitle>
                         <DialogDescription>
-                            Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)
+                            {t('no_model_dialog_description')}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button variant="destructive" onClick={() => {
                             setShowNoModelTypeAlert(false);
                             console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { selectedItem, modelInput });
-                        }}>Fortfahren</Button>
+                        }}>{t('proceed_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
