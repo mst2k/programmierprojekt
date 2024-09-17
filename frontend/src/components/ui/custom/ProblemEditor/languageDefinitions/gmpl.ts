@@ -70,18 +70,27 @@ export const GMPLTokens = {
     let hasRestrictions = false;
     let hasNonNegativity = false;
     let inComment = false;
-    let openDeclaration: string | null = null;
+    let openDeclaration: { keyword: string, line: number } | null = null as { keyword: string, line: number } | null;
+    let actualLineNumber = 0;
   
-    lines.forEach((line, index) => {
-      const tokens = tokenizeLine(line);
+    lines.forEach((line) => {
+      actualLineNumber++;
+      const trimmedLine = line.trim();
+  
+      // Skip empty lines and single-line comments
+      if (trimmedLine === '' || trimmedLine.startsWith('#')) {
+        return;
+      }
   
       // Handle multi-line comments
-      if (line.trim().startsWith('/*')) inComment = true;
-      if (line.trim().endsWith('*/')) inComment = false;
+      if (trimmedLine.startsWith('/*')) inComment = true;
+      if (trimmedLine.endsWith('*/')) {
+        inComment = false;
+        return;
+      }
       if (inComment) return;
   
-      // Ignore single-line comments
-      if (line.trim().startsWith('#')) return;
+      const tokens = tokenizeLine(line);
   
       // Check for data section
       if (tokens.some(token => token.type === 'keyword' && token.value === 'data')) {
@@ -97,11 +106,11 @@ export const GMPLTokens = {
         if (declarationKeyword) {
           if (openDeclaration) {
             errors.push({
-              message: `${openDeclaration} declaration is not properly closed with a semicolon`,
-              line: index,
+              message: `${openDeclaration.keyword} declaration is not properly closed with a semicolon`,
+              line: openDeclaration.line,
             });
           }
-          openDeclaration = declarationKeyword.value;
+          openDeclaration = { keyword: declarationKeyword.value, line: actualLineNumber };
         }
         if (openDeclaration && tokens.some(token => token.type === 'delimiter' && token.value === ';')) {
           openDeclaration = null;
@@ -118,7 +127,7 @@ export const GMPLTokens = {
           if (!tokens.some(token => token.type === 'identifier')) {
             errors.push({
               message: 'Constraint must have a name',
-              line: index + 1,
+              line: actualLineNumber,
             });
           }
         }
@@ -133,7 +142,7 @@ export const GMPLTokens = {
           if (token.type === 'identifier' && !validIdentifierRegex.test(token.value)) {
             errors.push({
               message: 'Invalid identifier. Only alphanumeric characters and underscore are allowed, and it must start with a letter or underscore',
-              line: index + 1,
+              line: actualLineNumber,
             });
           }
         });
@@ -146,16 +155,16 @@ export const GMPLTokens = {
     // Check if any declaration was left open
     if (openDeclaration) {
       errors.push({
-        message: `${openDeclaration} declaration is not properly closed with a semicolon`,
-        line: lines.length,
+        message: `${openDeclaration.keyword} declaration is not properly closed with a semicolon`,
+        line: openDeclaration.line,
       });
     }
   
-    // Check if the model has an objective function
+    // Uncomment if you want to enforce the presence of an objective function
     // if (!hasObjective && !inDataSection) {
     //   errors.push({
     //     message: 'Model must have an objective function (maximize or minimize)',
-    //     line: lines.length,
+    //     line: actualLineNumber,
     //   });
     // }
   
