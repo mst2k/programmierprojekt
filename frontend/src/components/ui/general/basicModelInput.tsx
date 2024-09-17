@@ -34,7 +34,7 @@ type Item = {
 }
 
 
-export default function BasicModelInput(states:any) {a
+export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
     const {
         currentSolver,
@@ -165,7 +165,7 @@ export default function BasicModelInput(states:any) {a
                             )}
                             <Select onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('select_placeholder')} />
+                                    <SelectValue data-testid="select-button" placeholder={t('select_placeholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {items.map((item) => (
@@ -200,6 +200,7 @@ export default function BasicModelInput(states:any) {a
                         <Button variant="destructive" onClick={() => {
                             setShowConverstionAltert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
+                            triggerSolving(undefined, true);
                         }}>{t('proceed_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
