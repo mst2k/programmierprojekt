@@ -33,11 +33,6 @@ jobs:
     - name: Run tests with coverage
       run: npm run coverage
 
-    - name: Build project
-      run: npm run build
-      env:
-        CI: true
-
     - name: Upload coverage reports to Codecov
       uses: actions/upload-artifact@v4
       with:
