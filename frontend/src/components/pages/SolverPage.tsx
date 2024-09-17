@@ -41,7 +41,7 @@ const SolverPage = () => {
         else if(currentInputVariant === 'easy') setInputComponent(<EasyModelInput states={allStates}></EasyModelInput>);
         else if(currentInputVariant === 'transport') setInputComponent(<TransportationProblemUI states={allStates}></TransportationProblemUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
-    }, [currentInputVariant]);
+    }, [currentInputVariant, currentSolver, solveTrigger]);
 
 
 

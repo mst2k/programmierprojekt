@@ -159,7 +159,7 @@ for {j in J} {
  printf '%5s %10.2f >= %.3f\\n', j, sum {i in I} x[i,j], b[j];
    }
    
-data;\\n\\n`;
+data;\n`;
 
 
         // Generate sets
