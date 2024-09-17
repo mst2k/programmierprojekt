@@ -7,11 +7,15 @@ import ResultComponent from "@/components/ui/general/displayRestult.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
 import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
 import TransportationProblemUI from "@/components/ui/general/transportModelInput.tsx";
+import KnapsackProblemUI from "@/components/ui/general/knapsackModelInput.tsx";
+import WorkforceSchedulingUI from "@/components/ui/general/workforceScheduleModelInput.tsx";
 
 export const inputModes:string[] = [
     "general",
     "easy",
-    "transport"
+    "transport",
+    "knapsack",
+    "workforce"
 ]
 
 const SolverPage = () => {
@@ -40,6 +44,8 @@ const SolverPage = () => {
         if(currentInputVariant === 'general') setInputComponent(<BasicModelInput states={allStates}></BasicModelInput>);
         else if(currentInputVariant === 'easy') setInputComponent(<EasyModelInput states={allStates}></EasyModelInput>);
         else if(currentInputVariant === 'transport') setInputComponent(<TransportationProblemUI states={allStates}></TransportationProblemUI>);
+        else if(currentInputVariant === 'knapsack') setInputComponent(<KnapsackProblemUI states={allStates}></KnapsackProblemUI>);
+        else if(currentInputVariant === 'workforce') setInputComponent(<WorkforceSchedulingUI states={allStates}></WorkforceSchedulingUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant, currentSolver, solveTrigger]);
 
