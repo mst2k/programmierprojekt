@@ -28,6 +28,7 @@
     "enterOFunc": "Enter objective function",
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
-    "mode": "Mode"
+    "mode": "Mode",
+    "solvertype": "Solver Type"
   }
   

@@ -28,6 +28,7 @@
     "enterOFunc": "Zielfunktion eingeben",
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
-    "mode": "Modus"
+    "mode": "Modus",
+    "solvertype": "Lösertyp"
   }
   

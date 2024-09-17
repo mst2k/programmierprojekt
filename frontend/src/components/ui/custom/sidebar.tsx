@@ -1,4 +1,112 @@
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { X, ArrowRightFromLine } from "lucide-react"
+import { useTranslation } from "react-i18next"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/general/seperator.tsx";
 
+import { Solvers} from "@/interfaces/SolverConstants.tsx";
+
+interface SidebarProps {
+    currentInputVariant: "general" | "easy";
+    setCurrentInputVariant: React.Dispatch<React.SetStateAction<"general" | "easy">>;
+    currentSolver: Solvers;
+    setCurrentSolver: React.Dispatch<React.SetStateAction<Solvers>>;
+}
+
+type SolverTypes = {
+  id: number;
+  content: Solvers;
+  description: string;
+}
+
+export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver }: SidebarProps) {
+  const [isOpen, setIsOpen] = useState(true)
+  const {t} = useTranslation();
+
+  const toggleSidebar = () => setIsOpen(!isOpen)
+
+
+  const solverTypes:SolverTypes[]=[
+    { id: 1, content: 'GLPKHgourvest',  description: 'Description GLPKHgourvest' },
+    { id: 2, content: 'GLPKJavil',  description: 'Description GLPKJavil' },
+    { id: 3, content: 'Highs', description: 'Description Highs' },
+  ]
+
+  const handleSolverChange = (value: string) => {
+    const selectedSolver = solverTypes.find(sTyp => sTyp.id.toString() === value)
+    if (selectedSolver) {
+      setCurrentSolver(selectedSolver.content)
+    }
+  }
+
+  return (
+    <div className="flex h-screen">
+      <div
+        className={`bg-background border-r transition-all duration-300 flex flex-col ${
+          isOpen ? "w-64" : "w-16"
+        }`}
+      >
+        <div className="flex justify-between items-center p-2 border-b">
+         {isOpen && (
+            <h2 className="text-lg font-semibold">{t('mode')}</h2>
+        )}
+          <Button
+            variant="ghost"
+            onClick={toggleSidebar}
+            className=" top-20 z-20 transition-all duration-300 bg-stone-50 hover:bg-stone-50"
+          >
+             {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4text-black"/>}
+          </Button>
+        </div>
+        {isOpen && (
+          <div className="flex flex-col space-y-2 p-4">
+            <Button
+              variant={currentInputVariant === "general" ? "default" : "outline"}
+              onClick={() => setCurrentInputVariant("general")}
+              className="justify-start"
+            >
+              {t('general')}
+            </Button>
+            <Button
+              variant={currentInputVariant === "easy" ? "default" : "outline"}
+              onClick={() => setCurrentInputVariant("easy")}
+              className="justify-start"
+            >
+              {t('easy')}
+            </Button>
+          </div>
+        )} 
+        {/* solver title*/}
+        {isOpen && ( 
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">{t('solver')}</h2>
+            <Separator className="my-2 mx-auto h-[1%]"/>
+          </div>
+        )}
+        {/* solver dropdown */}
+        {isOpen && (
+          <div className="flex flex-col space-y-2 p-4">
+            <Select onValueChange={handleSolverChange} value={currentSolver}>
+              <SelectTrigger>
+                <SelectValue placeholder={t('solvertype')} />
+              </SelectTrigger>
+              <SelectContent>
+                {solverTypes.map((sTyp) => (
+                  <SelectItem key={sTyp.id} value={sTyp.id.toString()}>
+                    {sTyp.content}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+      )}
+      </div>
+    </div>
+  )
+}
+
+// __________________________________________________________________________________
 // import React, { useState } from 'react';
 // import { ArrowLeftFromLine, ArrowRightFromLine, Plus, Trash2 } from 'lucide-react';
 // import { Button } from '@/components/ui/button';
@@ -114,88 +222,3 @@
 // };
 
 // export default CollapsableSidebar;
-// __________________________________________________________________________________
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { X, ArrowRightFromLine } from "lucide-react"
-import { useTranslation } from "react-i18next"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/general/seperator.tsx";
-
-interface SidebarProps {
-    currentInputVariant: "general" | "easy";
-    setCurrentInputVariant: React.Dispatch<React.SetStateAction<"general" | "easy">>;
-    currentSolver: string;
-    setCurrentSolver: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver }: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(true)
-  const {t} = useTranslation();
-
-  const toggleSidebar = () => setIsOpen(!isOpen)
-
-  return (
-    <div className="flex h-screen">
-      <div
-        className={`bg-background border-r transition-all duration-300 flex flex-col ${
-          isOpen ? "w-64" : "w-16"
-        }`}
-      >
-        <div className="flex justify-between items-center p-2 border-b">
-         {isOpen && (
-            <h2 className="text-lg font-semibold">{t('mode')}</h2>
-        )}
-          <Button
-            variant="ghost"
-            onClick={toggleSidebar}
-            className=" top-20 z-20 transition-all duration-300 bg-stone-50 hover:bg-stone-50"
-          >
-             {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4text-black"/>}
-          </Button>
-        </div>
-        {isOpen && (
-          <div className="flex flex-col space-y-2 p-4">
-            <Button
-              variant={currentInputVariant === "general" ? "default" : "outline"}
-              onClick={() => setCurrentInputVariant("general")}
-              className="justify-start"
-            >
-              {t('general')}
-            </Button>
-            <Button
-              variant={currentInputVariant === "easy" ? "default" : "outline"}
-              onClick={() => setCurrentInputVariant("easy")}
-              className="justify-start"
-            >
-              {t('easy')}
-            </Button>
-          </div>
-        )} 
-        {/* solver title*/}
-        {isOpen && ( 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">{t('solver')}</h2>
-            <Separator className="my-2 mx-auto h-[1%]"/>
-          </div>
-        )}
-        {/* solver dropdown */}
-        {isOpen && (
-          <div className="flex flex-col space-y-2 p-4">
-            <Select value={currentSolver} onValueChange={setCurrentSolver}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('solver')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="solver1">{t('solver1')}</SelectItem>
-                <SelectItem value="solver2">{t('solver2')}</SelectItem>
-                <SelectItem value="solver3">{t('solver3')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-      )}
-      </div>
-    </div>
-  )
-}
