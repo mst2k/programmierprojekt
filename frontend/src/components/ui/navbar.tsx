@@ -53,10 +53,10 @@ import {
                     {t('homeTitleDesc')}
                     </ListItem>
                   </ul>
-                </NavigationMenuContent>
+                </NavigationMenuContent>*/}
               </NavigationMenuItem>{ /*TODO: Nach demo wieder Aktivieren */}
-             {/* <NavigationMenuItem>
-              <NavigationMenuSingleTrigger onClick={() => navigate('/converter/')}> {t('converter')}</NavigationMenuSingleTrigger>*/}
+             <NavigationMenuItem>
+               <NavigationMenuSingleTrigger onClick={() => navigate('/converter/')}> {t('converter')}</NavigationMenuSingleTrigger> 
               </NavigationMenuItem>
 
               <NavigationMenuItem > 
