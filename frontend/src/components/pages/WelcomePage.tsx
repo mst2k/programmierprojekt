@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 function WelcomePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    
+
     const navigateToSolver = () => {
         navigate('/solver');
         window.scrollTo(0,0);
@@ -25,6 +25,7 @@ function WelcomePage() {
                     <p className="text-xl mb-8 text-[#2c3e50]">{t('welcomePage.powerfulSolution')}</p>
                     <Button size="lg" className="bg-[#e74c3c] hover:bg-[#c0392b] text-white">
                     {t('welcomePage.getStarted')} <ArrowRight className="ml-2 h-4 w-4" />
+
                     </Button>
                 </section>
                 <section id="features" className="py-16">
@@ -33,17 +34,17 @@ function WelcomePage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <FeatureCard 
                                 icon={<Code className="w-12 h-12 text-[#3498db]" />}
-                                title="Multiple Formats"
+                                title="Multiple Formats" //translation
                                 description="Support for GMPL, LP, and MPS problem formats"
                             />
                             <FeatureCard 
                                 icon={<Zap className="w-12 h-12 text-[#e74c3c]" />}
-                                title="Fast Solving"
+                                title="Fast Solving" //translation
                                 description="Efficient algorithms for quick problem resolution"
                             />
                             <FeatureCard 
                                 icon={<BookOpen className="w-12 h-12 text-[#3498db]" />}
-                                title="Easy Input"
+                                title="Easy Input" //translation
                                 description="User-friendly interface for problem input and solving"
                             />
                         </div>

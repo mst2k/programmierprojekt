@@ -26,6 +26,8 @@
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
     "send": "Send",
+    "mode": "Mode",  
+    "solvertype": "Solver Type",
     "otherProbs": "Other standard problems",
     "toggleSolver": "Toggle Solver",
     "input_placeholder": "Enter your text here",
