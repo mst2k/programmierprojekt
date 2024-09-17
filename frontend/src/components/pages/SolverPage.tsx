@@ -6,6 +6,7 @@ import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
 import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
+import TransportationProblemUI from "@/components/ui/general/transportModelInput.tsx";
 
 export const inputModes:string[] = [
     "general",
@@ -38,6 +39,7 @@ const SolverPage = () => {
     useEffect(() => {
         if(currentInputVariant === 'general') setInputComponent(<BasicModelInput states={allStates}></BasicModelInput>);
         else if(currentInputVariant === 'easy') setInputComponent(<EasyModelInput states={allStates}></EasyModelInput>);
+        else if(currentInputVariant === 'transport') setInputComponent(<TransportationProblemUI states={allStates}></TransportationProblemUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant]);
 

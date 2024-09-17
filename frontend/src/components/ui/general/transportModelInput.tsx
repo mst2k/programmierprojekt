@@ -6,12 +6,33 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 
-export default function TransportationProblemUI() {
+export default function TransportationProblemUI(states:any) {
     const [plants, setPlants] = useState([{ name: '', capacity: '' }])
     const [markets, setMarkets] = useState([{ name: '', demand: '' }])
     const [distances, setDistances] = useState([[]])
     const [freightCost, setFreightCost] = useState('')
+
+    const {
+        currentSolver,
+//        setCurrentSolver,
+//        currentLpFormat,
+        setCurrentLpFormat,
+//        currentProblem,
+        setCurrentProblem,
+        solveTrigger,
+        setSolveTrigger
+    }: {
+        currentSolver: Solvers;
+        setCurrentSolver: (solver: Solvers) => void;
+        currentLpFormat: ProblemFormats;
+        setCurrentLpFormat: (format: ProblemFormats) => void;
+        currentProblem: string;
+        setCurrentProblem: (problem: string) => void;
+        solveTrigger: number,
+        setSolveTrigger: (problem:number) => void
+    } = states.states;
 
     const addPlant = () => setPlants([...plants, { name: '', capacity: '' }])
     const addMarket = () => {
@@ -52,9 +73,94 @@ export default function TransportationProblemUI() {
         setDistances(newDistances)
     }
 
+    function triggerSolving(gmpl) {
+        setCurrentLpFormat("GMPL");
+        setCurrentProblem(gmpl);
+        setSolveTrigger(solveTrigger + 1);
+    }
+
 
     const generateGMPL = (plants, markets, distances, freightCost) => {
-        let gmplCode = 'data;\n\n';
+        let gmplCode = `
+# A TRANSPORTATION PROBLEM
+#
+# This problem finds a least cost shipping schedule that meets
+# requirements at markets and supplies at factories.
+#
+#  References:
+#              Dantzig G B, "Linear Programming and Extensions."
+#              Princeton University Press, Princeton, New Jersey, 1963,
+#              Chapter 3-3.
+
+set I;
+/* canning plants */
+
+set J;
+/* markets */
+
+param a{i in I};
+/* capacity of plant i in cases */
+
+param b{j in J};
+/* demand at market j in cases */
+
+param d{i in I, j in J};
+/* distance in thousands of miles */
+
+param f;
+/* freight in dollars per case per thousand miles */
+
+param c{i in I, j in J} := f * d[i,j] / 1000;
+/* transport cost in thousands of dollars per case */
+
+var x{i in I, j in J} >= 0;
+/* shipment quantities in cases */
+
+minimize cost: sum{i in I, j in J} c[i,j] * x[i,j];
+/* total transportation costs in thousands of dollars */
+
+s.t. supply{i in I}: sum{j in J} x[i,j] <= a[i];
+/* observe supply limit at plant i */
+
+s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j];
+/* satisfy demand at market j */
+
+
+
+solve;
+
+# Report / Result Section (Optional)
+printf '#################################\\n';
+printf 'Transportation Problem / LP Model Result\\n';
+printf '\\n';
+printf 'Minimum Cost = %.2f\\n', cost;
+printf '\\n';
+
+printf '\\n';
+printf 'Variables  (i.e. shipment quantities in cases ) \\n';
+
+printf 'Shipment quantities in cases\\n';
+printf 'Canning Plants  Markets   Solution (Cases) \\n';
+printf{i in I, j in J}:'%14s %10s %11s\\n',i,j, x[i,j];
+printf '\\n';
+
+printf 'Constraints\\n';
+printf '\\n';
+printf 'Observe supply limit at plant i\\n';
+printf 'Canning Plants Solution Sign  Required\\n';
+for {i in I} {
+ printf '%14s %10.2f <= %.3f\\n', i, sum {j in J} x[i,j], a[i];
+   }
+
+printf '\\n';
+printf 'Satisfy demand at market j\\n';
+printf 'Market Solution Sign  Required\\n';
+for {j in J} {
+ printf '%5s %10.2f >= %.3f\\n', j, sum {i in I} x[i,j], b[j];
+   }
+   
+data;\\n\\n`;
+
 
         // Generate sets
         gmplCode += `set I := ${plants.map(p => p.name).join(' ')};\n\n`;
@@ -92,12 +198,13 @@ export default function TransportationProblemUI() {
         // Generate freight cost
         gmplCode += `param f := ${freightCost};\n`;
 
-        return gmplCode;
+        triggerSolving(gmplCode);
+        return gmplCode
     };
 
     const handleGenerateGMPL = () => {
         const gmplCode = generateGMPL(plants, markets, distances, freightCost);
-        console.log(gmplCode);
+        console.log(gmplCode)
         // Here you could set the generated code to state, display it in a modal, or download it as a file
     };
 
