@@ -4,19 +4,19 @@ import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import TESTCallSolver from "@/components/ui/general/displayRestult.tsx";
-// import CollapsableSidebar from "@/components/ui/custom/sidebar.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
 import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
 
 const SolverPage = () => {
     // const {t} = useTranslation();
-    const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
+    const [currentSolver, setCurrentSolver] = useState<Solvers | null>(null);
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
     const [currentInputVariant, setCurrentInputVariant] = useState<"general" | "easy">("general");
     const [solveTrigger, setSolveTrigger] = useState<number>(0);
     const [resultComponent, setResultComponent] = useState(<></>)
-    const allStates =  {  currentSolver, setCurrentSolver,
+    const allStates =  {  
+        currentSolver, setCurrentSolver,
         currentLpFormat, setCurrentLpFormat,
         currentProblem, setCurrentProblem,
         currentInputVariant, setCurrentInputVariant,
@@ -27,6 +27,10 @@ const SolverPage = () => {
         if(currentSolver && currentLpFormat && currentProblem != "")
             setResultComponent(<TESTCallSolver lpProblem={currentProblem} problemType={currentLpFormat} lpSolver={currentSolver}></TESTCallSolver>);
     }, [solveTrigger]);
+
+    useEffect(() => {
+        console.log("current Solver:", currentSolver);
+    }, [currentSolver]);
 
     const renderContent = () => {
         //inputVariant: easy
@@ -61,6 +65,8 @@ const SolverPage = () => {
             <Sidebar
                 currentInputVariant={currentInputVariant}
                 setCurrentInputVariant={setCurrentInputVariant}
+                currentSolver={currentSolver}
+                setCurrentSolver={setCurrentSolver}
             />
             <div className="flex-1 flex flex-col">
                 <main className="flex-1 p-4 overflow-auto">

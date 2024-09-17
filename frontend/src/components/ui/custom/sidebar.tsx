@@ -10,8 +10,8 @@ import { Solvers} from "@/interfaces/SolverConstants.tsx";
 interface SidebarProps {
     currentInputVariant: "general" | "easy";
     setCurrentInputVariant: React.Dispatch<React.SetStateAction<"general" | "easy">>;
-    currentSolver: Solvers;
-    setCurrentSolver: React.Dispatch<React.SetStateAction<Solvers>>;
+    currentSolver: Solvers | null;
+    setCurrentSolver: React.Dispatch<React.SetStateAction<Solvers | null>>;
 }
 
 type SolverTypes = {
@@ -33,11 +33,8 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
     { id: 3, content: 'Highs', description: 'Description Highs' },
   ]
 
-  const handleSolverChange = (value: string) => {
-    const selectedSolver = solverTypes.find(sTyp => sTyp.id.toString() === value)
-    if (selectedSolver) {
-      setCurrentSolver(selectedSolver.content)
-    }
+  const handleSolverChange = (value: Solvers) => {
+      setCurrentSolver(value)
   }
 
   return (
@@ -87,13 +84,13 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
         {/* solver dropdown */}
         {isOpen && (
           <div className="flex flex-col space-y-2 p-4">
-            <Select onValueChange={handleSolverChange} value={currentSolver}>
+            <Select onValueChange={handleSolverChange} value={currentSolver || undefined}>
               <SelectTrigger>
                 <SelectValue placeholder={t('solvertype')} />
               </SelectTrigger>
               <SelectContent>
                 {solverTypes.map((sTyp) => (
-                  <SelectItem key={sTyp.id} value={sTyp.id.toString()}>
+                  <SelectItem key={sTyp.id} value={sTyp.content}>
                     {sTyp.content}
                   </SelectItem>
                 ))}
