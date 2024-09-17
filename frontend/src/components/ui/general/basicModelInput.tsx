@@ -7,7 +7,6 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Textarea } from "@/components/ui/textarea"
 import { InfoIcon } from 'lucide-react'
 import {
     Dialog,
@@ -119,15 +118,15 @@ export default function BasicModelInput(states:any) {
 
     function triggerSolving(_:any, solveAnyway?: boolean) {
 
-        if (solveAnyway != undefined || selectedItem && selectedItem.status !== 'nativ') {
-            setShowConverstionAltert(true);
+        if (solveAnyway != undefined && selectedItem && selectedItem.status !== 'nativ') {
+            setShowConverstionAlert(true);
         } else {
             if(selectedItem?.content){
                 setCurrentLpFormat(selectedItem.content);
                 setCurrentProblem(modelInput);
                 setSolveTrigger(solveTrigger + 1);
             }else {
-                setShowNoModelTypeAltert(true);
+                setShowConverstionAlert(true);
             }
         }
     }
@@ -168,10 +167,11 @@ export default function BasicModelInput(states:any) {
                                     <InfoIcon className="h-4 w-4" />
                                     <span className="sr-only">Info</span>
                                 </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{selectedItem.description}</p>
+                                <TooltipContent className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap">
+                                    <p className="text-sm">{selectedItem.description}</p>
                                 </TooltipContent>
                             </Tooltip>
+
                         )}
                     </div>
                     <div className="flex justify-end mt-4">
@@ -192,7 +192,7 @@ export default function BasicModelInput(states:any) {
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setShowConverstionAlert(false)}>Abbrechen</Button>
                         <Button variant="destructive" onClick={() => {
-                            setShowConverstionAltert(false);
+                            setShowConverstionAlert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
                             triggerSolving(undefined, true);
                         }}>{t('proceed_button')}</Button>

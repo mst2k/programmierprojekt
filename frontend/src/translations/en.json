@@ -27,11 +27,8 @@
     "status_native": "Native",
     "status_conversion": "Conversion",
     "status_unsupported": "Unsupported",
-    "description_gmpl": "Description GMPL",
-    "description_lp": "Description LP",
-    "description_mps": "Description MPS",
     "error_title": "Error",
-    "solver_result_title": "GLPK Solver Result",
+    "solver_result_title": "Solver Result",
     "objective_value": "Objective Value",
     "tab_columns": "Decision Variables",
     "tab_rows": "Constraints",
@@ -62,6 +59,10 @@
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
     "mode": "Mode",
-    "solvertype": "Solver Type"
-  }
+    "solvertype": "Solver Type",
+    "description_gmpl": "GMPL is a modeling language used to describe linear and mixed-integer optimization problems. It allows defining variables, constraints, and objective functions. Example:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
+    "description_lp": "The CPLEX LP format is used to represent linear optimization problems. It uses a line-based syntax to define the objective function and constraints. Example:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
+    "description_mps": "MPS is a widely used file format for representing linear and integer optimization problems. It is column-oriented and consists of sections like ROWS, COLUMNS, and RHS. Example:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA"
+
+}
   
