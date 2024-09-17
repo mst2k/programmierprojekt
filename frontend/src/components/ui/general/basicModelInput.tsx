@@ -77,6 +77,10 @@ export default function EnhancedStatusSelect(states:any) {
         }
     }, [currentSolver]);
 
+    useEffect(() => {
+        console.log("Selected language:", selectedItem ? selectedItem.content : "LP (default)");
+    }, [selectedItem]);
+
     const items:Item[]=[
         { id: 1, content: 'GMPL', status: gmplState, description: 'Description GMPL' },
         { id: 2, content: 'LP', status: lpState, description: 'Description LP' },

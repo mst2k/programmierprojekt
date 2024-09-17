@@ -11,7 +11,7 @@ interface SidebarProps {
     currentInputVariant: "general" | "easy";
     setCurrentInputVariant: React.Dispatch<React.SetStateAction<"general" | "easy">>;
     currentSolver: Solvers | null;
-    setCurrentSolver: React.Dispatch<React.SetStateAction<Solvers | null>>;
+    setCurrentSolver: React.Dispatch<React.SetStateAction<Solvers>>;
 }
 
 type SolverTypes = {
@@ -53,7 +53,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
             onClick={toggleSidebar}
             className=" top-20 z-20 transition-all duration-300 bg-stone-50 hover:bg-stone-50"
           >
-             {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4text-black"/>}
+             {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4 text-black"/>}
           </Button>
         </div>
         {isOpen && (

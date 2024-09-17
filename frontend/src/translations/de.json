@@ -29,6 +29,7 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "solvertype": "Lösertyp"
+    "solvertype": "Lösertyp",
+    "send": "Abschicken"
   }
   

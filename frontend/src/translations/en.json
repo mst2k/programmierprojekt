@@ -29,6 +29,7 @@
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
     "mode": "Mode",
-    "solvertype": "Solver Type"
+    "solvertype": "Solver Type",
+    "send": "Send"
   }
   
