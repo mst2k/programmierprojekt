@@ -3,6 +3,7 @@ import { Constraint } from "@/interfaces/glpkJavil/Constraint.tsx";
 import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
 import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
 import {GLP_UP, GLP_LO, GLP_FX, GLP_DB, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
+import {gmplString} from "@/interfaces/TestData.tsx";
 
 export function parseGMPL(lpString: string): LP {
     const cleanedInput = lpString
@@ -168,6 +169,8 @@ export function convertToGMPL(lp: LP): string {
 
                 // Deklaration abschließen
                 glpmString += ';\n';
+            }else{
+                glpmString += `var ${variable} >= 0; \n`;
             }
         }
     });
@@ -194,7 +197,7 @@ export function convertToGMPL(lp: LP): string {
         } else if (constraint.bnds.type === GLP_UP) { // <=
             glpmString += `${expr} <= ${constraint.bnds.ub};\n`;
         } else if (constraint.bnds.type === GLP_FX) { // =
-            glpmString += `${expr} = ${constraint.bnds.ub};\n`;
+            glpmString += `${expr} = ${constraint.bnds.lb};\n`;
         }
     });
 

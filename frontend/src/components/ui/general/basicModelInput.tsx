@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -7,6 +7,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Textarea } from "@/components/ui/textarea"
 import { InfoIcon } from 'lucide-react'
 import {
     Dialog,
@@ -32,7 +33,10 @@ export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
     const {
         currentSolver,
+//        setCurrentSolver,
+//        currentLpFormat,
         setCurrentLpFormat,
+//        currentProblem,
         setCurrentProblem,
         solveTrigger,
         setSolveTrigger
@@ -113,16 +117,17 @@ export default function BasicModelInput(states:any) {
         }
     }
 
-    function triggerSolving(_: any, solveAnyway?: boolean) {
+    function triggerSolving(_:any, solveAnyway?: boolean) {
+
         if (solveAnyway != undefined || selectedItem && selectedItem.status !== 'nativ') {
-            setShowConverstionAlert(true);
+            setShowConverstionAltert(true);
         } else {
-            if (selectedItem?.content) {
+            if(selectedItem?.content){
                 setCurrentLpFormat(selectedItem.content);
                 setCurrentProblem(modelInput);
                 setSolveTrigger(solveTrigger + 1);
-            } else {
-                setShowNoModelTypeAlert(true);
+            }else {
+                setShowNoModelTypeAltert(true);
             }
         }
     }
@@ -131,15 +136,15 @@ export default function BasicModelInput(states:any) {
         <TooltipProvider>
             <div className="flex items-center justify-center">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[60vh]">
-                    <Tabs 
+                    <Tabs
                         value={selectedItem?.id.toString() || "1"}
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
                         className="w-full"
                     >
                         <TabsList className="grid w-full grid-cols-3 rounded-b-none bg-background">
                             {items.map((item) => (
-                                <TabsTrigger 
-                                    key={item.id} 
+                                <TabsTrigger
+                                    key={item.id}
                                     value={item.id.toString()}
                                     className="relative data-[state=inactive]:bg-muted data-[state=inactive]:text-muted-foreground"
                                 >
@@ -187,7 +192,7 @@ export default function BasicModelInput(states:any) {
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setShowConverstionAlert(false)}>Abbrechen</Button>
                         <Button variant="destructive" onClick={() => {
-                            setShowConverstionAlert(false);
+                            setShowConverstionAltert(false);
                             console.log('Es ist eine Konvertierung notwendig. Trotzdem fortfahren?', { selectedItem, modelInput });
                             triggerSolving(undefined, true);
                         }}>{t('proceed_button')}</Button>

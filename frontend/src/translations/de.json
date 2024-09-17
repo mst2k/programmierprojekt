@@ -29,7 +29,7 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "solvertype": "Lösertyp"
+    "solvertype": "Lösertyp",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
     "input_placeholder": "Geben Sie hier Ihren Text ein",

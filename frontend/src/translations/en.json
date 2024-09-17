@@ -45,7 +45,7 @@
     "column_type": "Type",
     "column_primal": "Primal",
     "column_dual": "Dual",
-    "column_index": "Index"
+    "column_index": "Index",
     "otherProbs": "Others",
     "toggleSolver": "Toggle Solver",
     "modelInput": "Enter the model",
