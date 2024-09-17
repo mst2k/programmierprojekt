@@ -11,6 +11,7 @@
     "homeTitleDesc": "Installation tips and tool tips",
     "installationTitle": "Installation",
     "general": "General",
+    "easy": "Easy",
     "simplex": "Simplex",
     "otherProbs": "Other standard problems",
     "toggleSolver": "Toggle Solver",
@@ -45,5 +46,22 @@
     "column_primal": "Primal",
     "column_dual": "Dual",
     "column_index": "Index"
+    "otherProbs": "Others",
+    "toggleSolver": "Toggle Solver",
+    "modelInput": "Enter the model",
+    "differentLayout": "Different layout depending on the problem",
+    "displaySolution": "Display of the solution / explanations of possible errors ",
+    "orProblem": "Optimization problem",
+    "orTyp": "Optimization Type",
+    "Max": "Maximize",
+    "Min": "Minimize",
+    "orFunction": "Objective Function",
+    "rest": "Restrictions",
+    "Res": "Restriction",
+    "enterOFunc": "Enter objective function",
+    "chooseOrType": "Choose the Optimization Type",
+    "nnb": "Non Negativity Condition",
+    "mode": "Mode",
+    "solvertype": "Solver Type"
   }
   
