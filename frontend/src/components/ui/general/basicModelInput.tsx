@@ -44,13 +44,17 @@ export default function EnhancedStatusSelect(states: any) {
         setSolveTrigger: (problem: number) => void
     } = states.states;
 
-    const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+    const [selectedItem, setSelectedItem] = useState<Item | null>({ id: 1, content: "GMPL", status: "nativ", description: "Description GMPL" })
     const [modelInput, setModelInput] = useState('')
     const [showConverstionAlert, setShowConverstionAlert] = useState(false)
     const [showNoModelTypeAlert, setShowNoModelTypeAlert] = useState(false)
     const [gmplState, setGmplState] = useState<Item["status"]>("unsupported");
     const [lpState, setLpState] = useState<Item["status"]>("unsupported");
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
+
+    useEffect(() => {
+        console.log(selectedItem);
+    }, [selectedItem])
 
     useEffect(() => {
         switch (currentSolver) {
