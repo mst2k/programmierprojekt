@@ -30,8 +30,6 @@
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
     "solvertype": "Lösertyp",
-    "otherProbs": "Andere Standard Probleme",
-    "toggleSolver": "Umschalt-Löser",
     "input_placeholder": "Geben Sie hier Ihren Text ein",
     "select_placeholder": "Wählen",
     "submit_button": "Abschicken",
@@ -45,7 +43,7 @@
     "status_conversion": "Umwandlung",
     "status_unsupported": "Nicht unterstützt",
     "error_title": "Fehler",
-    "solver_result_title": "Solver Ergebnis",
+    "solver_result_title": "GLPK Solver Ergebnis",
     "objective_value": "Zielfunktionswert",
     "tab_columns": "Entscheidungsvariablen",
     "tab_rows": "Einschränkungen",
@@ -66,4 +64,3 @@
 
 
 }
-  
