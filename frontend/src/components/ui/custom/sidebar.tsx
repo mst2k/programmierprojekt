@@ -120,13 +120,17 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { X, ArrowRightFromLine } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/general/seperator.tsx";
 
 interface SidebarProps {
     currentInputVariant: "general" | "easy";
     setCurrentInputVariant: React.Dispatch<React.SetStateAction<"general" | "easy">>;
+    currentSolver: string;
+    setCurrentSolver: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Sidebar( { currentInputVariant, setCurrentInputVariant }: SidebarProps) {
+export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true)
   const {t} = useTranslation();
 
@@ -168,7 +172,29 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant }
               {t('easy')}
             </Button>
           </div>
+        )} 
+        {/* solver title*/}
+        {isOpen && ( 
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">{t('solver')}</h2>
+            <Separator className="my-2 mx-auto h-[1%]"/>
+          </div>
         )}
+        {/* solver dropdown */}
+        {isOpen && (
+          <div className="flex flex-col space-y-2 p-4">
+            <Select value={currentSolver} onValueChange={setCurrentSolver}>
+              <SelectTrigger>
+                <SelectValue placeholder={t('solver')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="solver1">{t('solver1')}</SelectItem>
+                <SelectItem value="solver2">{t('solver2')}</SelectItem>
+                <SelectItem value="solver3">{t('solver3')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+      )}
       </div>
     </div>
   )
