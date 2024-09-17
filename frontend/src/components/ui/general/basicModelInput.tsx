@@ -80,7 +80,7 @@ export default function BasicModelInput(states:any) {
     }, [currentSolver]);
 
     useEffect(() => {
-        console.log("Selected language:", selectedItem ? selectedItem.content : "LP (default)");
+        console.log("Selected language:", selectedItem ? selectedItem.content : "Not selected");
     }, [selectedItem]);
 
     const items:Item[]=[
