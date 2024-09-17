@@ -79,6 +79,10 @@ export default function BasicModelInput(states:any) {
         }
     }, [currentSolver]);
 
+    useEffect(() => {
+        console.log("Selected language:", selectedItem ? selectedItem.content : "Not selected");
+    }, [selectedItem]);
+
     const items:Item[]=[
         { id: 1, content: 'GMPL', status: gmplState, description: t('description_gmpl') },
         { id: 2, content: 'LP', status: lpState, description: t('description_lp') },
