@@ -2,7 +2,7 @@ import {SolverResult} from "@/interfaces/Result.tsx";
 import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
 import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
-import {convertToGLPM} from "@/hooks/converters/GMPLConverter.tsx";
+import {convertToGMPL} from "@/hooks/converters/GMPLConverter.tsx";
 
 
 /**
@@ -32,6 +32,10 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         let error: Error | null = null;
         let log: string = "";
         const worker = new Worker(new URL('@/lib/glpkWorker.js', import.meta.url));
+
+        console.log(`META URL${import.meta.url}`)
+        console.log(new URL('@/lib/glpkWorker.js', import.meta.url))
+
 
         //To receive information provided by the worker
         worker.onmessage = (e) => {
@@ -64,7 +68,7 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         //worker can only handle LP an GMPL => Parse MPS bevorehand!
         if(probtype === "MPS"){
             const lpProblem:LP = parseMPS(prob);
-            prob = convertToGLPM(lpProblem);
+            prob = convertToGMPL(lpProblem);
             probtype = "GMPL";
 
         }
