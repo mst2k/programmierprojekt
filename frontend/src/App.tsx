@@ -12,7 +12,7 @@ const Layout = () => {
         <>
             <header>
                 <NavigationMenuDemo></NavigationMenuDemo>
-                <Separator className="my-2 mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[calc(100%-4rem)]"/>
+                <Separator className="my-1 mb-0"/>
             </header>
 
             <main>
