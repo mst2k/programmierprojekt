@@ -27,9 +27,9 @@ type Item = {
     description: string;
 }
 
-
 export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
+
     const {
         currentSolver,
 //        setCurrentSolver,
@@ -71,6 +71,10 @@ export default function BasicModelInput(states:any) {
                 break;
         }
     }, [currentSolver]);
+
+    useEffect(() => {
+        console.log("Selected language:", selectedItem ? selectedItem.content : "Not selected");
+    }, [selectedItem]);
 
     const items:Item[]=[
         { id: 1, content: 'GMPL', status: gmplState, description: t('description_gmpl') },
