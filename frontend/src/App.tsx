@@ -5,6 +5,7 @@ import ConverterPage from "@/components/pages/ConverterPage.tsx";
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx";
 import { Separator } from "@/components/ui/general/seperator.tsx";
 import { Outlet } from 'react-router-dom';
+import AboutPage from './components/pages/AboutPage';
 
 const Layout = () => {
     return (
@@ -28,7 +29,8 @@ function App() {
           <Route element={<Layout />}>
               <Route path="/" element={<WelcomePage />} /> {/* Root route */}
               <Route path="/solver/" element={<SolverPage />} /> {/* /solver route */}
-              <Route path="/converter" element={<ConverterPage />} /> {/* /solver route */}
+              <Route path="/converter" element={<ConverterPage />} /> {/* /converter route */}
+              <Route path="/about" element={<AboutPage />} /> {/* about route */}
               </Route>
           </Routes>
       </HashRouter>
