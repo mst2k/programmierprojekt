@@ -53,7 +53,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                         onClick={toggleSidebar}
                         className=" top-20 z-20 transition-all duration-300 bg-stone-50 hover:bg-stone-50"
                     >
-                        {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4text-black"/>}
+                        {isOpen ? <X className=" h-4 w-4 text-black"/> : <ArrowRightFromLine className="h-4 w-4 text-black"/>}
                     </Button>
                 </div>
                 {isOpen && (
@@ -69,7 +69,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                                 </Button>
                             ))}
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 p-2">
                             <h2 className="text-lg font-semibold">{t('solver')}</h2>
                             <Separator className="my-2 mx-auto h-[1%]"/>
                         </div>
