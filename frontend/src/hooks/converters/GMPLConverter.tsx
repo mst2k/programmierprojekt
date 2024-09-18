@@ -1,8 +1,8 @@
-import { LP } from "@/interfaces/LP.tsx";
-import { Constraint } from "@/interfaces/Constraint.tsx";
-import { Bound } from "@/interfaces/Bound.tsx";
-import { Variable } from "@/interfaces/Variable.tsx";
-import {GLP_UP, GLP_LO, GLP_FX} from "@/interfaces/Bnds.tsx";
+import { LP } from "@/interfaces/glpkJavil/LP.tsx";
+import { Constraint } from "@/interfaces/glpkJavil/Constraint.tsx";
+import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
+import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
+import {GLP_UP, GLP_LO, GLP_FX, GLP_DB, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
 
 export function parseGMPL(lpString: string): LP {
     const cleanedInput = lpString
@@ -16,7 +16,7 @@ export function parseGMPL(lpString: string): LP {
         throw new Error('Objective function not found');
     }
 
-    const direction = objectiveMatch[0].toLowerCase() === 'maximize' ? 1 : -1;
+    const direction = objectiveMatch[0].toLowerCase() === 'maximize' ? GLP_MAX : GLP_MIN;
     const [, ...objectiveParts] = cleanedInput.split(objectiveMatch[0]);
     const objective = objectiveParts.join('')
         .split(';')[0]
@@ -50,30 +50,49 @@ export function parseGMPL(lpString: string): LP {
     const boundsMatches = [...bound_finder.matchAll(/var\s+(?:integer\s+|binary\s+)?(\w+)\s*(>=|<=)?\s*(-?\d*\.?\d*)?\s*(<=|>=)?\s*(-?\d*\.?\d*)?\s*;/g)];
 
     const bounds: Bound[] = boundsMatches.map(match => {
+        let parsedValue;
         const varName = match[1]; // Variable Name
         let lb: number = -Infinity, ub: number = Infinity;
 
         if (match[2] === ">=") {
-            lb = parseFloat(match[3]) || lb;
+            parsedValue = parseFloat(match[3]);
+            if (!isNaN(parsedValue)) {
+                lb = parsedValue;
+            }
         }
         if (match[2] === "<=") {
-            ub = parseFloat(match[3]) || ub;
+            parsedValue = parseFloat(match[3]);
+            if (!isNaN(parsedValue)) {
+                ub = parsedValue;
+            }
         }
+
         if (match[4] === ">=") {
-            lb = Math.max(lb, parseFloat(match[5]) || lb);
+            let parsedValue = parseFloat(match[5]);
+            if (!isNaN(parsedValue)) {
+                lb = Math.max(lb, parsedValue);
+            }
         }
         if (match[4] === "<=") {
-            ub = Math.min(ub, parseFloat(match[5]) || ub);
+            let parsedValue = parseFloat(match[5]);
+            if (!isNaN(parsedValue)) {
+                ub = Math.min(ub, parsedValue);
+            }
+        }
+        if (!match[2] && !match[3] && !match[4] && !match[5]){
+            lb = 0
         }
 
         // Determine the type based on the bounds
         let type;
-        if (lb > -Infinity) {
+        if (lb > -Infinity && ub <Infinity)
+            type = GLP_DB;
+        else if (lb > -Infinity) {
             type = GLP_LO; // Only lower bound is specified
         } else if (ub < Infinity) {
             type = GLP_UP; // Only upper bound is specified
         } else {
-            type = GLP_UP; // Default type when no bounds are given, as a fallback
+            type = GLP_FX; // Default type when no bounds are given, as a fallback
         }
 
         return {
@@ -106,7 +125,7 @@ export function parseGMPL(lpString: string): LP {
 }
 
 
-export function convertToGLPM(lp: LP): string {
+export function convertToGMPL(lp: LP): string {
     let glpmString = '';
 
     // Entscheidungvariablen definieren
@@ -139,10 +158,10 @@ export function convertToGLPM(lp: LP): string {
                         glpmString += ` integer`;
                     }
                     // Schranken (Bounds) hinzufügen
-                    if (lb !== null && lb !== -Infinity) {
+                    if (!isNaN(lb) && lb !== -Infinity) {
                         glpmString += ` >= ${lb}`;
                     }
-                    if (ub !== null&& ub !== Infinity) {
+                    if (!isNaN(ub) && ub !== Infinity) {
                         glpmString += ` <= ${ub}`;
                     }
                 }
@@ -224,8 +243,8 @@ function parseGMPLConstraints(constraintsString: string): Constraint[] {
             vars,
             bnds: {
                 type,
-                ub: type === GLP_FX ? value : GLP_UP ? value : Infinity,
-                lb: type === GLP_LO ? value : -Infinity,
+                ub: type === GLP_UP ? value : Infinity,
+                lb: type === GLP_FX ? value : GLP_LO ? value : -Infinity,
             }
         } as Constraint);
     }

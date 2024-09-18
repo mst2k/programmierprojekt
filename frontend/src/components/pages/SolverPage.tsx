@@ -1,42 +1,88 @@
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
-import { NavigationMenuDemo } from "../ui/navbar";
+import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
+import {useEffect, useState} from "react";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import TESTCallSolver from "@/components/ui/general/displayRestult.tsx";
+import Sidebar from "@/components/ui/custom/sidebar.tsx";
+import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
 
 const SolverPage = () => {
-    const {t} = useTranslation();
+    // const {t} = useTranslation();
+    const [currentSolver, setCurrentSolver] = useState<Solvers | null>(null);
+    const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
+    const [currentProblem, setCurrentProblem] = useState<string>("");
+    const [currentInputVariant, setCurrentInputVariant] = useState<"general" | "easy">("general");
+    const [solveTrigger, setSolveTrigger] = useState<number>(0);
+    const [resultComponent, setResultComponent] = useState(<></>)
+    const allStates =  {  
+        currentSolver, setCurrentSolver,
+        currentLpFormat, setCurrentLpFormat,
+        currentProblem, setCurrentProblem,
+        currentInputVariant, setCurrentInputVariant,
+        solveTrigger, setSolveTrigger}
+
+
+    useEffect(() => {
+        if(currentSolver && currentLpFormat && currentProblem != "")
+            setResultComponent(<TESTCallSolver lpProblem={currentProblem} problemType={currentLpFormat} lpSolver={currentSolver}></TESTCallSolver>);
+    }, [solveTrigger]);
+
+    useEffect(() => {
+        console.log("current Solver:", currentSolver);
+    }, [currentSolver]);
+
+    const renderContent = () => {
+        //inputVariant: easy
+        if(currentInputVariant === "easy"){
+            return (
+                <>
+                    <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                        <EasyModelInput states={allStates}></EasyModelInput>
+                    </div>
+                    <div className="h-1/2 p-4">
+                        {resultComponent}
+                    </div>
+                </>
+            );
+        //inputVariant: general
+        } else {
+            return(
+                <>
+                    <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                        <BasicModelInput states={allStates}></BasicModelInput>
+                    </div>
+                    <div className="h-1/2 p-4">
+                        {resultComponent}
+                    </div>
+                </>
+            );
+        }
+    }
 
     return (
-        <div className="flex flex-col h-screen w-screen">
-            <header>
-                <NavigationMenuDemo></NavigationMenuDemo>
-            </header>
-            <div className="flex flex-1">
-                <aside className="w-1/4 bg-gray-200 p-4">
-                    <ul>
-                        <li>{t('general')}</li>
-                        <li>{t('simplex')}</li>
-                        <li>{t('otherProbs')}</li>
-                        <li>{t('toggleSolver')}</li>
-                    </ul>
-                </aside>
-                <main className="flex-1 p-4">
-                    <div className="h-1/2 border-b-2 border-gray-300 p-4">
-                        <h2 className="text-xl font-bold">Eingabe des Modells</h2>
-                        <p>Unterschiedliche Layout je nach Problem</p>
+        <div className="flex h-screen w-screen">
+            <Sidebar
+                currentInputVariant={currentInputVariant}
+                setCurrentInputVariant={setCurrentInputVariant}
+                currentSolver={currentSolver}
+                setCurrentSolver={setCurrentSolver}
+            />
+            <div className="flex-1 flex flex-col">
+                <main className="flex-1 p-4 overflow-auto">
+                    {renderContent()}
+                    {/* <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                        <BasicModelInput states={allStates}></BasicModelInput>
                     </div>
-
                     <div className="h-1/2 p-4">
-                        <h2 className="text-xl font-bold">Anzeige der Lösung / Erklärungen möglicher Fehler</h2>
-                    </div>
+                        {resultComponent}
+                    </div> */}
                 </main>
+                <footer className="bg-gray-800 text-white p-4 text-center">
+                    Footer (About Page z.B.)
+                </footer>
             </div>
-
-            <footer className="bg-gray-800 text-white p-4 text-center">
-                Footer (About Page z.B.)
-            </footer>
         </div>
-
-
     );
 };
 

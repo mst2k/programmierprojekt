@@ -10,14 +10,13 @@ import {
   import { useNavigate } from "react-router-dom"
   import { cn } from "@/lib/utils"
   import * as React from 'react'
-  // import { useState } from "react"
+
   import Logo from '/logo.svg'
   import { useTranslation } from "react-i18next"
 
    
   export function NavigationMenuDemo() {
     const navigate = useNavigate();
-    // const [lang, setLang] = useState<Lang>("de"); //default
     const {t, i18n} = useTranslation();
 
     const changeLanguage =(lng: string) =>{
@@ -37,32 +36,8 @@ import {
       }
     ]
 
-
-    // const languageContent = {
-    //   de: {
-    //       title: "Startseite",
-    //       description: "Wunderschön gestaltete Komponenten, erstellt mit Radix UI und Tailwind CSS.",
-    //       language: "Sprache",
-    //       solver: "Löser",
-    //       about: "Über uns",
-    //       converter: "Konvertierer",
-    //   },
-    //   en: {
-    //     title: "Home",
-    //     description: "Beautifully designed components built with Radix UI and Tailwind CSS.",
-    //     language: "Language",
-    //     solver: "Solver",
-    //     about: "About",
-    //     converter: "Converter",
-    //   },
-    // };
-
-    // const homeContent = languageContent[lang]; 
-    // type Lang = keyof typeof languageContent;
-  
-
       return (            
-      <div className="w-full flex justify-between items-center">
+      <div className="w-full flex justify-between items-center px-4 py-0">
         <NavigationMenu >
           <NavigationMenuList>
             {/*left elements*/}
@@ -71,21 +46,21 @@ import {
                   <img src={Logo} className="logo" alt="Logo"></img> </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger onClick={()=> navigate('/')}>{t('title')}</NavigationMenuTrigger> {/* menue-item title*/}
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <NavigationMenuSingleTrigger onClick={()=> navigate('/')}>{t('title')}</NavigationMenuSingleTrigger> {/* menue-item title*/}
+                {/* <NavigationMenuContent>
+                  <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr]">
                     <ListItem href="/docs/installation" title={t('installationTitle')}>
                     {t('homeTitleDesc')}
                     </ListItem>
                   </ul>
-                </NavigationMenuContent>
+                </NavigationMenuContent>*/}
+              </NavigationMenuItem>{ /*TODO: Nach demo wieder Aktivieren */}
+             <NavigationMenuItem>
+               <NavigationMenuSingleTrigger onClick={() => navigate('/converter/')}> {t('converter')}</NavigationMenuSingleTrigger> 
               </NavigationMenuItem>
-              <NavigationMenuItem>
-              <NavigationMenuSingleTrigger onClick={() => navigate('/converter/')}> {t('converter')}</NavigationMenuSingleTrigger>
-              </NavigationMenuItem>
+
               <NavigationMenuItem > 
               <NavigationMenuSingleTrigger onClick={()=> navigate('/solver/')}>{t('solver')}</NavigationMenuSingleTrigger>
-              {/* Solver-Möglichkeiten aufführen? -- General, Simplex... */}
               </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu >
@@ -100,7 +75,7 @@ import {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>{t('language')}</NavigationMenuTrigger> {/* menue-item title*/}
                 <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-3 p-4 md:w-[250] lg:w-[300px]">
+                  <ul className="grid w-[200px] gap-3 p-4 md:w-[150] lg:w-[300px]">
                     {components.map((component) => (
                       <ListItem
                         key={component.title}
