@@ -46,7 +46,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
             >
                 <div className="flex justify-between items-center p-2 border-b">
                     {isOpen && (
-                        <h2 className="text-lg font-semibold">{t('mode')}</h2>
+                        <h2 className="text-lg font-semibold">{t('settings')}</h2>
                     )}
                     <Button
                         variant="ghost"
@@ -58,6 +58,10 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                 </div>
                 {isOpen && (
                     <>
+                        <div className="space-y-2 p-2">
+                            <h2 className="text-lg font-semibold">{t('mode')}</h2>
+                            <Separator className="my-2 mx-auto h-[1%]"/>
+                        </div>
                         <div className="flex flex-col space-y-2 p-4">
                             {inputModes.map((itype) => (
                                 <Button
