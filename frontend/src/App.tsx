@@ -5,6 +5,7 @@ import ConverterPage from "@/components/pages/ConverterPage.tsx";
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx";
 import { Separator } from "@/components/ui/general/seperator.tsx";
 import { Outlet } from 'react-router-dom';
+import BenchmarkComponent from "@/components/pages/Benchmark.tsx";
 
 const Layout = () => {
     return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="/" element={<WelcomePage />} /> {/* Root route */}
               <Route path="/solver/" element={<SolverPage />} /> {/* /solver route */}
               <Route path="/converter" element={<ConverterPage />} /> {/* /solver route */}
+              <Route path="/benchmark/" element={<BenchmarkComponent />} />
               </Route>
           </Routes>
       </HashRouter>
