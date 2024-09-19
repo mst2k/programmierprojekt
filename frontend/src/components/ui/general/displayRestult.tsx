@@ -58,7 +58,7 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
                 <CardTitle className="text-2xl font-bold">{`${lpSolver} ${t('solver_result_title')}`}</CardTitle>
                 <div className="flex items-center space-x-2">
                     <span className={`px-2 py-1 rounded text-white text-sm ${statusColors[result.Status]}`}>
-                        {result.Status} in {result.Duration}S
+                        {result.Status} in {result.Duration?.toFixed(3)} S
                     </span>
                 </div>
             </CardHeader>
