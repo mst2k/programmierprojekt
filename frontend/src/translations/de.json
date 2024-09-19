@@ -61,6 +61,18 @@
     "column_type": "Typ",
     "column_primal": "Primal",
     "column_dual": "Dual",
-    "column_index": "Index"
-  }
+    "column_index": "Index",
+    "fileExport": {
+        "exportFiles": "Dateien exportieren",
+        "exportGMPL": "GMPL (.mod)",
+        "exportLP": "CPLEX LP (.lp)",
+        "exportMPS": "MPS (.mps)",
+        "title": "Dateien exportieren",
+        "description": "Wählen Sie das gewünschte Dateiformat für den Export. \n (Der Export ist nur möglich, wenn das Problem zuvor gelöst wurde!)",
+        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe",
+        "noValidFormat": "Kein gültiges Format",
+        "conversionNotPossible": "Konvertierung nicht möglich",
+        "exportFailed": "Export fehlgeschlagen"
+    }
+}
   
