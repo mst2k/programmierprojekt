@@ -10,9 +10,9 @@ function useBenchmark() {
     const {solve:solveGlpkJavil} = useSolver(" ", problemType, "GLPKJavil")
     const {solve:solveHighs} = useSolver(" ", problemType, "Highs")
     const [benchmarkResults, setBenchmarkResults] = useState<any>(null)
-    async function benchmarkAllSolvers(problem, problemType, bmLog:(string)=>void) {
+    async function benchmarkAllSolvers(problem:string, problemType:ProblemFormats, bmLog:(arg: string)=>void) {
         const browserSolvers = ['glpkHgourvest', 'glpkJavil', 'highs'];
-        const results = {};
+        const results:{[key: string]: any; } = {};
 
         // Browser Solvers
         for (const solver of browserSolvers) {
@@ -36,7 +36,6 @@ function useBenchmark() {
                 results[solver] = executionTime;
             } catch (error) {
                 console.error(`Error in browser solver ${solver}:`, error);
-                results[solver] = 'Error';
             }
         }
 
@@ -68,10 +67,13 @@ function useBenchmark() {
         }
         return results;
     }
-    async function runBenchmark(problem?:string, problemType?:ProblemFormats, bmLog?:(string)=>void) {
-        if(!problem){
+    async function runBenchmark(problem?:string, problemType?:ProblemFormats, bmLog?: (arg: string)=>void) {
+        if(problemType === undefined || problem === undefined){
             problem = lpString; // Ihr Optimierungsproblem hier
-            problemType = 'LP'; // oder 'GMPL'
+            problemType = 'LP' as ProblemFormats; // oder 'GMPL'
+        }
+        if(!bmLog){
+            bmLog = (log:string) => {console.log(log)} ;
         }
 
         try {

@@ -26,8 +26,11 @@ export default function BenchmarkComponent() {
     const [logData, setLogData] = useState<string>("")
     const [loadedResults, setLoadedResults] = useState<BenchmarkResult | null>(null)
     const {runBenchmark, benchmarkResults} = useBenchmark()
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    const loadResultsInputRef = useRef<HTMLInputElement>(null)
+    const loadResultsInputRef = useRef<HTMLInputElement | null>(null); // null statt undefined
+
+// Und dann in JSX
+    <input ref={loadResultsInputRef} />
+
 
     function bmLog(newLog: string) {
         setLogData(prevLog => `${prevLog}\n${newLog}`)

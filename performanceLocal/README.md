@@ -15,34 +15,17 @@
    git clone https://github.com/mst2k/programmierprojekt.git
    ```
 
-2. Wechseln Sie in das Frontend Verzeichnis und installieren Sie die Abhängigkeiten:
+2. Wechseln Sie in das performanceLocal Verzeichnis:
    ```
+   brew install glpk highs //für MacOS
+   apt-get install glpk highs // für windows
+   //Für windows gibt es diverse infatllationsanleitungen
+   
    cd programmierprojekt/performanceLocal
    
-   On Linux run
+   pip install -r requirements.txt
    
-   npm install
+   python ./benchmark_runner.py //Stelle die Api auf Port 8080 bereit
    ```
-
-3. Starten Sie den Entwicklungsserver:
-   ```
-   npm run dev
-   ```
-
-Die lokale Version ist nun unter http://localhost:5173/ erreichbar
-
-## Contributing
-
-...
-
-### Commit-Konventionen
-
-Wir folgen den [Conventional Commits](https://www.conventionalcommits.org/)-Richtlinien für unsere Commit-Nachrichten. Dies hilft uns, einen klaren und standardisierten Verlauf der Projektänderungen zu führen.
-
-Beispiele für gültige Commit-Nachrichten:
-
-- `feat: Füge neue Benutzerauthentifizierung hinzu`
-- `fix: Behebe Darstellungsproblem in der Navigationsleiste`
-- `docs: Aktualisiere README mit Installationsanweisungen`
-- `style: Formatiere Codebase mit Prettier`
+3. Jetzt sollten auf der Seite /benchmark/ auch die Werte für die Performance des Backends verfügbar sein! 
 

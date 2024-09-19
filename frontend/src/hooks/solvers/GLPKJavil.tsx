@@ -25,7 +25,7 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
         let error: Error | null = null;
         let log: string = "";
 
-        function logFunction(newlog) {
+        function logFunction(newlog:string) {
             log = `${log}\n${newlog}`;
             console.log(newlog)
         }
