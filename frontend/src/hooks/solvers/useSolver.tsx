@@ -77,7 +77,7 @@ export const useSolver = (
         const end = performance.now();
         const duration = (end-start)/1000;
   if (solveResult.result) {
-      solveResult.Duration=duration
+      solveResult.result.Duration=duration
       setResult(solveResult.result);
   }
   if (solveResult.error) {
