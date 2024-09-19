@@ -10,13 +10,14 @@ function useBenchmark() {
     const {solve:solveGlpkJavil} = useSolver(" ", problemType, "GLPKJavil")
     const {solve:solveHighs} = useSolver(" ", problemType, "Highs")
     const [benchmarkResults, setBenchmarkResults] = useState<any>(null)
-    async function benchmarkAllSolvers(problem, problemType) {
+    async function benchmarkAllSolvers(problem, problemType, bmLog:(string)=>void) {
         const browserSolvers = ['glpkHgourvest', 'glpkJavil', 'highs'];
         const results = {};
 
         // Browser Solvers
         for (const solver of browserSolvers) {
             console.log(`Running solver in browser: ${solver}`);
+            bmLog(`Running solver in browser: ${solver}`);
             const start = performance.now();
             try {
                 switch(solver) {
@@ -41,16 +42,17 @@ function useBenchmark() {
 
         // API Solvers
         console.log(`Running solver via API`);
+        bmLog(`Running solver via API`);
         try {
             const response = await fetch('http://localhost:8080/api/benchmark', {
-                method: 'GET',
-                // headers: {
-                //     'Content-Type': 'application/json',
-                // },
-                // body: JSON.stringify({
-                //     problem: problem,
-                //     problem_type: problemType
-                // }),
+                method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({
+                     problem: problem,
+                     problem_type: problemType
+                 }),
             });
 
             if (!response.ok) {
@@ -58,6 +60,7 @@ function useBenchmark() {
             }
 
             const data = await response.json();
+            console.log(data);
             results["glpk(Backend)"] = data["glpk"]["execution_time"];
             results["highs(Backend)"] = data["highs"]["execution_time"];
         } catch (error) {
@@ -65,14 +68,14 @@ function useBenchmark() {
         }
         return results;
     }
-    async function runBenchmark(problem?:string, problemType?:ProblemFormats) {
+    async function runBenchmark(problem?:string, problemType?:ProblemFormats, bmLog?:(string)=>void) {
         if(!problem){
             problem = lpString; // Ihr Optimierungsproblem hier
             problemType = 'LP'; // oder 'GMPL'
         }
 
         try {
-            const allResults = await benchmarkAllSolvers(problem, problemType);
+            const allResults = await benchmarkAllSolvers(problem, problemType, bmLog);
             console.log('All benchmark results:', allResults);
             setBenchmarkResults(allResults);
         } catch (error) {

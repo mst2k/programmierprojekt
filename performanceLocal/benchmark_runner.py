@@ -176,7 +176,7 @@ subject to label1: x1 + 2*x2 <= 40;
 s.t. label2: 4*x1 + 3*x2 <= 120;
 end;
 """
-with open("./specific_intgmpl.sec") as f:
+with open("./transportation_mediumgmpl.sec") as f:
     DEFAULT_PROBLEM=""
     for line in f.readlines():
         DEFAULT_PROBLEM+=line
