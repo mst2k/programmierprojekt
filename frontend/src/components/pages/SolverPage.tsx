@@ -9,7 +9,7 @@ import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
 
 const SolverPage = () => {
     // const {t} = useTranslation();
-    const [currentSolver, setCurrentSolver] = useState<Solvers | null>(null);
+    const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
     const [currentInputVariant, setCurrentInputVariant] = useState<"general" | "easy">("general");
