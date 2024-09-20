@@ -4,6 +4,7 @@ import { ProblemFormats } from '@/interfaces/SolverConstants';
 import { checkGMPLErrors, GMPLTokens } from './languageDefinitions/gmpl';
 import { checkLPErrors, LPTokens } from './languageDefinitions/lp';
 import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
+import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
 
 export interface EditorLanguage {
   // TODO: Define the language tokens, erst wenn ich die Tokens von LP und GMPL verglichen habe
@@ -29,15 +30,7 @@ interface ProblemEditorProps {
 const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkErrors: ErrorCheckFunction }> = {
   'GMPL': { tokens: GMPLTokens, checkErrors: checkGMPLErrors },
   'LP': { tokens: LPTokens, checkErrors: checkLPErrors },
-  'MPS': { 
-    tokens: {}, 
-    checkErrors: () => ({
-      errors: [],
-      hasObjective: false,
-      hasRestrictions: false,
-      hasNonNegativity: false
-    })
-  },
+  'MPS': { tokens: MPSTokens, checkErrors: checkMPSErrors },
 };
 
 export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
@@ -52,7 +45,6 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
 
   const setupLanguage = (monaco: any) => {
     if (monaco) {
-      console.log("Registering language", props.problemFormat);
       monaco.languages.register({ id: props.problemFormat });
       monaco.languages.setMonarchTokensProvider(props.problemFormat, tokens);
     }
@@ -77,11 +69,19 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       const code = editorRef.current.getValue();
       updateErrors(code, editorRef.current, monaco);
     }
-  }, [props.problemFormat, monaco]);
+  }, [props.problemFormat, monaco, props.value]);
 
   const updateErrors = (code: string, editor: any, monaco: any) => {
-    // Clear existing markers first
-    clearMarkers(editor, monaco);
+
+    //wenn kein code vorhanden ist, keine Fehler anzeigen
+    if (!code) {
+      setModelProperties({
+        hasObjective: false,
+        hasRestrictions: false,
+        hasNonNegativity: false
+      });
+      return;
+    }
 
     const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code);
     const model = editor.getModel();
@@ -108,7 +108,6 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       updateErrors(code, editor, monaco);
     });
     
-    // Initial error check
     const code = editor.getValue();
     updateErrors(code, editor, monaco);
   };
@@ -130,6 +129,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
         />
       </div>
       <div className='flex justify-around mt-2'>
+        {/* TODO: loopen, wenn ich übersetzungen mache */}
         <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
