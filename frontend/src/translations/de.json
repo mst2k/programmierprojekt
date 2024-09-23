@@ -79,5 +79,18 @@
         "noValidFormat": "Kein gültiges Format",
         "conversionNotPossible": "Konvertierung nicht möglich",
         "exportFailed": "Export fehlgeschlagen"
+    },
+    "welcomePage":{
+            "solveProb": "Einfach OR-Probleme lösen",
+            "powerfulSolution": "Leistungsstarke Lösungen für Simplex- und andere OR-Probleme mit GMPL-, LP- und MPS-Formaten",
+            "getStarted": "Los geht's",
+            "keayFeat": "Wichtige Merkmale",
+            "aboutProj":"Über das Projekt",
+            "context": "OR Solver ist ein Gruppenprojekt, das im Rahmen eines dualen Studiengangs entwickelt wurde. Unser Team von engagierten Studenten hat dieses leistungsstarke Tool entwickelt, um den Prozess der Lösung von Operations Research Problemen zu vereinfachen.",
+            "academicContext": "Durch die Kombination von akademischem Wissen und praktischer Anwendung haben wir eine Lösung entwickelt, die sowohl den schulischen als auch beruflichen Anforderungen im Bereich des Operations Research gerecht wird.",
+            "optimize": "Bereit zu optimieren?",
+            "startSolv": "Beginne noch heute, deine OR-Probleme mit unserer leicht zu nutzenden Anwendung zu lösen.",
+            "try": "Jetzt ausprobieren",
+            "ORTeamRights": "2024 OR Solver Team. Alle Rechte vorbehalten."
     }
 }
