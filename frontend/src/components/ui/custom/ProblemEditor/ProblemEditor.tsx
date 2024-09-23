@@ -99,12 +99,12 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
           
       />
       </div>
-      <div className='flex justify-around mt-2'>
-        {/*Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))*/}
+      {/*<div className='flex justify-around mt-2'>
+        Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))
         <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-      </div>
+      </div>*/}
     </div>
   );
 };
