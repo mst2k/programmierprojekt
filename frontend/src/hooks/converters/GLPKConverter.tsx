@@ -1,7 +1,6 @@
 import { LP } from "@/interfaces/glpkJavil/LP.tsx";
 import {parseLP} from "@/hooks/converters/LPConverter.tsx";
 
-
 export const parseGLPMAdvanced = (prob: string): Promise<LP> => {
     return new Promise(async (resolve, reject) => {
         try {

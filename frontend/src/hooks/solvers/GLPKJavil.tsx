@@ -19,19 +19,31 @@ export const getGLPK = async () => {
 };
 
 
+/**
+ * Solves a linear programming problem using GLPK by Javil.
+ * @async
+ * @param {string} prob - The problem description string.
+ * @param {ProblemFormats} probtype - The format of the problem (e.g., "GMPL", "LP", "MPS").
+ * @returns {Promise<{result: SolverResult | null, error: Error | null, log: string}>} A promise that resolves to an object containing the solver result, any error, and a log string.
+ */
 export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Promise<{ result: SolverResult | null; error: Error | null; log: string}> => {
     return new Promise(async (resolve) => {
         let result: SolverResult | null = null;
         let error: Error | null = null;
         let log: string = "";
 
+        function logFunction(newlog:string) {
+            log = `${log}\n${newlog}`;
+            console.log(newlog)
+        }
+
         try {
             const glpk = await getGLPK();  // Hier wird gewartet, bis GLPK vollständig geladen ist
             const options: Options = {
-                msglev: glpk.GLP_MSG_ERR,  // Jetzt ist GLP_MSG_ALL verfügbar
+                msglev: glpk.GLP_MSG_ALL,  // Jetzt ist GLP_MSG_ALL verfügbar
                 presol: true,
                 cb: {
-                    call: (progress: any) => console.log(progress),
+                    call: (progress: any) => logFunction(progress),
                     each: 1
                 }
             } as Options;
@@ -65,7 +77,12 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
     }) as Promise<{ result: SolverResult | null; error: Error | null; log: string }>;
 };
 
-
+/**
+ * Transforms the solver result into a standardized format.
+ * @param {LP} lp - The linear programming problem object.
+ * @param {Result} result - The raw result from the GLPK solver.
+ * @returns {SolverResult} The transformed solver result in a standardized format.
+ */
 function transformSolverResult(lp: LP, result: Result): SolverResult {
     // Mapping der Status-Codes des Solvers auf die Status-Codes in SolverResult
     const statusMap: { [key: number]:string } = {
@@ -132,6 +149,12 @@ function getVariableType(variableName: string, lp: LP): ColumnData['Type'] {
 }
 
 
+/**
+ * Calculates the primal value for a constraint.
+ * @param {LP['subjectTo'][number]} constraint - The constraint object.
+ * @param {{[key: string]: number}} vars - An object mapping variable names to their values.
+ * @returns {number} The calculated primal value for the constraint.
+ */
 function calculatePrimal(constraint: LP['subjectTo'][number], vars: { [key: string]: number }): number {
     // Berechne den Primalwert für die Nebenbedingung (Summe der Variablenkoeffizienten * Variablenwert)
     return constraint.vars.reduce((sum, variable) => {

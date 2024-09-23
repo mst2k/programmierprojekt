@@ -54,7 +54,8 @@ const SolverPage = () => {
                 setCurrentInputVariant={setCurrentInputVariant}
                 currentSolver={currentSolver}
                 setCurrentSolver={setCurrentSolver}
-            />
+                currentProblem={currentProblem}
+                currentLpFormat={currentLpFormat}/>
             <div className="flex-1 flex flex-col">
                 <main className="flex-1 p-4 overflow-auto">
                     <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
