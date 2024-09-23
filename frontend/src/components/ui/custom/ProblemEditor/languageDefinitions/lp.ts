@@ -84,7 +84,6 @@ export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo
 
   let inObjectiveSection = false;
   let inConstraintSection = false;
-  let inBoundsSection = false;
   let hasObjective = false;
   let hasRestrictions = false;
   let hasNonNegativity = false;
