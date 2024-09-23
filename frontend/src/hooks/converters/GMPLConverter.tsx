@@ -168,6 +168,8 @@ export function convertToGMPL(lp: LP): string {
 
                 // Deklaration abschließen
                 glpmString += ';\n';
+            }else{
+                glpmString += `var ${variable} >= 0; \n`;
             }
         }
     });
@@ -194,7 +196,7 @@ export function convertToGMPL(lp: LP): string {
         } else if (constraint.bnds.type === GLP_UP) { // <=
             glpmString += `${expr} <= ${constraint.bnds.ub};\n`;
         } else if (constraint.bnds.type === GLP_FX) { // =
-            glpmString += `${expr} = ${constraint.bnds.ub};\n`;
+            glpmString += `${expr} = ${constraint.bnds.lb};\n`;
         }
     });
 

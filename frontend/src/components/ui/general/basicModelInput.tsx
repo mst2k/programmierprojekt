@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -27,12 +27,15 @@ type Item = {
     description: string;
 }
 
-
 export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
+
     const {
         currentSolver,
+//        setCurrentSolver,
+//        currentLpFormat,
         setCurrentLpFormat,
+//        currentProblem,
         setCurrentProblem,
         solveTrigger,
         setSolveTrigger
@@ -68,6 +71,10 @@ export default function BasicModelInput(states:any) {
                 break;
         }
     }, [currentSolver]);
+
+    useEffect(() => {
+        console.log("Selected language:", selectedItem ? selectedItem.content : "Not selected");
+    }, [selectedItem]);
 
     const items:Item[]=[
         { id: 1, content: 'GMPL', status: gmplState, description: t('description_gmpl') },
@@ -113,16 +120,17 @@ export default function BasicModelInput(states:any) {
         }
     }
 
-    function triggerSolving(_: any, solveAnyway?: boolean) {
-        if (solveAnyway != undefined || selectedItem && selectedItem.status !== 'nativ') {
+    function triggerSolving(_:any, solveAnyway?: boolean) {
+
+        if (solveAnyway != undefined && selectedItem && selectedItem.status !== 'nativ') {
             setShowConverstionAlert(true);
         } else {
-            if (selectedItem?.content) {
+            if(selectedItem?.content){
                 setCurrentLpFormat(selectedItem.content);
                 setCurrentProblem(modelInput);
                 setSolveTrigger(solveTrigger + 1);
-            } else {
-                setShowNoModelTypeAlert(true);
+            }else {
+                setShowConverstionAlert(true);
             }
         }
     }
@@ -131,15 +139,15 @@ export default function BasicModelInput(states:any) {
         <TooltipProvider>
             <div className="flex items-center justify-center">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[60vh]">
-                    <Tabs 
+                    <Tabs
                         value={selectedItem?.id.toString() || "1"}
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
                         className="w-full"
                     >
                         <TabsList className="grid w-full grid-cols-3 rounded-b-none bg-background">
                             {items.map((item) => (
-                                <TabsTrigger 
-                                    key={item.id} 
+                                <TabsTrigger
+                                    key={item.id}
                                     value={item.id.toString()}
                                     className="relative data-[state=inactive]:bg-muted data-[state=inactive]:text-muted-foreground"
                                 >
@@ -163,14 +171,15 @@ export default function BasicModelInput(states:any) {
                                     <InfoIcon className="h-4 w-4" />
                                     <span className="sr-only">Info</span>
                                 </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{selectedItem.description}</p>
+                                <TooltipContent className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap">
+                                    <p className="text-sm">{selectedItem.description}</p>
                                 </TooltipContent>
                             </Tooltip>
+
                         )}
                     </div>
                     <div className="flex justify-end mt-4">
-                        <Button onClick={triggerSolving}>Abschicken</Button>
+                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
                     </div>
                 </div>
             </div>
