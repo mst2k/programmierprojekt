@@ -64,9 +64,6 @@ const SolverPage = () => {
                         {resultComponent}
                     </div>
                 </main>
-                <footer className="bg-gray-800 text-white p-4 text-center">
-                    Footer (About Page z.B.)
-                </footer>
             </div>
         </div>
     );
