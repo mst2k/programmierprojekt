@@ -1,12 +1,43 @@
-import { SolverResult } from "@/interfaces/Result.tsx";
+import {ColumnData, RowData, SolverResult} from "@/interfaces/Result.tsx";
 import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
 import {parseGLPMAdvancedToLP} from "@/hooks/converters/GLPKConverter.tsx";
 import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToLP} from "@/hooks/converters/LPConverter.tsx";
 
+/**
+ * Solves a linear programming problem using the HiGHS solver.
+ * @async
+ * @param {string} prob - The problem description string.
+ * @param {ProblemFormats} probtype - The format of the problem (e.g., "GMPL", "LP", "MPS").
+ * @returns {Promise<{result: SolverResult | null, error: Error | null, log: string}>} A promise that resolves to an object containing the solver result, any error, and a log string.
+ */
 export const solveHiGHS = async (prob: string, probtype: ProblemFormats):
     Promise<{ result: SolverResult | null; error: Error | null; log: string }> => {
+    function adjustResult(result: SolverResult) {
+        const statusMappingVariable: { [key: string]: RowData["Status"] | ColumnData["Status"] } = {
+            "BS": 'Basic',
+            "LB": 'Lower Bound',
+            "UB": 'Upper Bound',
+            "FR": 'Free',
+            "FX": 'Fixed'
+        };
+
+        // Iteriere durch die Zeilen des Ergebnisses
+        for (const row of result.Rows) {
+            row.Status = statusMappingVariable[row.Status] || row.Status;
+        }
+
+        // Iteriere durch die Spalten des Ergebnisses
+        for (const columnKey in result.Columns) {
+            let column = result.Columns[columnKey];
+            column.Status = statusMappingVariable[column.Status] || column.Status;
+        }
+
+        return result;
+    }
+
+
     return new Promise(async (resolve) => {
         let result: SolverResult | null = null;
         let error: Error | null = null;
@@ -19,6 +50,7 @@ export const solveHiGHS = async (prob: string, probtype: ProblemFormats):
             if (solution) {
                 console.log("Raw HiGHS solution:", solution);  // Log the raw solution
                 result = solution as SolverResult
+                result = adjustResult(result)
                 log = `Solution found. Status: ${solution.status}, Objective value: ${solution.objectiveValue}`;
             } else if (workerError) {
                 error = new Error(workerError);
@@ -36,16 +68,21 @@ export const solveHiGHS = async (prob: string, probtype: ProblemFormats):
         };
 
         //Worker can only handle LP Format. Converting
-        switch (probtype){
-            case "GMPL":
-                prob = await parseGLPMAdvancedToLP(prob)
-                probtype = "LP"
-                break;
-            case "MPS":
-                const lpObject:LP = parseMPS(prob);
-                prob = convertToLP(lpObject)
-                probtype="LP"
-                break
+        try {
+            switch (probtype) {
+                case "GMPL":
+                    prob = await parseGLPMAdvancedToLP(prob)
+                    probtype = "LP"
+                    break;
+                case "MPS":
+                    const lpObject: LP = parseMPS(prob);
+                    prob = convertToLP(lpObject)
+                    probtype = "LP"
+                    break
+            }
+        }catch (er){
+            error = er as Error
+            resolve({result, error, log});
         }
         worker.postMessage({prob, probtype});
     }) as Promise<{ result: SolverResult | null; error: Error | null; log: string }>;
