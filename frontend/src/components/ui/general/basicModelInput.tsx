@@ -137,6 +137,7 @@ export default function BasicModelInput(states:any) {
 
     return (
         <TooltipProvider>
+            <div className="w-full h-3 md:hidden"></div>
             <div className="flex items-center justify-center">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[62vh]">
                     <Tabs
@@ -151,14 +152,15 @@ export default function BasicModelInput(states:any) {
                                     value={item.id.toString()}
                                     className="relative data-[state=active]:bg-muted data-[state=inactive]:bg-background data-[state=inactive]:text-muted-foreground flex items-center justify-center"
                                 >
-                                    {item.content}
+                                    <span>{item.content}</span>
                                     <span
                                         className={`absolute top-1/2 right-1 transform -translate-y-1/2 px-2 text-xs rounded-full text-white ${getStatusColor(
                                             item.status
                                         )}`}
                                     >
-              {getStatusLabel(item.status)}
-            </span>
+                                        <p className={"hidden md:flex"}>{getStatusLabel(item.status)}</p>
+                                        <p className={"md:hidden"}> <br/> </p>
+                                </span>
                                 </TabsTrigger>
                             ))}
                         </TabsList>
