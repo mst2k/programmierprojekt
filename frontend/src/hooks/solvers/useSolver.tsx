@@ -60,6 +60,7 @@ export const useSolver = (
 
     try {
       let solveResult;
+      const start = performance.now();
       switch (solver) {
         case "GLPKHgourvest":
             solveResult = await solveGLPKHgourvest(prob, probtype);
@@ -73,8 +74,10 @@ export const useSolver = (
         default:
             throw new Error(`Unsupported solver: ${solver}`);
     }
-
+        const end = performance.now();
+        const duration = (end-start)/1000;
   if (solveResult.result) {
+      solveResult.result.Duration=duration
       setResult(solveResult.result);
   }
   if (solveResult.error) {

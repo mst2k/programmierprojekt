@@ -15,7 +15,7 @@ export const inputModes:string[] = [
 
 const SolverPage = () => {
     // const {t} = useTranslation();
-    const [currentSolver, setCurrentSolver] = useState<Solvers | null>(null);
+    const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
     const [currentInputVariant, setCurrentInputVariant] = useState<string>("general");
