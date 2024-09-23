@@ -14,6 +14,7 @@ import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToGMPL, parseGMPL} from "@/hooks/converters/GMPLConverter.tsx";
 import {convertToLP, parseLP} from "@/hooks/converters/LPConverter.tsx";
 import {convertToMPS, parseMPS} from "@/hooks/converters/MPSConverter.tsx";
+import {parseGLPMAdvanced} from "@/hooks/converters/GLPKConverter.tsx";
 
 const convertOptions = [
     {name: "glpkInterface",
@@ -22,6 +23,7 @@ const convertOptions = [
     {name: "gmpl", from: parseGMPL, to: convertToGMPL},
     {name: "lp", from: parseLP, to: convertToLP},
     {name: "mps", from: parseMPS, to: convertToMPS},
+    {name: "gmpl(Advanced)", from: parseGLPMAdvanced, to: convertToGMPL}
 ]
 
 
@@ -32,23 +34,23 @@ const CodeExecutionPage: React.FC = () => {
     const [to, setOptionTo] = useState<string>('');
     const [output, setOutput] = useState<string>('');
 
-    const handleExecute = () => {
-        if(from === to){
+    const handleExecute = async () => {
+        if (from === to) {
             setOutput(code)
             return
         }
-        let lpObject: LP | undefined = undefined;
+        let lpObject: LP | Promise<LP> | undefined = undefined;
 
         //Convert input Value into
         const fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
-        if(fromFunction){
-            lpObject = fromFunction.from(code);
+        if (fromFunction) {
+            lpObject = await fromFunction.from(code);
         }
         const toFunction = convertOptions.find(c => c.name === to) ?? undefined;
-        if(toFunction){
-            if(lpObject){
-                setOutput(toFunction.to(lpObject));
-            }else
+        if (toFunction) {
+            if (lpObject) {
+                setOutput(toFunction.to(lpObject as LP));
+            } else
                 throw "No Valid lpObject to Create Output"
         }
 
