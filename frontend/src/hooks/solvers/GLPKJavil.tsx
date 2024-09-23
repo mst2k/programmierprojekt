@@ -32,13 +32,18 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
         let error: Error | null = null;
         let log: string = "";
 
+        function logFunction(newlog:string) {
+            log = `${log}\n${newlog}`;
+            console.log(newlog)
+        }
+
         try {
             const glpk = await getGLPK();  // Hier wird gewartet, bis GLPK vollständig geladen ist
             const options: Options = {
-                msglev: glpk.GLP_MSG_ERR,  // Jetzt ist GLP_MSG_ALL verfügbar
+                msglev: glpk.GLP_MSG_ALL,  // Jetzt ist GLP_MSG_ALL verfügbar
                 presol: true,
                 cb: {
-                    call: (progress: any) => console.log(progress),
+                    call: (progress: any) => logFunction(progress),
                     each: 1
                 }
             } as Options;
