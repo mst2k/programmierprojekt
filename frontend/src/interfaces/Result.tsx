@@ -4,6 +4,7 @@ export interface SolverResult {
     Columns: { [key: string]: ColumnData };
     Rows: RowData[];
     Output?:string;
+    Duration?:number
 }
 
 export interface ColumnData {
