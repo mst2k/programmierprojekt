@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
 import { Editor } from "@monaco-editor/react";
 import { ProblemFormats } from '@/interfaces/SolverConstants';
 import { checkGMPLErrors, GMPLTokens } from './languageDefinitions/gmpl';
 import { checkLPErrors, LPTokens } from './languageDefinitions/lp';
-import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
+//import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
 
 export interface EditorLanguage {
   // Define the structure of your language definition here
@@ -51,11 +50,6 @@ const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkError
 
 export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   const { tokens, checkErrors } = formatConfigs[props.problemFormat];
-  const [modelProperties, setModelProperties] = useState({
-    hasObjective: false,
-    hasRestrictions: false,
-    hasNonNegativity: false
-  });
 
   const handleEditorWillMount = (monaco: any) => {
     monaco.languages.register({ id: props.problemFormat });
@@ -65,7 +59,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   const handleEditorDidMount = (editor: any, monaco: any) => {
     const updateErrors = () => {
       const code = editor.getValue();
-      const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code);
+      const { errors } = checkErrors(code);
       const model = editor.getModel();
       monaco.editor.setModelMarkers(model, props.problemFormat, errors.map(err => ({
         severity: monaco.MarkerSeverity.Error,
@@ -75,7 +69,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
         endLineNumber: err.line,
         endColumn: model.getLineMaxColumn(err.line),
       })));
-      setModelProperties({ hasObjective, hasRestrictions, hasNonNegativity });
+      //setModelProperties({ hasObjective, hasRestrictions, hasNonNegativity });
     };
     editor.onDidChangeModelContent(updateErrors);
     updateErrors(); // Initial error check
@@ -99,12 +93,12 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
           
       />
       </div>
-      <div className='flex justify-around mt-2'>
-        {/*Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))*/}
+      {/*<div className='flex justify-around mt-2'>
+        Hier sollten man eigentlich drüber iterieren, aber ich habe keine Lust wegen den Übersetzungen - vielleicht später :))
         <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
         <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-      </div>
+      </div>*/}
     </div>
   );
 };

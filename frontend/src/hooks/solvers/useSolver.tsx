@@ -57,38 +57,39 @@ export const useSolver = (
     setError(null);
     setResult(null);
     setLog("");
-    if(prob.trim() != "") {
-        try {
-            let solveResult;
-            switch (solver) {
-                case "GLPKHgourvest":
-                    solveResult = await solveGLPKHgourvest(prob, probtype);
-                    break;
-                case "Highs":
-                    solveResult = await solveHiGHS(prob, probtype);
-                    break;
-                case "GLPKJavil":
-                    solveResult = await solveGLPKJavil(prob, probtype)
-                    break;
-                default:
-                    throw new Error(`Unsupported solver: ${solver}`);
-            }
 
+    try {
+      let solveResult;
+      const start = performance.now();
+      switch (solver) {
+        case "GLPKHgourvest":
+            solveResult = await solveGLPKHgourvest(prob, probtype);
+            break;
+        case "Highs":
+            solveResult = await solveHiGHS(prob, probtype);
+            break;
+        case "GLPKJavil":
+            solveResult = await solveGLPKJavil(prob,probtype)
+            break;
+        default:
+            throw new Error(`Unsupported solver: ${solver}`);
+    }
+        const end = performance.now();
+        const duration = (end-start)/1000;
+  if (solveResult.result) {
+      solveResult.result.Duration=duration
+      setResult(solveResult.result);
+  }
+  if (solveResult.error) {
+      setError(solveResult.error);
+  }
+  setLog(solveResult.log);
 
-            if (solveResult.result) {
-                setResult(solveResult.result);
-            }
-            if (solveResult.error) {
-                setError(solveResult.error);
-            }
-            setLog(solveResult.log);
-
-        } catch (err) {
-            console.error("An error occurred:", err);
-            setError(err instanceof Error ? err : new Error('An unknown error occurred'));
-        } finally {
-            setIsLoading(false);
-        }
+  } catch (err) {
+      console.error("An error occurred:", err);
+      setError(err instanceof Error ? err : new Error('An unknown error occurred'));
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
