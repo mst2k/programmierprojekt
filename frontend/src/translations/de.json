@@ -62,6 +62,9 @@
     "description_mps": "MPS ist ein weit verbreitetes Dateiformat zur Darstellung von linearen und ganzzahligen Optimierungsproblemen. Es ist spaltenorientiert und besteht aus verschiedenen Abschnitten wie ROWS, COLUMNS und RHS. Beispiel:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
     "settings": "Einstellungen",
     "bounds": "Beschränkungen",
+    "basicModelInput" : {
+        "solve": "Lösen"
+    },
     "sidebar": {
         "export": "Exportieren",
         "mode": "Modus",
