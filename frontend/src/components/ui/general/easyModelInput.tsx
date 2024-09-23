@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, KeyboardEvent } from 'react'
 import { Button } from "@/components/ui/button"
 import {
     Select,
@@ -10,14 +10,6 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Trash2, Plus } from 'lucide-react'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from 'react-i18next'
 
@@ -35,12 +27,12 @@ export default function EnhancedStatusSelect(states:any) {
         solveTrigger: number, setSolveTrigger: (problem:number) => void
     } = states.states;
 
-    const [showNoModelTypeAltert, setShowNoModelTypeAltert] = useState(false)
     const [currentFormat, setCurrentFormat] = useState<ProblemFormats>('LP')
 
     const [optimizationType, setOptimizationType] = useState<'maximize' | 'minimize'>('maximize');
     const [objectiveFunction, setObjectiveFunction] = useState('');
     const [restrictions, setRestrictions] = useState<string[]>(['']);
+    const [bounds, setBounds] = useState<string[]>(['']);
     const [selectedVariables, setSelectedVariables] = useState<string[]>([]); // State for selected checkboxes
 
     useEffect(() => {
@@ -70,11 +62,44 @@ export default function EnhancedStatusSelect(states:any) {
         setRestrictions(prev => prev.filter((_, i) => i !== index));
     };
 
+    const addBound = () => {
+        setBounds(prev => [...prev, '']);
+    };
+
+    const updateBound = (index: number, value: string) => {
+        setBounds(prev => prev.map((b, i) => i === index ? value : b));
+    };
+
+    const removeBound = (index: number) => {
+        setBounds(prev => prev.filter((_, i) => i !== index));
+    };
+
+    //automatically adds restriction/bound when pressing enter
+    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>, type: 'restriction' | 'bound', index: number) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (type === 'restriction') {
+                if (index === restrictions.length - 1) {
+                    addRestriction();
+                }
+                const nextInput = document.getElementById(`restriction-${index + 1}`);
+                nextInput?.focus();
+            } else if (type === 'bound') {
+                if (index === bounds.length - 1) {
+                    addBound();
+                }
+                const nextInput = document.getElementById(`bound-${index + 1}`);
+                nextInput?.focus();
+            }
+        }
+    };
+
     //extracts vars with regex, return var-list without duplicates
     const extractVariables = (): string[] => {
         const objectiveVars = objectiveFunction.match(/[a-zA-Z_]\w*/g) || [];
         const restrictionVars = restrictions.flatMap(restriction => restriction.match(/[a-zA-Z_]\w*/g) || []);
-        return Array.from(new Set([...objectiveVars, ...restrictionVars])); // deletes duplicates
+        const boundVars = bounds.flatMap(bound => bound.match(/[a-zA-Z_]\w*/g) || []);
+        return Array.from(new Set([...objectiveVars, ...restrictionVars, ...boundVars])); // deletes duplicates
     };
 
     // includes all checked vars, updates dynamically
@@ -87,8 +112,26 @@ export default function EnhancedStatusSelect(states:any) {
     };
 
     function triggerSolving( ) {
-        const problem = `${optimizationType} ${objectiveFunction}\nsubject to\n${restrictions.join('\n')}`;
+        //format problem in LP
+        let problem = `${optimizationType}\n`;
+        problem += `obj: ${objectiveFunction}\n`;
+        problem += "Subject To\n";
+        restrictions.forEach((restriction, index) => {
+            problem += `c${index + 1}: ${restriction}\n`;
+        });
+        problem += "Bounds\n";
+        bounds.forEach((bound) => {
+            problem += `${bound}\n`;
+        });
+        selectedVariables.forEach(variable => {
+            if (!bounds.some(bound => bound.includes(variable))) {
+                problem += ` ${variable} >= 0\n`;
+            }
+        });
+        problem += "end";
+
         setCurrentProblem(problem);
+        console.log("Problem:\n", problem);
         setSolveTrigger(solveTrigger + 1);
     }
 
@@ -118,6 +161,7 @@ export default function EnhancedStatusSelect(states:any) {
                         placeholder={`Restriktion ${index + 1}`}
                         value={restriction}
                         onChange={(e) => updateRestriction(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyPress(e, 'restriction', index)}
                     />
                     {restrictions.length > 1 && (
                         <Button onClick={() => removeRestriction(index)} variant="outline" className="p-1">
@@ -127,6 +171,26 @@ export default function EnhancedStatusSelect(states:any) {
                 </div>
             ))}
             <Button onClick={addRestriction} className="py-2 text-sm ml-auto block">
+                <Plus className="h-4 w-4" />
+            </Button>
+            <h3 className="font-bold mb-2">{t("bounds")}</h3>
+            {bounds.map((bound, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                    <Input
+                        key ={index}
+                        placeholder={`Einschränkung ${index + 1}`} //z.B. 0 <= x1 <= 40
+                        value={bound} 
+                        onChange={(e) => updateBound(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyPress(e, 'bound', index)}
+                    />
+                    {bounds.length > 1 && (
+                        <Button onClick={() => removeBound(index)} variant="outline" className="p-1">
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                    )}
+                </div>
+            ))}
+            <Button onClick={addBound} className="py-2 text-sm ml-auto block">
                 <Plus className="h-4 w-4" />
             </Button>
             <h3 className="font-bold mb-2">{t("nnb")}</h3>
@@ -157,39 +221,6 @@ export default function EnhancedStatusSelect(states:any) {
                         <Button onClick={triggerSolving}>{t('send')}</Button>
                     </div>
                 </div>
-            {/* Dialoge */}
-            <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
-                        <DialogDescription>
-                            Es ist eine Konvertierung notwendig. Trotzdem fortfahren?
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button variant="destructive" onClick={() => {
-                            setShowNoModelTypeAltert(false);
-                        }}>Fortfahren</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-
-            <Dialog open={showNoModelTypeAltert} onOpenChange={setShowNoModelTypeAltert}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Achtung</DialogTitle>
-                        <DialogDescription>
-                            Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button variant="destructive" onClick={() => {
-                            setShowNoModelTypeAltert(false);
-                            console.log('Du musst einen Modelltypen auswählen! (in der Eingabebox oben rechts)', { objectiveFunction, restrictions });
-                        }}>Fortfahren</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
             </div>
     )
 }

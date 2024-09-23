@@ -73,7 +73,7 @@ End
 `;
 
 
-export const gmpl2String = `
+export const gmplStringMSP = `
 var x11 integer >=0;
 var x12 integer >=0;
 var x21 integer >=0;
@@ -96,16 +96,6 @@ maximize label : 4*x1 +5*x2;
 /* Constraints */
 subject to label1: x1 + 2*x2 <= 40; 
 s.t. label2: 4*x1 + 3*x2 <= 120;
-end;
-`
-
-export const glpmString3 = `
-/* Declaration of decision variables */
-/* Objective function */
-maximize obj: 0.6 * x1 + 0.5 * x2;
-/* Constraints */
-subject to cons1: 1 * x1 + 2 * x2 <= 1;
-subject to cons2: 3 * x1 + 1 * x2 <= 2;
 end;
 `
 
@@ -143,7 +133,7 @@ BOUNDS
 ENDATA
 `;
 
-export const gmplStringTransp = `
+export const gmplStringTransport = `
 # A TRANSPORTATION PROBLEM
 #
 # This problem finds a least cost shipping schedule that meets
@@ -243,5 +233,4 @@ param d :              New-York   Chicago   Topeka :=
 param f := 90;
 
 end;
-
 `

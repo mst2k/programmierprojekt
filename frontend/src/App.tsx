@@ -5,18 +5,21 @@ import ConverterPage from "@/components/pages/ConverterPage.tsx";
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx";
 import { Separator } from "@/components/ui/general/seperator.tsx";
 import { Outlet } from 'react-router-dom';
+import Footer from "@/components/ui/general/footer.tsx";
+import AboutPage from './components/pages/AboutPage';
 
 const Layout = () => {
     return (
         <>
             <header>
                 <NavigationMenuDemo></NavigationMenuDemo>
-                <Separator className="my-2 mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[calc(100%-4rem)]"/>
+                <Separator className="my-1 mb-0"/>
             </header>
 
             <main>
                 <Outlet/>
             </main>
+            <Footer></Footer>
         </>
     )
 }
@@ -28,7 +31,8 @@ function App() {
           <Route element={<Layout />}>
               <Route path="/" element={<WelcomePage />} /> {/* Root route */}
               <Route path="/solver/" element={<SolverPage />} /> {/* /solver route */}
-              <Route path="/converter" element={<ConverterPage />} /> {/* /solver route */}
+              <Route path="/converter" element={<ConverterPage />} /> {/* /converter route */}
+              <Route path="/about" element={<AboutPage />} /> {/* about route */}
               </Route>
           </Routes>
       </HashRouter>

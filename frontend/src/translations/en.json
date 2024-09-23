@@ -1,7 +1,6 @@
 {
     "title": "Homepage",
     "language": "Language",
-    "solver": "Solver",
     "about": "About",
     "converter": "Converter",
     "descEn": "Changes the language settings to english",
@@ -13,8 +12,6 @@
     "general": "General",
     "easy": "Easy",
     "simplex": "Simplex",
-    "otherProbs": "Others",
-    "toggleSolver": "Toggle Solver",
     "modelInput": "Enter the model",
     "differentLayout": "Different layout depending on the problem",
     "displaySolution": "Display of the solution / explanations of possible errors ",
@@ -28,9 +25,11 @@
     "enterOFunc": "Enter objective function",
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
-    "mode": "Mode",
-    "solvertype": "Solver Type",
     "send": "Send",
+    "mode": "Mode",  
+    "solvertype": "Solver Type",
+    "otherProbs": "Other standard problems",
+    "toggleSolver": "Toggle Solver",
     "input_placeholder": "Enter your text here",
     "select_placeholder": "Select",
     "submit_button": "Submit",
@@ -62,6 +61,41 @@
     "settings": "Settings",
     "description_gmpl": "GMPL is a modeling language used to describe linear and mixed-integer optimization problems. It allows defining variables, constraints, and objective functions. Example:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
     "description_lp": "The CPLEX LP format is used to represent linear optimization problems. It uses a line-based syntax to define the objective function and constraints. Example:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
-    "description_mps": "MPS is a widely used file format for representing linear and integer optimization problems. It is column-oriented and consists of sections like ROWS, COLUMNS, and RHS. Example:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA"
+    "description_mps": "MPS is a widely used file format for representing linear and integer optimization problems. It is column-oriented and consists of sections like ROWS, COLUMNS, and RHS. Example:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
+    "bounds": "Bounds",
+    "solver": "Solver",
+    "basicModelInput" : {
+        "solve": "Sovle"
+    },
+    "sidebar": {
+        "export": "Export",
+        "mode": "Mode",
+        "solver": "Solver",
+        "solvertype": "Solver Type"
+    },
+    "fileExport": {
+        "exportFiles": "Export Files",
+        "exportGMPL": "GMPL (.mod)",
+        "exportLP": "CPLEX LP (.lp)",
+        "exportMPS": "MPS (.mps)",
+        "title": "Export Files",
+        "description": "Choose the desired file format for export. \n(Export is only possible if the Problem was already solved)",
+        "noValidLpObject": "No valid LP object to create output",
+        "noValidFormat": "No valid format",
+        "conversionNotPossible": "Conversion not possible",
+        "exportFailed": "Export failed"
+    },
+    "welcomePage":{
+            "solveProb": "Solve OR Problems with Ease",
+            "powerfulSolution": "Powerful solutions for Simplex and other OR problems using GMPL, LP, and MPS formats",
+            "getStarted": "Get Started",
+            "keayFeat": "Key Features",
+            "aboutProj":"About the Project",
+            "context": "OR Solver is a group project developed as part of a dual study program. Our team of dedicated students has created this powerful tool to simplify the process of solving operations research problems.",
+            "academicContext": "By combining academic knowledge with practical application, we've designed a solution that caters to both educational and professional needs in the field of operations research.",
+            "optimize": "Ready to Optimize?",
+            "startSolv": "Start solving your OR problems today with our easy-to-use platform.",
+            "try": "Try OR Solver Now",
+            "ORTeamRights": "2024 OR Solver Team. All rights reserved."
+    }
 }
-  
