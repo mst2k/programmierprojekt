@@ -1,7 +1,6 @@
 {
     "title": "Startseite",
     "language": "Sprache",
-    "solver": "Löser",
     "about": "Über uns",
     "converter": "Konvertierer",
     "descEn": "Ändert die Spracheinstellungen auf englisch",
@@ -27,7 +26,6 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "solvertype": "Lösertyp",
     "send": "Abschicken",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
@@ -62,6 +60,12 @@
     "column_primal": "Primal",
     "column_dual": "Dual",
     "column_index": "Index",
+    "sidebar": {
+        "export": "Exportieren",
+        "mode": "Modus",
+        "solver": "Löser",
+        "solvertype": "Lösertyp"
+    },
     "fileExport": {
         "exportFiles": "Dateien exportieren",
         "exportGMPL": "GMPL (.mod)",

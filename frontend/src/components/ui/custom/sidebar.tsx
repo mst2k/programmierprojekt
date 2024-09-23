@@ -49,7 +49,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
             >
                 <div className="flex justify-between items-center p-2 border-b">
                     {isOpen && (
-                        <h2 className="text-lg font-semibold">{t('mode')}</h2>
+                        <h2 className="text-lg font-semibold">{t('sidebar.mode')}</h2>
                     )}
                     <Button
                         variant="ghost"
@@ -73,14 +73,14 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                             ))}
                         </div>
                         <div className="space-y-2 p-2">
-                            <h2 className="text-lg font-semibold">{t('solver')}</h2>
+                            <h2 className="text-lg font-semibold">{t('sidebar.solver')}</h2>
                             <Separator className="my-2 mx-auto h-[1%]"/>
                         </div>
 
                         <div className="flex flex-col space-y-2 p-4">
                             <Select onValueChange={handleSolverChange} value={currentSolver || undefined}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('solvertype')} />
+                                    <SelectValue placeholder={t('sidebar.solvertype')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {solverTypes.map((sTyp) => (
@@ -92,7 +92,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                             </Select>
                         </div>
                         <div className="space-y-2 p-2">
-                            <h2 className="text-lg font-semibold">{t('export')}</h2>
+                            <h2 className="text-lg font-semibold">{t('sidebar.export')}</h2>
                             <Separator className="my-2 mx-auto h-[1%]"/>
                         </div>
                         <div className="flex flex-col space-y-2 p-4">

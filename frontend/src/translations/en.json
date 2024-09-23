@@ -1,7 +1,6 @@
 {
     "title": "Homepage",
     "language": "Language",
-    "solver": "Solver",
     "about": "About",
     "converter": "Converter",
     "descEn": "Changes the language settings to english",
@@ -26,8 +25,6 @@
     "enterOFunc": "Enter objective function",
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
-    "mode": "Mode",
-    "solvertype": "Solver Type",
     "send": "Send",
     "otherProbs": "Other standard problems",
     "toggleSolver": "Toggle Solver",
@@ -62,6 +59,12 @@
     "column_primal": "Primal",
     "column_dual": "Dual",
     "column_index": "Index",
+    "sidebar": {
+        "export": "Export",
+        "mode": "Mode",
+        "solver": "Solver",
+        "solvertype": "Solver Type"
+    },
     "fileExport": {
         "exportFiles": "Export Files",
         "exportGMPL": "GMPL (.mod)",
