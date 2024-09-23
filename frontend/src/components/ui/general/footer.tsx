@@ -3,7 +3,7 @@ import { Github } from "lucide-react"
 
 export default function Footer() {
     return (
-        <footer className="bg-[#f0f0f0] py-8 mt-auto ">
+        <footer className="bg-muted py-8 mt-auto">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -32,8 +32,8 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="mt-8 pt-8 border-t border-muted-foreground/20">
-                    <p className="text-center text-sm text-muted-foreground"> &copy;
-                         {new Date().getFullYear()} Programmierprojekt. Veröffentlicht unter der JOA NECH, kommt noch!.
+                    <p className="text-center text-sm text-muted-foreground">
+                        © {new Date().getFullYear()} Programmierprojekt. Veröffentlicht unter der JOA NECH, kommt noch!.
                     </p>
                 </div>
             </div>
