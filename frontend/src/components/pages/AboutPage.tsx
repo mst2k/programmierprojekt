@@ -47,6 +47,15 @@ function AboutPage() {
                     <div className='flex space-x-4'>  
                         <text>Hier steht etwas über den Quellcode</text>
                     </div>
+                    <Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
                 </main>
                 <footer className="bg-gray-800 text-white p-4 text-center">
                     Footer (About Page z.B.)
