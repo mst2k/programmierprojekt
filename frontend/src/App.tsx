@@ -5,6 +5,7 @@ import ConverterPage from "@/components/pages/ConverterPage.tsx";
 import { NavigationMenuDemo } from "@/components/ui/navbar.tsx";
 import { Separator } from "@/components/ui/general/seperator.tsx";
 import { Outlet } from 'react-router-dom';
+import Footer from "@/components/ui/general/footer.tsx";
 
 const Layout = () => {
     return (
