@@ -84,6 +84,7 @@ export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo
 
   let inObjectiveSection = false;
   let inConstraintSection = false;
+  let inBoundsSection = false;
   let hasObjective = false;
   let hasRestrictions = false;
   let hasNonNegativity = false;
@@ -136,18 +137,14 @@ export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo
       hasRestrictions = true;
     }
 
-    // if (inBoundsSection) {
-    //   if (!trimmedLine.includes('<=') && !trimmedLine.includes('>=') && !trimmedLine.includes('=') && !trimmedLine.includes('free')) {
-    //     errors.push({
-    //       message: 'Bound must include a comparison operator (<=, >=, =) or "free"',
-    //       line: actualLineNumber,
-    //     });
-    //   }
-    //   if (trimmedLine.includes('>= 0') || trimmedLine.toLowerCase().includes('&gt;= 0')) {
-    //     hasNonNegativity = true;
-    //   }
-    // }
-  });
+    if (inBoundsSection) {
+      //TODO: überarbeitunen, auch bei den anderen langs
+      if (trimmedLine.includes('>= 0')) {
+        hasNonNegativity = true;
+      }
+  };
+
+});
 
   if (!hasObjective) {
     errors.push({
