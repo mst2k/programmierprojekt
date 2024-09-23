@@ -2,7 +2,6 @@ import '@/App.css'
 
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom"
-import * as React from 'react';
 import { ArrowRight, Code, Zap, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,7 +83,13 @@ function WelcomePage() {
 
     )
 }
-function FeatureCard({ icon, title, description }) {
+interface FeatureCardProps {
+    icon: React.ReactNode;  // Icon = JSX
+    title: string;
+    description: string;
+  }
+
+function FeatureCard({ icon, title, description }: FeatureCardProps) {
     return (
         <Card className="bg-white border-none shadow-lg overflow-hidden">
             <div className="absolute top-0 right-0 w-16 h-16 bg-[#f0f0f0] rounded-full -mr-8 -mt-8"></div>
