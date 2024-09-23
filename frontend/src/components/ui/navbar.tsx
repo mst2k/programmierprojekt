@@ -37,7 +37,7 @@ import {
     ]
 
       return (            
-      <div className="w-full flex justify-between items-center px-4 py-0">
+      <div className="w-full flex justify-between items-center px-4 py-0 my-1">
         <NavigationMenu >
           <NavigationMenuList>
             {/*left elements*/}
