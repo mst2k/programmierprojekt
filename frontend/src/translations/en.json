@@ -26,6 +26,8 @@
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
     "send": "Send",
+    "mode": "Mode",  
+    "solvertype": "Solver Type",
     "otherProbs": "Other standard problems",
     "toggleSolver": "Toggle Solver",
     "input_placeholder": "Enter your text here",
@@ -81,5 +83,18 @@
         "noValidFormat": "No valid format",
         "conversionNotPossible": "Conversion not possible",
         "exportFailed": "Export failed"
+    },
+    "welcomePage":{
+            "solveProb": "Solve OR Problems with Ease",
+            "powerfulSolution": "Powerful solutions for Simplex and other OR problems using GMPL, LP, and MPS formats",
+            "getStarted": "Get Started",
+            "keayFeat": "Key Features",
+            "aboutProj":"About the Project",
+            "context": "OR Solver is a group project developed as part of a dual study program. Our team of dedicated students has created this powerful tool to simplify the process of solving operations research problems.",
+            "academicContext": "By combining academic knowledge with practical application, we've designed a solution that caters to both educational and professional needs in the field of operations research.",
+            "optimize": "Ready to Optimize?",
+            "startSolv": "Start solving your OR problems today with our easy-to-use platform.",
+            "try": "Try OR Solver Now",
+            "ORTeamRights": "2024 OR Solver Team. All rights reserved."
     }
 }

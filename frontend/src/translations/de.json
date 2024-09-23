@@ -27,6 +27,7 @@
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
     "send": "Abschicken",
+    "solvertype": "Lösertyp",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
     "input_placeholder": "Geben Sie hier Ihren Text ein",
@@ -82,5 +83,19 @@
         "noValidFormat": "Kein gültiges Format",
         "conversionNotPossible": "Konvertierung nicht möglich",
         "exportFailed": "Export fehlgeschlagen"
+    },
+    "welcomePage":{
+            "solveProb": "Einfach OR-Probleme lösen",
+            "powerfulSolution": "Leistungsstarke Lösungen für Simplex- und andere OR-Probleme mit GMPL-, LP- und MPS-Formaten",
+            "getStarted": "Los geht's",
+            "keayFeat": "Hauptfunktionen",
+            "aboutProj":"Über das Projekt",
+            "context": "OR Solver ist ein Gruppenprojekt, das im Rahmen eines dualen Studiums entwickelt wurde. Unser Team von engagierten Studenten hat dieses leistungsstarke Tool entwickelt, um den Prozess der Lösung von Operations Research Problemen zu vereinfachen.",
+            "academicContext": "Durch die Kombination von akademischem Wissen und praktischer Anwendung haben wir eine Lösung entwickelt, die sowohl den Bildungs- als auch den professionellen Bedürfnissen im Bereich Operations Research gerecht wird.",
+            "optimize": "Bereit zu optimieren?",
+            "startSolv": "Beginne noch heute mit der Lösung deiner OR-Probleme mit unserer leicht zu nutzenden Anwendung.",
+            "try": "Jetzt ausprobieren",
+            "ORTeamRights": "2024 OR Solver Team. Alle Rechte vorbehalten."
     }
 }
+
