@@ -185,7 +185,7 @@ export default function AboutPage() {
                     <li>Apache 2.0 Lizenz für bestimmte Bibliotheken</li>
                     <li>Proprietäre Lizenz für unsere Kerntechnologie</li>
                   </ul>
-                  <Button variant="outline" className="mt-4" onClick="">Vollständige Lizenzbedingungen</Button>
+                  <Button variant="outline" className="mt-4">Vollständige Lizenzbedingungen</Button>
                 </CardContent>
               </Card>
             </AccordionContent>
