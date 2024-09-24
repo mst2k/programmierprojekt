@@ -31,42 +31,42 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "Elisabeth",
-    position: "Projektmanagerin",
-    description: "Elisabeth koordiniert unser Team und sorgt dafür, dass alle Projektabläufe reibungslos funktionieren. Ihre organisatorischen Fähigkeiten und ihr strategisches Denken sind der Schlüssel zu unserem Erfolg.",
+    position: "Entwickelerin",
+    description: "Elisabeth ist bekannt für ihr starkes technisches Verständnis und ihre Fähigkeit, komplexe Geschäftsprozesse zu durchdringen. Sie bringt wertvolle Einsichten in die Entwicklung und Umsetzung technischer Lösungen mit und meistert technische Herausforderungen mit Bravour.",
     expertise: {
-      technical: { value: 70, description: "Verständnis für technische Herausforderungen und Lösungsansätze" },
-      leadership: { value: 95, description: "Hervorragende Führungsqualitäten und Teamkoordination" },
-      business: { value: 85, description: "Fundierte Kenntnisse in Projektmanagement und Geschäftsprozessen" }
+      technical: { value: 80, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
+      leadership: { value:40 , description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
+      business: { value: 85, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
     }
   },
   {
     name: "Marcel",
-    position: "Fullstack-Entwickler",
-    description: "Marcel ist unser technisches Multitalent. Seine Expertise in verschiedenen Programmiersprachen und Frameworks macht ihn zu einem unverzichtbaren Mitglied unseres Entwicklerteams.",
+    position: "Entwickler",
+    description: "Marcel bringt umfassende Expertise in allen Bereichen der Softwareentwicklung mit. Mit seinem breiten Spektrum an technischen Fähigkeiten spielt er eine Schlüsselrolle in der Entwicklung von Frontend- und Backend-Lösungen.",
     expertise: {
-      technical: { value: 95, description: "Umfassende Kenntnisse in Frontend- und Backend-Technologien" },
-      leadership: { value: 75, description: "Mentoring von Juniorentwicklern und technische Führung in Projekten" },
-      business: { value: 70, description: "Verständnis für Geschäftsanforderungen und deren technische Umsetzung" }
+      technical: { value: 95, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
+      leadership: { value: 60, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
+      business: { value: 70, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
     }
   },
   {
     name: "Felix",
-    position: "UI/UX Designer",
-    description: "Felix verleiht unseren Produkten das gewisse Etwas. Sein Gespür für Ästhetik und Benutzerfreundlichkeit sorgt dafür, dass unsere Anwendungen nicht nur funktional, sondern auch optisch ansprechend sind.",
+    position: "Entwickler",
+    description: "Felix vereint technisches Know-how mit einem tiefen Verständnis für Designprozesse und User Experience. Er leitet kreative Prozesse und sorgt dafür, dass Projekte nicht nur technisch, sondern auch ästhetisch überzeugen.",
     expertise: {
-      technical: { value: 80, description: "Kenntnisse in Design-Tools und Prototyping-Software" },
-      leadership: { value: 70, description: "Leitung von Design-Workshops und Kreativprozessen" },
-      business: { value: 75, description: "Verständnis für Markenidentität und User Experience" }
+      technical: { value: 95, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
+      leadership: { value: 70, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
+      business: { value: 75, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
     }
   },
   {
     name: "Yannick",
-    position: "Data Scientist",
-    description: "Yannick ist unser Experte für Datenanalyse und maschinelles Lernen. Seine Fähigkeit, komplexe Datensätze zu interpretieren und daraus wertvolle Erkenntnisse zu gewinnen, treibt unsere datengetriebenen Entscheidungen voran.",
+    position: "Product Owner/ Scrum Master",
+    description: "Yannick ist ein Produktmanager mit starkem Führungscharisma und ausgeprägten analytischen Fähigkeiten. Er bringt ein tiefes Verständnis für die Geschäftsanforderungen mit und sorgt dafür, dass datengetriebene Lösungen effizient umgesetzt werden.",
     expertise: {
-      technical: { value: 90, description: "Expertise in Datenanalyse, maschinellem Lernen und statistischer Modellierung" },
-      leadership: { value: 65, description: "Führung von Datenanalyse-Projekten und Schulung von Teammitgliedern" },
-      business: { value: 80, description: "Umsetzung von Geschäftsanforderungen in datengetriebene Lösungen" }
+      technical: { value: 35, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
+      leadership: { value: 95, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
+      business: { value: 90, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
     }
   }
 ]
@@ -185,7 +185,7 @@ export default function AboutPage() {
                     <li>Apache 2.0 Lizenz für bestimmte Bibliotheken</li>
                     <li>Proprietäre Lizenz für unsere Kerntechnologie</li>
                   </ul>
-                  <Button variant="outline" className="mt-4">Vollständige Lizenzbedingungen</Button>
+                  <Button variant="outline" className="mt-4" onClick="">Vollständige Lizenzbedingungen</Button>
                 </CardContent>
               </Card>
             </AccordionContent>
@@ -208,9 +208,9 @@ export default function AboutPage() {
                     schaffen, sondern auch anderen Entwicklern die Möglichkeit geben, von unserer
                     Arbeit zu lernen und darauf aufzubauen.
                   </p>
-                  <Button>
+                  <Button >
                     <GithubIcon className="mr-2 h-4 w-4" />
-                    Besuchen Sie unser GitHub
+                    <a href="https://github.com/mst2k/programmierprojekt" target="_blank">Besuchen Sie unser GitHub</a>
                   </Button>
                 </CardContent>
               </Card>
