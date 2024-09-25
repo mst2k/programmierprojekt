@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+
 	darkMode: ["class"],
 	content: ["./src/**/*.{js,jsx,ts,tsx}"],
 	theme: {
@@ -29,7 +30,7 @@ export default {
     				foreground: 'hsl(var(--secondary-foreground))'
     			},
     			muted: {
-    				DEFAULT: 'hsl(var(--muted))',
+    				DEFAULT: '#f0f0f0',//'hsl(var(--muted))',
     				foreground: 'hsl(var(--muted-foreground))'
     			},
     			accent: {
