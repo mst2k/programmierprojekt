@@ -97,5 +97,13 @@
             "startSolv": "Start solving your OR problems today with our easy-to-use platform.",
             "try": "Try OR Solver Now",
             "ORTeamRights": "2024 OR Solver Team. All rights reserved."
+    },
+    "converterPage": {
+        "title": "Converter",
+        "codePlaceholder": "Enter your code here...",
+        "from": "From",
+        "to": "To",
+        "execute": "Execute",
+        "noValidLpObject": "No Valid LP Object to Create Output"
     }
 }
