@@ -27,7 +27,6 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
 
         try {
             const glpk = await getGLPK();  // Hier wird gewartet, bis GLPK vollständig geladen ist
-
             const options: Options = {
                 msglev: glpk.GLP_MSG_ERR,  // Jetzt ist GLP_MSG_ALL verfügbar
                 presol: true,
@@ -69,16 +68,16 @@ export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Pr
 
 function transformSolverResult(lp: LP, result: Result): SolverResult {
     // Mapping der Status-Codes des Solvers auf die Status-Codes in SolverResult
-    const statusMap: { [key: number]: SolverResult['Status'] } = {
-        0: 'Optimal',
-        1: 'Infeasible',
-        2: 'Unbounded',
-        3: 'Error',
-        4: 'Unknown',
+    const statusMap: { [key: number]:string } = {
+        5: 'Optimal',
+        2: 'Feasible',
+        3: 'Infeasible',
+        6: 'Unbounded',
+        4: 'Not Feasible',
     };
 
     // Erstelle Columns aus Variablen und Bounds
-    const columns: { [key: string]: ColumnData } = {};
+    const columns: { [key: string]: ColumnData } = {"Unsupported": {Name: "NotSupported"} as ColumnData};
 
     // Falls es Schranken (bounds) gibt, iteriere darüber und sammle Infos
     if (lp.bounds) {
@@ -102,12 +101,12 @@ function transformSolverResult(lp: LP, result: Result): SolverResult {
         return {
             Index: index,
             Name: constraint.name,
-            Status: "Basic",
+            Status: "Unknown",
             Lower: constraint.bnds.lb,
             Upper: constraint.bnds.ub,
             Primal: calculatePrimal(constraint, result.result.vars), // Berechne den Primalwert
             Dual: result.result.dual?.[constraint.name] || 0, // Dualwert, falls vorhanden
-        };
+        } as RowData;
     });
 
     return {
@@ -116,7 +115,7 @@ function transformSolverResult(lp: LP, result: Result): SolverResult {
         Columns: columns,
         Rows: rows,
         Output: `Solution for ${lp.name} computed in ${result.time} seconds`,
-    };
+    } as SolverResult;
 }
 
 function getVariableStatus(primalValue: number, bound: { type: number, lb: number, ub: number }): ColumnData['Status'] {
