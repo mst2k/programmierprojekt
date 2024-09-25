@@ -1,55 +1,98 @@
 import '@/App.css'
-
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Zap, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import Joyride, { Step, CallBackProps } from 'react-joyride';
+import { useState } from 'react';
 
 function WelcomePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [runTour, setRunTour] = useState(false);
 
     const navigateToSolver = () => {
         navigate('/solver');
         window.scrollTo(0,0);
     }
+
+    const startTour = () => {
+        setRunTour(true);
+    }
+
+    const handleJoyrideCallback = (data: CallBackProps) => {
+        const { status } = data;
+        if (status === 'finished' || status === 'skipped') {
+            setRunTour(false);
+        }
+    }
+
+    const steps: Step[] = [
+        {
+            target: '.joyride-welcome',
+            content: 'Welcome to our problem-solving platform!',
+            disableBeacon: true,
+        },
+        {
+            target: '.joyride-features',
+            content: 'Explore our key features that make problem-solving easier.',
+        },
+        {
+            target: '.joyride-about',
+            content: 'Learn more about our project and its academic context.',
+        },
+        {
+            target: '.joyride-contact',
+            content: 'Ready to start? Click here to begin solving problems!',
+        },
+    ];
     
     return (
         <div className="flex flex-col min-h-screen w-screen bg-[#f0f0f0]">            
+            <Joyride
+                steps={steps}
+                run={runTour}
+                continuous={true}
+                showSkipButton={true}
+                callback={handleJoyrideCallback}
+                styles={{
+                    options: {
+                        primaryColor: '#3498db',
+                    }
+                }}
+            />
             <main className="flex-grow">
-                <section className="container mx-auto px-6 py-16 text-center">
+                <section className="container mx-auto px-6 py-16 text-center joyride-welcome">
                     <h1 className="text-5xl font-bold mb-4 text-[#2c3e50]">{t("welcomePage.solveProb")}</h1>
                     <p className="text-xl mb-8 text-[#2c3e50]">{t('welcomePage.powerfulSolution')}</p>
-                    <Button size="lg" className="bg-[#e74c3c] hover:bg-[#c0392b] text-white">
-                    {t('welcomePage.getStarted')} <ArrowRight className="ml-2 h-4 w-4" />
-
+                    <Button size="lg" className="bg-[#e74c3c] hover:bg-[#c0392b] text-white" onClick={startTour}>
+                        {t('welcomePage.getStarted')} <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </section>
-                <section id="features" className="py-16">
+                <section id="features" className="py-16 joyride-features">
                     <div className="container mx-auto px-6">
                         <h2 className="text-3xl font-bold mb-8 text-center text-[#2c3e50]">{t('welcomePage.keayFeat')}</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <FeatureCard 
                                 icon={<Code className="w-12 h-12 text-[#3498db]" />}
-                                title="Multiple Formats" //translation
+                                title="Multiple Formats"
                                 description="Support for GMPL, LP, and MPS problem formats"
                             />
                             <FeatureCard 
                                 icon={<Zap className="w-12 h-12 text-[#e74c3c]" />}
-                                title="Fast Solving" //translation
+                                title="Fast Solving"
                                 description="Efficient algorithms for quick problem resolution"
                             />
                             <FeatureCard 
                                 icon={<BookOpen className="w-12 h-12 text-[#3498db]" />}
-                                title="Easy Input" //translation
+                                title="Easy Input"
                                 description="User-friendly interface for problem input and solving"
                             />
                         </div>
                     </div>
                 </section>
-                <section id="about" className="py-16 bg-white">
+                <section id="about" className="py-16 bg-white joyride-about">
                     <div className="container mx-auto px-6">
                         <h2 className="text-3xl font-bold mb-8 text-center text-[#2c3e50]">{t('welcomePage.aboutProj')}</h2>
                         <Card className="bg-[#f0f0f0] border-none shadow-lg">
@@ -64,7 +107,7 @@ function WelcomePage() {
                         </Card>
                     </div>
                 </section>
-                <section id="contact" className="py-16 bg-white">
+                <section id="contact" className="py-16 bg-white joyride-contact">
                     <div className="container mx-auto px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">{t('welcomePage.optimize')}</h2>
                         <p className="mb-8">{t('welcomePage.startSolv')}</p>
@@ -75,14 +118,14 @@ function WelcomePage() {
                 </section>
             </main>
         </div>
-
     )
 }
+
 interface FeatureCardProps {
-    icon: React.ReactNode;  // Icon = JSX
+    icon: React.ReactNode;
     title: string;
     description: string;
-  }
+}
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
     return (
@@ -98,4 +141,5 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
         </Card>
     );
 }
+
 export default WelcomePage;
