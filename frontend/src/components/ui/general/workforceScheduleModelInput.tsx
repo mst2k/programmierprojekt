@@ -150,6 +150,7 @@ data;
     const handleGenerateGMPL = () => {
         const generatedCode = generateGMPL(employees, shifts, preferences);
         setGmplCode(generatedCode);
+        triggerSolving(gmplCodeState)
         setIsGmplDialogOpen(true);
     };
 
