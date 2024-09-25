@@ -56,7 +56,7 @@ const SolverPage = () => {
     }, [currentSolver]);
 
     return (
-        <div className="flex h-screen w-screen">
+        <div className="flex h-min-screen w-screen">
             <Sidebar
                 currentInputVariant={currentInputVariant}
                 setCurrentInputVariant={setCurrentInputVariant}
@@ -66,7 +66,7 @@ const SolverPage = () => {
                 currentLpFormat={currentLpFormat}/>
             <div className="flex-1 flex flex-col">
                 <main className="flex-1 p-4 overflow-auto">
-                    <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
+                    <div className="h-min-1/2 h-auto border-b-2 border-gray-300 p-4">
                         {inputComponent}
                     </div>
                     <div className="h-auto p-4">
