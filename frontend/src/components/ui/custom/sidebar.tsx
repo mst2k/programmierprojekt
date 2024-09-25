@@ -41,7 +41,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
     }
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-min-screen">
             <div
                 className={`bg-background border-r transition-all duration-300 flex flex-col ${
                     isOpen ? "w-64" : "w-16"

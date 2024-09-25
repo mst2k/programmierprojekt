@@ -1,19 +1,54 @@
-'use client'
-
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { PlusCircle, MinusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
+import { useTranslation } from "react-i18next"
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
+import { DialogHeader } from "@/components/ui/dialog"
+import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 
 export default function KnapsackProblemUI(states: any) {
+    const gmplInit = `
+# A KNAPSACK PROBLEM
+#
+# This problem finds the most valuable combination of items
+# that can be carried in a knapsack of limited capacity.
+
+set ITEMS;
+
+param weight{i in ITEMS};
+param value{i in ITEMS};
+param capacity;
+
+var take{i in ITEMS} binary;
+
+maximize total_value: sum{i in ITEMS} value[i] * take[i];
+
+s.t. weight_limit: sum{i in ITEMS} weight[i] * take[i] <= capacity;
+
+solve;
+
+printf "Knapsack Problem Solution\\n";
+printf "-------------------------\\n";
+printf "Total value: %g\\n", total_value;
+printf "Items to take:\\n";
+for {i in ITEMS: take[i] > 0.5} {
+  printf "%s\\n", i;
+}
+
+data;
+`
+
+    const { t } = useTranslation()
     const [items, setItems] = useState([{ name: '', weight: '', value: '' }])
     const [capacity, setCapacity] = useState('')
+    const [gmplCodeState, setGmplCode] = useState(gmplInit)
+    const [isGmplDialogOpen, setIsGmplDialogOpen] = useState(false)
 
     const {
-        currentSolver,
         setCurrentLpFormat,
         setCurrentProblem,
         solveTrigger,
@@ -46,71 +81,58 @@ export default function KnapsackProblemUI(states: any) {
     }
 
     const generateGMPL = (items: { name: string; weight: string; value: string; }[], capacity: string) => {
-        let gmplCode = `
-# A KNAPSACK PROBLEM
-#
-# This problem finds the most valuable combination of items
-# that can be carried in a knapsack of limited capacity.
+        let gmplCode = gmplInit;
 
-set ITEMS;
+        gmplCode += `\nset ITEMS := ${items.map(item => item.name).join(' ')};\n\n`;
 
-param weight{i in ITEMS};
-param value{i in ITEMS};
-param capacity;
+        gmplCode += 'param weight :=\n';
+        items.forEach(item => {
+            gmplCode += `  ${item.name} ${item.weight}\n`;
+        });
+        gmplCode += ';\n\n';
 
-var take{i in ITEMS} binary;
+        gmplCode += 'param value :=\n';
+        items.forEach(item => {
+            gmplCode += `  ${item.name} ${item.value}\n`;
+        });
+        gmplCode += ';\n\n';
 
-maximize total_value: sum{i in ITEMS} value[i] * take[i];
+        gmplCode += `param capacity := ${capacity};\n\n`;
 
-s.t. weight_limit: sum{i in ITEMS} weight[i] * take[i] <= capacity;
+        gmplCode += 'end;\n';
 
-solve;
-
-printf "Knapsack Problem Solution\\n";
-printf "-------------------------\\n";
-printf "Total value: %g\\n", total_value;
-printf "Items to take:\\n";
-for {i in ITEMS: take[i] > 0.5} {
-  printf "%s\\n", i;
-}
-
-data;
-
-set ITEMS := ${items.map(item => item.name).join(' ')};
-
-param weight :=
-${items.map(item => `  ${item.name} ${item.weight}`).join('\n')};
-
-param value :=
-${items.map(item => `  ${item.name} ${item.value}`).join('\n')};
-
-param capacity := ${capacity};
-
-end;
-`
-
-        triggerSolving(gmplCode);
-        return gmplCode
+        return gmplCode;
     };
 
     const handleGenerateGMPL = () => {
-        const gmplCode = generateGMPL(items, capacity);
-        console.log(gmplCode)
+        const generatedCode = generateGMPL(items, capacity);
+        setGmplCode(generatedCode);
+        triggerSolving(gmplCodeState)
+        setIsGmplDialogOpen(true);
+    };
+
+    const handleEditGMPL = (newCode: string) => {
+        setGmplCode(newCode);
+    };
+
+    const handleSaveGMPL = () => {
+        setIsGmplDialogOpen(false);
+        triggerSolving(gmplCodeState);
     };
 
     return (
-        <div className="p-4 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Knapsack Problem Input</h1>
+        <div className="p-4 max-w-4xl mx-auto h-auto">
+            <h1 className="text-2xl font-bold mb-4">{t('knapsackInput.title')}</h1>
 
             <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Items</h2>
+                <h2 className="text-xl font-semibold mb-2">{t('knapsackInput.items')}</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Item Name</TableHead>
-                            <TableHead>Weight</TableHead>
-                            <TableHead>Value</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>{t('knapsackInput.itemName')}</TableHead>
+                            <TableHead>{t('knapsackInput.weight')}</TableHead>
+                            <TableHead>{t('knapsackInput.value')}</TableHead>
+                            <TableHead>{t('knapsackInput.action')}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -120,7 +142,7 @@ end;
                                     <Input
                                         value={item.name}
                                         onChange={(e) => updateItem(index, 'name', e.target.value)}
-                                        placeholder="Item name"
+                                        placeholder={t('knapsackInput.itemName')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -128,7 +150,7 @@ end;
                                         type="number"
                                         value={item.weight}
                                         onChange={(e) => updateItem(index, 'weight', e.target.value)}
-                                        placeholder="Weight"
+                                        placeholder={t('knapsackInput.weight')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -136,7 +158,7 @@ end;
                                         type="number"
                                         value={item.value}
                                         onChange={(e) => updateItem(index, 'value', e.target.value)}
-                                        placeholder="Value"
+                                        placeholder={t('knapsackInput.value')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -149,22 +171,46 @@ end;
                     </TableBody>
                 </Table>
                 <Button onClick={addItem} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Item
+                    <PlusCircle className="mr-2 h-4 w-4" /> {t('knapsackInput.addItem')}
                 </Button>
             </div>
 
             <div className="mb-6">
-                <Label htmlFor="capacity">Knapsack Capacity</Label>
+                <Label htmlFor="capacity">{t('knapsackInput.capacity')}</Label>
                 <Input
                     id="capacity"
                     type="number"
                     value={capacity}
                     onChange={(e) => setCapacity(e.target.value)}
-                    placeholder="Capacity"
+                    placeholder={t('knapsackInput.capacity')}
                 />
             </div>
 
-            <Button onClick={handleGenerateGMPL}>Generate GMPL</Button>
+            <Button className="mb-4" onClick={handleGenerateGMPL}>{t('knapsackInput.generateGMPL')}</Button>
+
+            <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button className="ml-2">{t('knapsackInput.showGMPL')}</Button>
+                </DialogTrigger>
+                <DialogContent className="h-auto">
+                    <DialogHeader>
+                        <DialogTitle>{t('knapsackInput.editGMPL')}</DialogTitle>
+                    </DialogHeader>
+                    <div className="relative flex-grow border border-t-0 rounded-b-lg h-[400px]">
+                        <ProblemEditor
+                            problemFormat={'GMPL'}
+                            value={gmplCodeState}
+                            onChange={(value: string) => handleEditGMPL(value)}
+                        />
+                    </div>
+                    <div className="flex justify-end space-x-2 mt-2">
+                        <Button onClick={handleSaveGMPL}>{t('knapsackInput.generateGMPL')}</Button>
+                        <Button onClick={() => setIsGmplDialogOpen(false)} variant="outline">
+                            {t('knapsackInput.closeGMPL')}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

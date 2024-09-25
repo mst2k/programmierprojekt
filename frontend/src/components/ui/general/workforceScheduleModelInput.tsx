@@ -1,20 +1,58 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { PlusCircle, MinusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
+import { useTranslation } from "react-i18next"
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
+import { DialogHeader } from "@/components/ui/dialog"
+import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 
 export default function WorkforceSchedulingUI(states: any) {
+    const gmplInit = `
+# WORKFORCE SCHEDULING PROBLEM
+#
+# This problem assigns employees to shifts while respecting
+# maximum working hours and shift requirements.
+
+set EMPLOYEES;
+set SHIFTS;
+
+param maxHours{e in EMPLOYEES};
+param required{s in SHIFTS};
+param preference{e in EMPLOYEES, s in SHIFTS};
+
+var assign{e in EMPLOYEES, s in SHIFTS} binary;
+
+maximize total_preference: sum{e in EMPLOYEES, s in SHIFTS} preference[e,s] * assign[e,s];
+
+s.t. shift_requirement{s in SHIFTS}: sum{e in EMPLOYEES} assign[e,s] >= required[s];
+s.t. max_hours{e in EMPLOYEES}: sum{s in SHIFTS} assign[e,s] <= maxHours[e];
+
+solve;
+
+printf "Workforce Scheduling Solution\\n";
+printf "------------------------------\\n";
+printf "Total preference score: %g\\n", total_preference;
+printf "Assignments:\\n";
+for {e in EMPLOYEES, s in SHIFTS: assign[e,s] > 0.5} {
+  printf "%s assigned to %s\\n", e, s;
+}
+
+data;
+`
+
+    const { t } = useTranslation()
     const [employees, setEmployees] = useState([{ name: '', maxHours: '' }])
     const [shifts, setShifts] = useState([{ name: '', required: '' }])
     const [preferences, setPreferences] = useState([[]])
+    const [gmplCodeState, setGmplCode] = useState(gmplInit)
+    const [isGmplDialogOpen, setIsGmplDialogOpen] = useState(false)
 
     const {
-        currentSolver,
         setCurrentLpFormat,
         setCurrentProblem,
         solveTrigger,
@@ -29,11 +67,13 @@ export default function WorkforceSchedulingUI(states: any) {
 
     const addEmployee = () => {
         setEmployees([...employees, { name: '', maxHours: '' }])
+        // @ts-expect-error
         setPreferences(preferences.map(row => [...row, '']))
     }
 
     const addShift = () => {
         setShifts([...shifts, { name: '', required: '' }])
+        // @ts-expect-error
         setPreferences([...preferences, new Array(employees.length).fill('')])
     }
 
@@ -65,6 +105,7 @@ export default function WorkforceSchedulingUI(states: any) {
 
     const updatePreference = (shiftIndex: number, employeeIndex: number, value: string) => {
         const newPreferences = [...preferences]
+        // @ts-expect-error
         newPreferences[shiftIndex][employeeIndex] = value
         setPreferences(newPreferences)
     }
@@ -76,75 +117,63 @@ export default function WorkforceSchedulingUI(states: any) {
     }
 
     const generateGMPL = (employees: { name: string; maxHours: string }[], shifts: { name: string; required: string }[], preferences: string[][]) => {
-        let gmplCode = `
-# WORKFORCE SCHEDULING PROBLEM
-#
-# This problem assigns employees to shifts while respecting
-# maximum working hours and shift requirements.
+        let gmplCode = gmplInit;
 
-set EMPLOYEES;
-set SHIFTS;
+        gmplCode += `\nset EMPLOYEES := ${employees.map(e => e.name).join(' ')};\n`;
+        gmplCode += `set SHIFTS := ${shifts.map(s => s.name).join(' ')};\n\n`;
 
-param maxHours{e in EMPLOYEES};
-param required{s in SHIFTS};
-param preference{e in EMPLOYEES, s in SHIFTS};
+        gmplCode += 'param maxHours :=\n';
+        employees.forEach(e => {
+            gmplCode += `  ${e.name} ${e.maxHours}\n`;
+        });
+        gmplCode += ';\n\n';
 
-var assign{e in EMPLOYEES, s in SHIFTS} binary;
+        gmplCode += 'param required :=\n';
+        shifts.forEach(s => {
+            gmplCode += `  ${s.name} ${s.required}\n`;
+        });
+        gmplCode += ';\n\n';
 
-maximize total_preference: sum{e in EMPLOYEES, s in SHIFTS} preference[e,s] * assign[e,s];
+        gmplCode += 'param preference :\n    ';
+        gmplCode += employees.map(e => e.name).join(' ');
+        gmplCode += ' :=\n';
+        shifts.forEach((s, i) => {
+            gmplCode += `  ${s.name} ${preferences[i].join(' ')}\n`;
+        });
+        gmplCode += ';\n\n';
 
-s.t. shift_requirement{s in SHIFTS}: sum{e in EMPLOYEES} assign[e,s] >= required[s];
-s.t. max_hours{e in EMPLOYEES}: sum{s in SHIFTS} assign[e,s] <= maxHours[e];
+        gmplCode += 'end;\n';
 
-solve;
-
-printf "Workforce Scheduling Solution\\n";
-printf "------------------------------\\n";
-printf "Total preference score: %g\\n", total_preference;
-printf "Assignments:\\n";
-for {e in EMPLOYEES, s in SHIFTS: assign[e,s] > 0.5} {
-  printf "%s assigned to %s\\n", e, s;
-}
-
-data;
-
-set EMPLOYEES := ${employees.map(e => e.name).join(' ')};
-set SHIFTS := ${shifts.map(s => s.name).join(' ')};
-
-param maxHours :=
-${employees.map(e => `  ${e.name} ${e.maxHours}`).join('\n')};
-
-param required :=
-${shifts.map(s => `  ${s.name} ${s.required}`).join('\n')};
-
-param preference :
-${shifts.map(s => s.name).join(' ')} :=
-${employees.map((e, i) => `  ${e.name} ${preferences.map(row => row[i]).join(' ')}`).join('\n')};
-
-end;
-`
-
-        triggerSolving(gmplCode);
-        return gmplCode
+        return gmplCode;
     };
 
     const handleGenerateGMPL = () => {
-        const gmplCode = generateGMPL(employees, shifts, preferences);
-        console.log(gmplCode)
+        const generatedCode = generateGMPL(employees, shifts, preferences);
+        setGmplCode(generatedCode);
+        setIsGmplDialogOpen(true);
+    };
+
+    const handleEditGMPL = (newCode: string) => {
+        setGmplCode(newCode);
+    };
+
+    const handleSaveGMPL = () => {
+        setIsGmplDialogOpen(false);
+        triggerSolving(gmplCodeState);
     };
 
     return (
-        <div className="p-4 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Workforce Scheduling Problem Input</h1>
+        <div className="p-4 max-w-4xl mx-auto h-auto">
+            <h1 className="text-2xl font-bold mb-4">{t('workforceInput.title')}</h1>
 
             <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Employees</h2>
+                <h2 className="text-xl font-semibold mb-2">{t('workforceInput.employees')}</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Employee Name</TableHead>
-                            <TableHead>Max Hours</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>{t('workforceInput.employeeName')}</TableHead>
+                            <TableHead>{t('workforceInput.maxHours')}</TableHead>
+                            <TableHead>{t('workforceInput.action')}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -154,7 +183,7 @@ end;
                                     <Input
                                         value={employee.name}
                                         onChange={(e) => updateEmployee(index, 'name', e.target.value)}
-                                        placeholder="Employee name"
+                                        placeholder={t('workforceInput.employeeName')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -162,7 +191,7 @@ end;
                                         type="number"
                                         value={employee.maxHours}
                                         onChange={(e) => updateEmployee(index, 'maxHours', e.target.value)}
-                                        placeholder="Max hours"
+                                        placeholder={t('workforceInput.maxHours')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -175,18 +204,18 @@ end;
                     </TableBody>
                 </Table>
                 <Button onClick={addEmployee} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Employee
+                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addEmployee')}
                 </Button>
             </div>
 
             <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Shifts</h2>
+                <h2 className="text-xl font-semibold mb-2">{t('workforceInput.shifts')}</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Shift Name</TableHead>
-                            <TableHead>Required Employees</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>{t('workforceInput.shiftName')}</TableHead>
+                            <TableHead>{t('workforceInput.requiredEmployees')}</TableHead>
+                            <TableHead>{t('workforceInput.action')}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -196,7 +225,7 @@ end;
                                     <Input
                                         value={shift.name}
                                         onChange={(e) => updateShift(index, 'name', e.target.value)}
-                                        placeholder="Shift name"
+                                        placeholder={t('workforceInput.shiftName')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -204,7 +233,7 @@ end;
                                         type="number"
                                         value={shift.required}
                                         onChange={(e) => updateShift(index, 'required', e.target.value)}
-                                        placeholder="Required employees"
+                                        placeholder={t('workforceInput.requiredEmployees')}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -217,16 +246,16 @@ end;
                     </TableBody>
                 </Table>
                 <Button onClick={addShift} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Shift
+                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addShift')}
                 </Button>
             </div>
 
             <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Employee Preferences</h2>
+                <h2 className="text-xl font-semibold mb-2">{t('workforceInput.preferences')}</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Shift \ Employee</TableHead>
+                            <TableHead>{t('workforceInput.shiftEmployee')}</TableHead>
                             {employees.map((employee, index) => (
                                 <TableHead key={index}>{employee.name}</TableHead>
                             ))}
@@ -242,7 +271,7 @@ end;
                                             type="number"
                                             value={preferences[shiftIndex]?.[employeeIndex] || ''}
                                             onChange={(e) => updatePreference(shiftIndex, employeeIndex, e.target.value)}
-                                            placeholder="Preference"
+                                            placeholder={t('workforceInput.preference')}
                                         />
                                     </TableCell>
                                 ))}
@@ -252,7 +281,31 @@ end;
                 </Table>
             </div>
 
-            <Button onClick={handleGenerateGMPL}>Generate GMPL</Button>
+            <Button className="mb-4" onClick={handleGenerateGMPL}>{t('workforceInput.generateGMPL')}</Button>
+
+            <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button className="ml-2">{t('workforceInput.showGMPL')}</Button>
+                </DialogTrigger>
+                <DialogContent className="h-auto">
+                    <DialogHeader>
+                        <DialogTitle>{t('workforceInput.editGMPL')}</DialogTitle>
+                    </DialogHeader>
+                    <div className="relative flex-grow border border-t-0 rounded-b-lg h-[400px]">
+                        <ProblemEditor
+                            problemFormat={'GMPL'}
+                            value={gmplCodeState}
+                            onChange={(value: string) => handleEditGMPL(value)}
+                        />
+                    </div>
+                    <div className="flex justify-end space-x-2 mt-2">
+                        <Button onClick={handleSaveGMPL}>{t('workforceInput.generateGMPL')}</Button>
+                        <Button onClick={() => setIsGmplDialogOpen(false)} variant="outline">
+                            {t('workforceInput.closeGMPL')}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
