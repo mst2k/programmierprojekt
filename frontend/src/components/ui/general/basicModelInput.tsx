@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -57,6 +57,45 @@ export default function BasicModelInput(states:any) {
     const [gmplState, setGmplState] = useState<Item["status"]>("unsupported");
     const [lpState, setLpState] = useState<Item["status"]>("unsupported");
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+    const tooltipRef = useRef(null)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+                setIsTooltipOpen(false)
+            }
+        }
+
+        if (isMobile && isTooltipOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+            document.addEventListener('touchstart', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('touchstart', handleClickOutside)
+        }
+    }, [isMobile, isTooltipOpen])
+
+    const toggleTooltip = () => {
+        if (isMobile) {
+            setIsTooltipOpen(true)
+        } else {
+            setIsTooltipOpen(!isTooltipOpen)
+        }
+    }
+
 
     useEffect(() => {
         switch (currentSolver) {
@@ -172,16 +211,23 @@ export default function BasicModelInput(states:any) {
                             onChange={(value: React.SetStateAction<string>) => setModelInput(value)}
                         />
                         {selectedItem && (
-                            <Tooltip>
-                                <TooltipTrigger className="absolute top-2 right-6 p-1 text-muted-foreground hover:text-foreground">
+                            <Tooltip open={isTooltipOpen}>
+                                <TooltipTrigger
+                                    className="absolute top-2 right-6 p-1 text-muted-foreground hover:text-foreground"
+                                    onClick={toggleTooltip}
+                                    onTouchStart={toggleTooltip}
+                                    ref={tooltipRef}
+                                >
                                     <InfoIcon className="h-4 w-4" />
                                     <span className="sr-only">Info</span>
                                 </TooltipTrigger>
-                                <TooltipContent className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap">
+                                <TooltipContent
+                                    className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap"
+                                    sideOffset={5}
+                                >
                                     <p className="text-sm">{selectedItem.description}</p>
                                 </TooltipContent>
                             </Tooltip>
-
                         )}
                     </div>
                     <div className="flex justify-end pt-2">
