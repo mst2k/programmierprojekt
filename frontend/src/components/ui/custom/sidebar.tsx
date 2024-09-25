@@ -5,13 +5,16 @@ import { useTranslation } from "react-i18next"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/general/seperator.tsx";
 import {inputModes} from "@/components/pages/SolverPage.tsx";
-import {Solvers} from "@/interfaces/SolverConstants.tsx";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import {FileExport} from "@/components/ui/general/fileExport.tsx";
 
 interface SidebarProps {
     currentInputVariant: string;
     setCurrentInputVariant: (variant: string) => void;
     currentSolver: Solvers | null;
     setCurrentSolver: (solver: Solvers) => void;
+    currentProblem: string,
+    currentLpFormat: ProblemFormats,
 }
 
 type SolverTypes = {
@@ -20,7 +23,7 @@ type SolverTypes = {
     description: string;
 }
 
-export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver }: SidebarProps) {
+export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver, currentProblem, currentLpFormat }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(true)
     const {t} = useTranslation();
 
@@ -46,7 +49,7 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
             >
                 <div className="flex justify-between items-center p-2 border-b">
                     {isOpen && (
-                        <h2 className="text-lg font-semibold">{t('settings')}</h2>
+                        <h2 className="text-lg font-semibold">{t('sidebar.mode')}</h2>
                     )}
                     <Button
                         variant="ghost"
@@ -58,10 +61,6 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                 </div>
                 {isOpen && (
                     <>
-                        <div className="space-y-2 p-2">
-                            <h2 className="text-lg font-semibold">{t('mode')}</h2>
-                            <Separator className="my-2 mx-auto h-[1%]"/>
-                        </div>
                         <div className="flex flex-col space-y-2 p-4">
                             {inputModes.map((itype) => (
                                 <Button
@@ -74,14 +73,14 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                             ))}
                         </div>
                         <div className="space-y-2 p-2">
-                            <h2 className="text-lg font-semibold">{t('solver')}</h2>
+                            <h2 className="text-lg font-semibold">{t('sidebar.solver')}</h2>
                             <Separator className="my-2 mx-auto h-[1%]"/>
                         </div>
 
                         <div className="flex flex-col space-y-2 p-4">
                             <Select onValueChange={handleSolverChange} value={currentSolver || undefined}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('solvertype')} />
+                                    <SelectValue placeholder={t('sidebar.solvertype')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {solverTypes.map((sTyp) => (
@@ -91,6 +90,13 @@ export default function Sidebar( { currentInputVariant, setCurrentInputVariant, 
                                     ))}
                                 </SelectContent>
                             </Select>
+                        </div>
+                        <div className="space-y-2 p-2">
+                            <h2 className="text-lg font-semibold">{t('sidebar.export')}</h2>
+                            <Separator className="my-2 mx-auto h-[1%]"/>
+                        </div>
+                        <div className="flex flex-col space-y-2 p-4">
+                            <FileExport currentProblem={currentProblem} currentInputVariant={currentLpFormat}></FileExport>
                         </div>
                     </>
                 )}

@@ -1,3 +1,7 @@
+/**
+ * Represents the result of a solver operation.
+ * @interface
+ */
 export interface SolverResult {
     Status: 'Optimal' | 'Infeasible' | 'Unbounded' | 'Error' | 'Unknown';
     ObjectiveValue: number;
@@ -7,6 +11,10 @@ export interface SolverResult {
     Duration?:number
 }
 
+/**
+ * Represents data for a single column in the solver result (Decision Variables).
+ * @interface
+ */
 export interface ColumnData {
     Index: number;
     Status: 'Basic' | 'Lower Bound' | 'Upper Bound' | 'Free' | 'Fixed' | 'Unknown';
@@ -18,6 +26,10 @@ export interface ColumnData {
     Name: string;
 }
 
+/**
+ * Represents data for a single row in the solver result (Constraints).
+ * @interface
+ */
 export interface RowData {
     Index: number;
     Name: string;

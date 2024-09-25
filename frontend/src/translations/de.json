@@ -1,7 +1,6 @@
 {
     "title": "Startseite",
     "language": "Sprache",
-    "solver": "Löser",
     "about": "Über uns",
     "converter": "Konvertierer",
     "descEn": "Ändert die Spracheinstellungen auf englisch",
@@ -27,8 +26,8 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "solvertype": "Lösertyp",
     "send": "Abschicken",
+    "solvertype": "Lösertyp",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
     "input_placeholder": "Geben Sie hier Ihren Text ein",
@@ -62,5 +61,42 @@
     "description_gmpl": "GMPL ist eine Modellierungssprache zur Beschreibung von linearen und gemischt-ganzzahligen Optimierungsproblemen. Sie erlaubt die Definition von Variablen, Nebenbedingungen und Zielfunktionen. Beispiel:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
     "description_lp": "Das CPLEX LP-Format wird zur Darstellung von linearen Optimierungsproblemen verwendet. Es verwendet eine zeilenbasierte Syntax zur Definition der Zielfunktion und der Nebenbedingungen. Beispiel:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
     "description_mps": "MPS ist ein weit verbreitetes Dateiformat zur Darstellung von linearen und ganzzahligen Optimierungsproblemen. Es ist spaltenorientiert und besteht aus verschiedenen Abschnitten wie ROWS, COLUMNS und RHS. Beispiel:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
-    "settings": "Einstellungen"
-  }
+    "settings": "Einstellungen",
+    "bounds": "Beschränkungen",
+    "solver": "Löser",
+    "basicModelInput" : {
+        "solve": "Lösen"
+    },
+    "sidebar": {
+        "export": "Exportieren",
+        "mode": "Modus",
+        "solver": "Löser",
+        "solvertype": "Lösertyp"
+    },
+    "fileExport": {
+        "exportFiles": "Dateien exportieren",
+        "exportGMPL": "GMPL (.mod)",
+        "exportLP": "CPLEX LP (.lp)",
+        "exportMPS": "MPS (.mps)",
+        "title": "Dateien exportieren",
+        "description": "Wählen Sie das gewünschte Dateiformat für den Export. \n (Der Export ist nur möglich, wenn das Problem zuvor gelöst wurde!)",
+        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe",
+        "noValidFormat": "Kein gültiges Format",
+        "conversionNotPossible": "Konvertierung nicht möglich",
+        "exportFailed": "Export fehlgeschlagen"
+    },
+    "welcomePage":{
+            "solveProb": "Einfach OR-Probleme lösen",
+            "powerfulSolution": "Leistungsstarke Lösungen für Simplex- und andere OR-Probleme mit GMPL-, LP- und MPS-Formaten",
+            "getStarted": "Los geht's",
+            "keayFeat": "Hauptfunktionen",
+            "aboutProj":"Über das Projekt",
+            "context": "OR Solver ist ein Gruppenprojekt, das im Rahmen eines dualen Studiums entwickelt wurde. Unser Team von engagierten Studenten hat dieses leistungsstarke Tool entwickelt, um den Prozess der Lösung von Operations Research Problemen zu vereinfachen.",
+            "academicContext": "Durch die Kombination von akademischem Wissen und praktischer Anwendung haben wir eine Lösung entwickelt, die sowohl den Bildungs- als auch den professionellen Bedürfnissen im Bereich Operations Research gerecht wird.",
+            "optimize": "Bereit zu optimieren?",
+            "startSolv": "Beginne noch heute mit der Lösung deiner OR-Probleme mit unserer leicht zu nutzenden Anwendung.",
+            "try": "Jetzt ausprobieren",
+            "ORTeamRights": "2024 OR Solver Team. Alle Rechte vorbehalten."
+    }
+}
+

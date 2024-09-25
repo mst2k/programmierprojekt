@@ -5,6 +5,13 @@ import {parseMPS} from "@/hooks/converters/MPSConverter.tsx";
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToLP} from "@/hooks/converters/LPConverter.tsx";
 
+/**
+ * Solves a linear programming problem using the HiGHS solver.
+ * @async
+ * @param {string} prob - The problem description string.
+ * @param {ProblemFormats} probtype - The format of the problem (e.g., "GMPL", "LP", "MPS").
+ * @returns {Promise<{result: SolverResult | null, error: Error | null, log: string}>} A promise that resolves to an object containing the solver result, any error, and a log string.
+ */
 export const solveHiGHS = async (prob: string, probtype: ProblemFormats):
     Promise<{ result: SolverResult | null; error: Error | null; log: string }> => {
     function adjustResult(result: SolverResult) {

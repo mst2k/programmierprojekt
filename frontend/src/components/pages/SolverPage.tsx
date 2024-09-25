@@ -62,19 +62,17 @@ const SolverPage = () => {
                 setCurrentInputVariant={setCurrentInputVariant}
                 currentSolver={currentSolver}
                 setCurrentSolver={setCurrentSolver}
-            />
+                currentProblem={currentProblem}
+                currentLpFormat={currentLpFormat}/>
             <div className="flex-1 flex flex-col">
                 <main className="flex-1 p-4 overflow-auto">
                     <div className="h-min-1/2 border-b-2 border-gray-300 p-4">
                         {inputComponent}
                     </div>
-                    <div className="h-1/2 p-4">
+                    <div className="h-auto p-4">
                         {resultComponent}
                     </div>
                 </main>
-                <footer className="bg-gray-800 text-white p-4 text-center">
-                    Footer (About Page z.B.)
-                </footer>
             </div>
         </div>
     );

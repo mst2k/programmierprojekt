@@ -50,7 +50,7 @@ export default function BasicModelInput(states:any) {
         setSolveTrigger: (problem: number) => void
     } = states.states;
 
-    const [selectedItem, setSelectedItem] = useState<Item | null>({ id: 1, content: "GMPL", status: "nativ", description: "Description GMPL" })
+    const [selectedItem, setSelectedItem] = useState<Item | null>({ id: 1, content: "GMPL", status: "nativ", description: t('description_gmpl') })
     const [modelInput, setModelInput] = useState('')
     const [showConverstionAlert, setShowConverstionAlert] = useState(false)
     const [showNoModelTypeAlert, setShowNoModelTypeAlert] = useState(false)
@@ -138,28 +138,32 @@ export default function BasicModelInput(states:any) {
     return (
         <TooltipProvider>
             <div className="flex items-center justify-center">
-                <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[60vh]">
+                <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[62vh]">
                     <Tabs
                         value={selectedItem?.id.toString() || "1"}
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
-                        className="w-full"
+                        className="w-full mb-1"
                     >
-                        <TabsList className="grid w-full grid-cols-3 rounded-b-none bg-background">
+                        <TabsList className="grid w-full grid-cols-3 bg-background gap-2">
                             {items.map((item) => (
                                 <TabsTrigger
                                     key={item.id}
                                     value={item.id.toString()}
-                                    className="relative data-[state=inactive]:bg-muted data-[state=inactive]:text-muted-foreground"
+                                    className="relative data-[state=active]:bg-muted data-[state=inactive]:bg-background data-[state=inactive]:text-muted-foreground flex items-center justify-center"
                                 >
                                     {item.content}
-                                    <span className={`absolute top-0 right-0 mt-1 mr-1 px-1 text-xs rounded-full text-white ${getStatusColor(item.status)}`}>
-                                        {getStatusLabel(item.status)}
-                                    </span>
+                                    <span
+                                        className={`absolute top-1/2 right-1 transform -translate-y-1/2 px-2 text-xs rounded-full text-white ${getStatusColor(
+                                            item.status
+                                        )}`}
+                                    >
+              {getStatusLabel(item.status)}
+            </span>
                                 </TabsTrigger>
                             ))}
                         </TabsList>
                     </Tabs>
-                    <div className="relative flex-grow border border-t-0 rounded-b-lg">
+                    <div className="relative flex-grow border rounded-lg p-1">
                         <ProblemEditor
                             problemFormat={selectedItem?.content || 'GMPL'}
                             value={modelInput}
@@ -178,8 +182,8 @@ export default function BasicModelInput(states:any) {
 
                         )}
                     </div>
-                    <div className="flex justify-end mt-4">
-                        <Button onClick={triggerSolving}>Abschicken</Button>
+                    <div className="flex justify-end pt-2">
+                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
                     </div>
                 </div>
             </div>
