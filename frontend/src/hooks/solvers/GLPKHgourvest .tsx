@@ -33,9 +33,6 @@ export const solveGLPKHgourvest = async (prob: string, probtype: ProblemFormats)
         let log: string = "";
         const worker = new Worker(new URL('@/lib/glpkWorker.js', import.meta.url));
 
-        console.log(`META URL${import.meta.url}`)
-        console.log(new URL('@/lib/glpkWorker.js', import.meta.url))
-
 
         //To receive information provided by the worker
         worker.onmessage = (e) => {

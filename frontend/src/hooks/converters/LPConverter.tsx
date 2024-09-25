@@ -2,7 +2,7 @@ import { LP } from "@/interfaces/glpkJavil/LP.tsx";
 import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
 import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
 import {Bnds, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
-import { GLP_UP, GLP_LO, GLP_FX } from "@/interfaces/glpkJavil/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX, GLP_FR } from "@/interfaces/glpkJavil/Bnds.tsx";
 
 // Funktion zur Konvertierung eines LP-Objekts in das LP-Format
 export function convertToLP(lpData: LP): string {
@@ -236,7 +236,7 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
 // Hilfsfunktion zum Parsen der Schranken (Bounds)
 function parseLPBound(boundStr: string): Bound | null {
     // Regex to handle "<= x <=" and also "lb <= x" and "x <= ub"
-    const regex = /(\d*\.?\d*)?\s*(<=|>=)?\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*(<=|>=|=)?\s*(\d*\.?\d*)?/;
+    const regex = /(\d*\.?\d*)?\s*(<=|>=|free)?\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*(<=|>=|=|free)?\s*(\d*\.?\d*)?/;
     const match = regex.exec(boundStr);
 
     if (match) {
@@ -250,9 +250,13 @@ function parseLPBound(boundStr: string): Bound | null {
             type = GLP_LO; // lb >= x
         } else if (match[4] === "=") {
             type = GLP_FX; // x = ub
-        } else {
+        } else if (match[2] === "free" || match[4] === "free"){
+            type = GLP_FR;
+        }
+        else{
             type = GLP_UP; // Default to 1 if only one bound is present (x <= ub or lb <= x)
         }
+
 
         return {
             type,
