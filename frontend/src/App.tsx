@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/general/seperator.tsx";
 import { Outlet } from 'react-router-dom';
 import Footer from "@/components/ui/general/footer.tsx";
 import AboutPage from './components/pages/AboutPage';
+import LicensePage from "@/components/pages/LicensePage";
 
 const Layout = () => {
     return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/solver/" element={<SolverPage />} /> {/* /solver route */}
               <Route path="/converter" element={<ConverterPage />} /> {/* /converter route */}
               <Route path="/about" element={<AboutPage />} /> {/* about route */}
+              <Route path="/license" element={<LicensePage />} /> {/* license route */}
               </Route>
           </Routes>
       </HashRouter>

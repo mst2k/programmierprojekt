@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState} from "react"
+import { useNavigate } from "react-router-dom"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { GithubIcon, FileTextIcon, UsersIcon, BookOpenIcon, CodeIcon, PresentationIcon } from "lucide-react"
 import { FC } from "react"
+import { useTranslation } from 'react-i18next';
 
 // Typ für Expertise
 interface Expertise {
@@ -100,35 +102,37 @@ const ExpertiseBar: FC<ExpertiseBarProps> = ({ expertise, icon }) => (
 export default function AboutPage() {
   // useState explizit typisiert
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined)
+  const navigate = useNavigate();
+  const {t} = useTranslation();
+
+  const navigateToLicense = () => {
+    navigate('/license');
+    window.scrollTo(0,0);
+  }
 
   return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8 text-center">Über uns</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center">{t("aboutPage.title")}</h1>
 
         <Accordion type="single" collapsible className="w-full space-y-4" value={openAccordion} onValueChange={setOpenAccordion}>
           <AccordionItem value="history">
             <AccordionTrigger>
               <div className="flex items-center">
                 <BookOpenIcon className="mr-2 pl-1.5" />
-                Unsere Geschichte
+                {t("aboutPage.cpt1.Header")}
               </div>
             </AccordionTrigger>
             <AccordionContent>
               <Card>
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground">
-                    Im Rahmen des dualen Studiums im Fach Wirtschaftsinformatik an  der Hochschule Osnabrück
-                    durften wir im 5. Semester unsere Fachkenntnisse aus dem Bereichen Operations Research
-                    und den Grundlagen der Webentwicklung anwenden.
+                    {t("aboutPage.cpt1.Text1")}
                   </p>
                   <p className="mt-4 text-muted-foreground">
-                    Im Laufe der ersten vier Semester wurden uns dabei Kenntnisse und Fertigkeiten vermittelt
-                    die in diesem Projekt gebündelt angewandt werden müssen um das Ziel dieses Projekts zu
-                    erreichen.
+                    {t("aboutPage.cpt1.Text2")}
                   </p>
                   <p className="mt-4 text-muted-foreground">
-                    Das Projektteam ist in seinen Kenntnisse und Fähigkeiten eher heterogen, sodass verschiedene
-                    Sichtweisen zu einer vielversprechenden Webanwendung geführt haben.
+                    {t("aboutPage.cpt1.Text3")}
                   </p>
                 </CardContent>
               </Card>
@@ -139,7 +143,7 @@ export default function AboutPage() {
             <AccordionTrigger>
               <div className="flex items-center">
                 <UsersIcon className="mr-2 pl-1.5" />
-                Das Team
+                {t("aboutPage.cpt2.Header")}
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -174,18 +178,16 @@ export default function AboutPage() {
             <AccordionTrigger>
               <div className="flex items-center">
                 <FileTextIcon className="mr-2 pl-1.5" />
-                Lizenzen
+                {t("aboutPage.cpt3.Header")}
               </div>
             </AccordionTrigger>
             <AccordionContent>
               <Card>
                 <CardContent className="pt-6">
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>MIT Lizenz für Open-Source-Komponenten</li>
-                    <li>Apache 2.0 Lizenz für bestimmte Bibliotheken</li>
-                    <li>Proprietäre Lizenz für unsere Kerntechnologie</li>
-                  </ul>
-                  <Button variant="outline" className="mt-4">Vollständige Lizenzbedingungen</Button>
+                  <p className="mb-4 text-muted-foreground">
+                    {t("aboutPage.cpt3.text")}
+                  </p>
+                  <Button variant="outline" onClick={navigateToLicense} className="mt-4">{t("aboutPage.cpt3.button")}</Button>
                 </CardContent>
               </Card>
             </AccordionContent>
@@ -195,22 +197,18 @@ export default function AboutPage() {
             <AccordionTrigger>
               <div className="flex items-center">
                 <GithubIcon className="mr-2 pl-1.5" />
-                Quellcode
+                {t("aboutPage.cpt4.Header")}
               </div>
             </AccordionTrigger>
             <AccordionContent>
               <Card>
                 <CardContent className="pt-6">
                   <p className="mb-4 text-muted-foreground">
-                    Wir glauben an die Kraft der Open-Source-Gemeinschaft. Ein Großteil unseres
-                    Codes ist öffentlich zugänglich, um Zusammenarbeit und Innovation zu fördern.
-                    Durch die Offenlegung unseres Quellcodes möchten wir nicht nur Transparenz
-                    schaffen, sondern auch anderen Entwicklern die Möglichkeit geben, von unserer
-                    Arbeit zu lernen und darauf aufzubauen.
+                    {t("aboutPage.cpt4.text")}
                   </p>
                   <Button >
                     <GithubIcon className="mr-2 h-4 w-4" />
-                    <a href="https://github.com/mst2k/programmierprojekt" target="_blank">Besuchen Sie unser GitHub</a>
+                    <a href="https://github.com/mst2k/programmierprojekt" target="_blank">{t("aboutPage.cpt4.button")}</a>
                   </Button>
                 </CardContent>
               </Card>
