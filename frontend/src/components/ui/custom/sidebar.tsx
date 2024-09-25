@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { X, ArrowRightFromLine, Menu } from "lucide-react"
+import { X, ArrowRightFromLine } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/general/seperator"

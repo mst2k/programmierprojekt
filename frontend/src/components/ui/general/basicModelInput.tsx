@@ -59,7 +59,7 @@ export default function BasicModelInput(states:any) {
     const [mpsState, setMpsState] = useState<Item["status"]>("unsupported");
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
-    const tooltipRef = useRef(null)
+    const tooltipRef = useRef<HTMLButtonElement | null>(null)
 
     useEffect(() => {
         const checkMobile = () => {
@@ -71,8 +71,8 @@ export default function BasicModelInput(states:any) {
     }, [])
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+            if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
                 setIsTooltipOpen(false)
             }
         }
