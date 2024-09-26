@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom"
 import { ArrowRight, Code, Zap, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Joyride, { Step, CallBackProps } from 'react-joyride';
+import { Step } from 'react-joyride';
 import { useState } from 'react';
+import GuidedTour from "@/components/ui/custom/GuidedTour"
 
 function WelcomePage() {
     const { t } = useTranslation();
@@ -19,13 +20,6 @@ function WelcomePage() {
 
     const startTour = () => {
         setRunTour(true);
-    }
-
-    const handleJoyrideCallback = (data: CallBackProps) => {
-        const { status } = data;
-        if (status === 'finished' || status === 'skipped') {
-            setRunTour(false);
-        }
     }
 
     const steps: Step[] = [
@@ -46,21 +40,26 @@ function WelcomePage() {
             target: '.joyride-contact',
             content: 'Ready to start? Click here to begin solving problems!',
         },
+        {
+            target: '.joyride-solver',
+            content: "Let's move to the Solver Page to solve your problems."
+        },
+        // {
+        //     target: '.joyride-converter-input',
+        //     content: 'On the Converter page, you can input your problem to convert between different formats.',
+        // },
+        // {
+        //     target: '.joyride-converter-output',
+        //     content: 'The converted problem will be displayed here.',
+        // },
     ];
     
     return (
         <div className="flex flex-col min-h-screen w-screen bg-[#f0f0f0]">            
-            <Joyride
+            <GuidedTour
                 steps={steps}
                 run={runTour}
-                continuous={true}
-                showSkipButton={true}
-                callback={handleJoyrideCallback}
-                styles={{
-                    options: {
-                        primaryColor: '#3498db',
-                    }
-                }}
+                setRun={setRunTour}
             />
             <main className="flex-grow">
                 <section className="container mx-auto px-6 py-16 text-center joyride-welcome">
@@ -70,8 +69,8 @@ function WelcomePage() {
                         {t('welcomePage.getStarted')} <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </section>
-                <section id="features" className="py-16 joyride-features">
-                    <div className="container mx-auto px-6">
+                <section id="features" className="py-16">
+                    <div className="container mx-auto px-6 joyride-features">
                         <h2 className="text-3xl font-bold mb-8 text-center text-[#2c3e50]">{t('welcomePage.keayFeat')}</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <FeatureCard 
@@ -92,8 +91,8 @@ function WelcomePage() {
                         </div>
                     </div>
                 </section>
-                <section id="about" className="py-16 bg-white joyride-about">
-                    <div className="container mx-auto px-6">
+                <section id="about" className="py-16 bg-white">
+                    <div className="container mx-auto px-6 joyride-about">
                         <h2 className="text-3xl font-bold mb-8 text-center text-[#2c3e50]">{t('welcomePage.aboutProj')}</h2>
                         <Card className="bg-[#f0f0f0] border-none shadow-lg">
                             <CardContent className="p-6">
@@ -107,11 +106,11 @@ function WelcomePage() {
                         </Card>
                     </div>
                 </section>
-                <section id="contact" className="py-16 bg-white joyride-contact">
-                    <div className="container mx-auto px-6 text-center">
+                <section id="contact" className="py-16 bg-white">
+                    <div className="container mx-auto px-6 text-center joyride-contact">
                         <h2 className="text-3xl font-bold mb-4">{t('welcomePage.optimize')}</h2>
                         <p className="mb-8">{t('welcomePage.startSolv')}</p>
-                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white">
+                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white joyride-solver">
                         {t('welcomePage.try')}
                         </Button>
                     </div>
