@@ -124,6 +124,8 @@ async function calculateUrlLength(params: { key1: string; key2: string } | {
     };
 }
 
+
+
 // Test mit verschiedenen Datensätzen
 async function testCompression() {
     const testCases = [

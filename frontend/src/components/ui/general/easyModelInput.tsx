@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input"
 import { Trash2, Plus } from 'lucide-react'
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from 'react-i18next'
+import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
+import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
 export default function EnhancedStatusSelect(states:any) {
     const { t } = useTranslation();
@@ -19,12 +21,14 @@ export default function EnhancedStatusSelect(states:any) {
         setCurrentLpFormat,
         setCurrentProblem,
         solveTrigger,
-        setSolveTrigger
+        setSolveTrigger,
+        setCurrentInputVariant
     }: {
         currentSolver: Solvers; setCurrentSolver: (solver: Solvers) => void;
         currentLpFormat: ProblemFormats; setCurrentLpFormat: (format: ProblemFormats) => void;
         currentProblem: string; setCurrentProblem: (problem: string) => void;
-        solveTrigger: number, setSolveTrigger: (problem:number) => void
+        solveTrigger: number, setSolveTrigger: (problem:number) => void;
+        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
     const [currentFormat, setCurrentFormat] = useState<ProblemFormats>('LP')
@@ -135,6 +139,32 @@ export default function EnhancedStatusSelect(states:any) {
         setSolveTrigger(solveTrigger + 1);
     }
 
+    const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
+        console.log('Geladene Parameter:', loadedParams);
+        if (loadedParams.currentPage) {
+            if (loadedParams.currentPage === "easy") {
+                if (loadedParams.optimizationType) {
+                    setOptimizationType(loadedParams.optimizationType as 'maximize' | 'minimize');
+                }
+                if (loadedParams.objectiveFunction) {
+                    setObjectiveFunction(loadedParams.objectiveFunction);
+                }
+                if (loadedParams.restrictions) {
+                    setRestrictions(JSON.parse(loadedParams.restrictions));
+                }
+                if (loadedParams.bounds) {
+                    setBounds(JSON.parse(loadedParams.bounds));
+                }
+                if (loadedParams.selectedVariables) {
+                    setSelectedVariables(JSON.parse(loadedParams.selectedVariables));
+                }
+                clearUrlParams()
+            }else{
+                    setCurrentInputVariant(loadedParams.currentPage);
+            }
+        }
+    };
+
     const renderTabContent = () => (
         <div className="space-y-4">
             <h3 className="font-bold mb-2">{t("orTyp")}</h3>
@@ -219,6 +249,17 @@ export default function EnhancedStatusSelect(states:any) {
                     </div>
                     <div className="flex justify-end">
                         <Button onClick={triggerSolving}>{t('send')}</Button>
+                        <AdvancedShareButton
+                            parameters={{
+                                optimizationType: optimizationType,
+                                objectiveFunction: objectiveFunction,
+                                restrictions: JSON.stringify(restrictions),
+                                bounds: JSON.stringify(bounds),
+                                selectedVariables: JSON.stringify(selectedVariables),
+                                currentPage:"easy"
+                            }}
+                            onParametersLoaded={handleParametersLoaded}
+                        />
                     </div>
                 </div>
             </div>
