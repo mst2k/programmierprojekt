@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
 import { useTranslation } from "react-i18next"
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
+import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog"
 import { DialogHeader } from "@/components/ui/dialog"
 import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
+import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
+import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
 export default function KnapsackProblemUI(states: any) {
     const gmplInit = `
@@ -52,13 +54,15 @@ data;
         setCurrentLpFormat,
         setCurrentProblem,
         solveTrigger,
-        setSolveTrigger
+        setSolveTrigger,
+        setCurrentInputVariant
     }: {
         currentSolver: Solvers;
         setCurrentLpFormat: (format: ProblemFormats) => void;
         setCurrentProblem: (problem: string) => void;
         solveTrigger: number,
-        setSolveTrigger: (problem: number) => void
+        setSolveTrigger: (problem: number) => void;
+        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
     const addItem = () => setItems([...items, { name: '', weight: '', value: '' }])
@@ -119,6 +123,24 @@ data;
         setIsGmplDialogOpen(false);
         triggerSolving(gmplCodeState);
     };
+
+    const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
+        console.log('Geladene Parameter:', loadedParams);
+        if (loadedParams.currentPage) {
+            if (loadedParams.currentPage === "knapsack") {
+                if (loadedParams.items) {
+                    setItems(JSON.parse(loadedParams.items));
+                }
+                if (loadedParams.capacity) {
+                    setCapacity(loadedParams.capacity);
+                }
+                clearUrlParams()
+            } else {
+                setCurrentInputVariant(loadedParams.currentPage)
+            }
+        }
+    };
+
 
     return (
         <div className="p-4 max-w-4xl mx-auto h-auto">
@@ -185,13 +207,19 @@ data;
                     placeholder={t('knapsackInput.capacity')}
                 />
             </div>
-
-            <Button className="mb-4" onClick={handleGenerateGMPL}>{t('knapsackInput.generateGMPL')}</Button>
-
+            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+                <Button className="" onClick={handleGenerateGMPL}>{t('knapsackInput.generateGMPL')}</Button>
+                <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('knapsackInput.showGMPL')}</Button>
+                <AdvancedShareButton
+                    parameters={{
+                        items: JSON.stringify(items),
+                        capacity: capacity,
+                        currentPage:"knapsack"
+                    }}
+                    onParametersLoaded={handleParametersLoaded}
+                />
+            </div>
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button className="ml-2">{t('knapsackInput.showGMPL')}</Button>
-                </DialogTrigger>
                 <DialogContent className="h-auto">
                     <DialogHeader>
                         <DialogTitle>{t('knapsackInput.editGMPL')}</DialogTitle>
