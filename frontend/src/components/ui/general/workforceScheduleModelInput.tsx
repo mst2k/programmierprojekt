@@ -110,7 +110,7 @@ data;
     const updatePreference = (shiftIndex: number, employeeIndex: number, value: string) => {
         const newPreferences = [...preferences]
         // @ts-expect-error
-        newPreferences[shiftIndex][employeeIndex] = value
+        newPreferences[employeeIndex][shiftIndex] = value
         setPreferences(newPreferences)
     }
 
@@ -139,15 +139,15 @@ data;
         gmplCode += ';\n\n';
 
         gmplCode += 'param preference :\n    ';
-        gmplCode += employees.map(e => e.name).join(' ');
+        gmplCode += shifts.map(e => e.name).join(' ');
         gmplCode += ' :=\n';
-        shifts.forEach((s, i) => {
-            gmplCode += `  ${s.name} ${preferences[i].join(' ')}\n`;
+        employees.forEach((e, i) => {
+            gmplCode += `  ${e.name} ${preferences[i].join(' ')}\n`;
         });
         gmplCode += ';\n\n';
 
         gmplCode += 'end;\n';
-
+        setGmplCode(gmplCode)
         return gmplCode;
     };
 
@@ -296,7 +296,7 @@ data;
                                     <TableCell key={employeeIndex}>
                                         <Input
                                             type="number"
-                                            value={preferences[shiftIndex]?.[employeeIndex] || ''}
+                                            value={preferences[employeeIndex]?.[shiftIndex] || ''}
                                             onChange={(e) => updatePreference(shiftIndex, employeeIndex, e.target.value)}
                                             placeholder={t('workforceInput.preference')}
                                         />
