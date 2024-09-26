@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { DialogHeader } from "@/components/ui/dialog"
 import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
+import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
+import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
 export default function WorkforceSchedulingUI(states: any) {
     const gmplInit = `
@@ -56,13 +58,15 @@ data;
         setCurrentLpFormat,
         setCurrentProblem,
         solveTrigger,
-        setSolveTrigger
+        setSolveTrigger,
+        setCurrentInputVariant
     }: {
         currentSolver: Solvers;
         setCurrentLpFormat: (format: ProblemFormats) => void;
         setCurrentProblem: (problem: string) => void;
         solveTrigger: number,
-        setSolveTrigger: (problem: number) => void
+        setSolveTrigger: (problem: number) => void;
+        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
     const addEmployee = () => {
@@ -162,6 +166,28 @@ data;
         setIsGmplDialogOpen(false);
         triggerSolving(gmplCodeState);
     };
+
+    const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
+        console.log('Geladene Parameter:', loadedParams);
+        if (loadedParams.currentPage) {
+            if (loadedParams.currentPage === "workforce") {
+                if (loadedParams.employees) {
+                    setEmployees(JSON.parse(loadedParams.employees));
+                }
+                if (loadedParams.shifts) {
+                    setShifts(JSON.parse(loadedParams.shifts));
+                }
+                if (loadedParams.preferences) {
+                    setPreferences(JSON.parse(loadedParams.preferences));
+                }
+                clearUrlParams()
+            } else {
+                setCurrentInputVariant(loadedParams.currentPage)
+            }
+        }
+    };
+
+
 
     return (
         <div className="p-4 max-w-4xl mx-auto h-auto">
@@ -281,13 +307,22 @@ data;
                     </TableBody>
                 </Table>
             </div>
+            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+                <Button className="mb" onClick={handleGenerateGMPL}>{t('workforceInput.generateGMPL')}</Button>
+                <Button className="ml-2" onClick={(e) => {setIsGmplDialogOpen(true)}}>{t('workforceInput.showGMPL')}</Button>
+                <AdvancedShareButton
+                    parameters={{
+                        employees: JSON.stringify(employees),
+                        shifts: JSON.stringify(shifts),
+                        preferences: JSON.stringify(preferences),
+                        currentPage:"workforce"
+                    }}
+                    onParametersLoaded={handleParametersLoaded}
+                />
 
-            <Button className="mb-4" onClick={handleGenerateGMPL}>{t('workforceInput.generateGMPL')}</Button>
+            </div>
 
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button className="ml-2">{t('workforceInput.showGMPL')}</Button>
-                </DialogTrigger>
                 <DialogContent className="h-auto">
                     <DialogHeader>
                         <DialogTitle>{t('workforceInput.editGMPL')}</DialogTitle>

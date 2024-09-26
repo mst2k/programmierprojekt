@@ -11,6 +11,8 @@ import {useTranslation} from "react-i18next";
 import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "@radix-ui/react-dialog";
 import {DialogHeader} from "@/components/ui/dialog.tsx";
 import {ProblemEditor} from "@/components/ui/custom/ProblemEditor/ProblemEditor.tsx";
+import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
+import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
 export default function TransportationProblemUI(states:any) {
     const gmplInit = `
@@ -101,13 +103,14 @@ data;\n`
     const [isGmplDialogOpen, setIsGmplDialogOpen] = useState(false)
 
     const {
-//        setCurrentSolver,
+        setCurrentSolver,
 //        currentLpFormat,
         setCurrentLpFormat,
 //        currentProblem,
         setCurrentProblem,
         solveTrigger,
-        setSolveTrigger
+        setSolveTrigger,
+        setCurrentInputVariant
     }: {
         currentSolver: Solvers;
         setCurrentSolver: (solver: Solvers) => void;
@@ -116,7 +119,8 @@ data;\n`
         currentProblem: string;
         setCurrentProblem: (problem: string) => void;
         solveTrigger: number,
-        setSolveTrigger: (problem:number) => void
+        setSolveTrigger: (problem:number) => void;
+        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
     const addPlant = () => setPlants([...plants, { name: '', capacity: '' }])
@@ -237,6 +241,30 @@ data;\n`
         triggerSolving(gmplCodeState);
     }
 
+    const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
+        console.log('Geladene Parameter:', loadedParams);
+        if (loadedParams.currentPage) {
+            if (loadedParams.currentPage === "transport") {
+                if (loadedParams.plants) {
+                    setPlants(JSON.parse(loadedParams.plants));
+                }
+                if (loadedParams.markets) {
+                    setMarkets(JSON.parse(loadedParams.markets));
+                }
+                if (loadedParams.distances) {
+                    setDistances(JSON.parse(loadedParams.distances));
+                }
+                if (loadedParams.freightCost) {
+                    setFreightCost(loadedParams.freightCost);
+                }
+                clearUrlParams()
+            } else {
+                setCurrentInputVariant(loadedParams.currentPage)
+            }
+        }
+    };
+
+
     return (
         <div className="p-4 max-w-4xl mx-auto h-auto">
             <h1 className="text-2xl font-bold mb-4">{t('transportInput.title')}</h1>
@@ -268,63 +296,63 @@ data;\n`
                 </Button>
             </div>
 
-    <div className="mb-6">
-    <h2 className="text-xl font-semibold mb-2">Markets</h2>
-    {markets.map((market, index) => (
-        <div key={index} className="flex items-center mb-2">
-    <Input
-        value={market.name}
-        onChange={(e) => updateMarket(index, 'name', e.target.value)}
-        placeholder="Market name"
-        className="mr-2"
-        />
-        <Input
-            type="number"
-        value={market.demand}
-        onChange={(e) => updateMarket(index, 'demand', e.target.value)}
-        placeholder={t("transportInput.demand")}
-        className="mr-2"
-        />
-        <Button onClick={() => removeMarket(index)} size="icon" variant="ghost">
-    <MinusCircle className="h-4 w-4" />
-        </Button>
-        </div>
-    ))}
-    <Button onClick={addMarket} className="mt-2">
-    <PlusCircle className="mr-2 h-4 w-4" /> {t("transportInput.addMarket")}
-    </Button>
-    </div>
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Markets</h2>
+                {markets.map((market, index) => (
+                    <div key={index} className="flex items-center mb-2">
+                        <Input
+                            value={market.name}
+                            onChange={(e) => updateMarket(index, 'name', e.target.value)}
+                            placeholder="Market name"
+                            className="mr-2"
+                        />
+                        <Input
+                            type="number"
+                            value={market.demand}
+                            onChange={(e) => updateMarket(index, 'demand', e.target.value)}
+                            placeholder={t("transportInput.demand")}
+                            className="mr-2"
+                        />
+                        <Button onClick={() => removeMarket(index)} size="icon" variant="ghost">
+                            <MinusCircle className="h-4 w-4" />
+                        </Button>
+                    </div>
+                ))}
+                <Button onClick={addMarket} className="mt-2">
+                    <PlusCircle className="mr-2 h-4 w-4" /> {t("transportInput.addMarket")}
+                </Button>
+            </div>
 
-    <div className="mb-6">
-    <h2 className="text-xl font-semibold mb-2">{t("transportInput.distances")}</h2>
-    <Table>
-    <TableHeader>
-        <TableRow>
-            <TableHead>{t("transportInput.plantMarket")}</TableHead>
-    {markets.map((market, index) => (
-        <TableHead key={index}>{market.name}</TableHead>
-    ))}
-    </TableRow>
-    </TableHeader>
-    <TableBody>
-    {plants.map((plant, plantIndex) => (
-            <TableRow key={plantIndex}>
-                <TableCell>{plant.name}</TableCell>
-    {markets.map((_, marketIndex) => (
-        <TableCell key={marketIndex}>
-        <Input
-            type="number"
-        value={distances[plantIndex]?.[marketIndex] || ''}
-        onChange={(e) => updateDistance(plantIndex, marketIndex, e.target.value)}
-        placeholder={t("transportInput.distances")}
-            />
-            </TableCell>
-    ))}
-    </TableRow>
-))}
-    </TableBody>
-    </Table>
-    </div>
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">{t("transportInput.distances")}</h2>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>{t("transportInput.plantMarket")}</TableHead>
+                            {markets.map((market, index) => (
+                                <TableHead key={index}>{market.name}</TableHead>
+                            ))}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {plants.map((plant, plantIndex) => (
+                            <TableRow key={plantIndex}>
+                                <TableCell>{plant.name}</TableCell>
+                                {markets.map((_, marketIndex) => (
+                                    <TableCell key={marketIndex}>
+                                        <Input
+                                            type="number"
+                                            value={distances[plantIndex]?.[marketIndex] || ''}
+                                            onChange={(e) => updateDistance(plantIndex, marketIndex, e.target.value)}
+                                            placeholder={t("transportInput.distances")}
+                                        />
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
 
             <div className="mb-6">
                 <Label htmlFor="freightCost">{t('transportInput.freightCost')}</Label>
@@ -337,22 +365,31 @@ data;\n`
                 />
             </div>
 
-            <Button className={"mb-4"} onClick={handleGenerateGMPL}>{t('transportInput.generateGMPL')}</Button>
-
+            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+                <Button className={"mb"} onClick={handleGenerateGMPL}>{t('transportInput.generateGMPL')}</Button>
+                <Button className="ml-2" onClick={(e) => {setIsGmplDialogOpen(true)}}>{t('transportInput.showGMPL')}</Button>
+                <AdvancedShareButton
+                    parameters={{
+                        plants: JSON.stringify(plants),
+                        markets: JSON.stringify(markets),
+                        distances: JSON.stringify(distances),
+                        freightCost: freightCost,
+                        currentPage: "transport"
+                    }}
+                    onParametersLoaded={handleParametersLoaded}
+                />
+            </div>
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button className="ml-2">{t('transportInput.showGMPL')}</Button>
-                </DialogTrigger>
-                <DialogContent className="h-auto">
+                <DialogContent className="h-auto relative flex-row">
                     <DialogHeader>
                         <DialogTitle>{t('transportInput.editGMPL')}</DialogTitle>
                     </DialogHeader>
                     <div className="relative flex-grow border border-t-0 rounded-b-lg h-[400px]">
-                    <ProblemEditor
-                        problemFormat={'GMPL'}
-                        value={gmplCodeState}
-                        onChange={(value: React.SetStateAction<string>) => handleEditGMPL(value)}
-                    />
+                        <ProblemEditor
+                            problemFormat={'GMPL'}
+                            value={gmplCodeState}
+                            onChange={(value: React.SetStateAction<string>) => handleEditGMPL(value)}
+                        />
                     </div>
                     <div className="flex justify-end space-x-2 mt-2">
                         <Button onClick={handleSaveGMPL}>{t('transportInput.generateGMPL')}</Button>
@@ -363,5 +400,5 @@ data;\n`
                 </DialogContent>
             </Dialog>
         </div>
-)
+    )
 }
