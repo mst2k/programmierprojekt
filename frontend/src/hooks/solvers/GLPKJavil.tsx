@@ -27,25 +27,18 @@ export const getGLPK = async () => {
  * @returns {Promise<{result: SolverResult | null, error: Error | null, log: string}>} A promise that resolves to an object containing the solver result, any error, and a log string.
  */
 export const solveGLPKJavil = async (prob: string, probtype: ProblemFormats): Promise<{ result: SolverResult | null; error: Error | null; log: string}> => {
+    let log: string = "See The Browser Console for further Information. Logging is not Possible elsewhere";
     return new Promise(async (resolve) => {
+
         let result: SolverResult | null = null;
         let error: Error | null = null;
-        let log: string = "";
-
-        function logFunction(newlog:string) {
-            log = `${log}\n${newlog}`;
-            console.log(newlog)
-        }
 
         try {
             const glpk = await getGLPK();  // Hier wird gewartet, bis GLPK vollständig geladen ist
             const options: Options = {
                 msglev: glpk.GLP_MSG_ALL,  // Jetzt ist GLP_MSG_ALL verfügbar
                 presol: true,
-                cb: {
-                    call: (progress: any) => logFunction(progress),
-                    each: 1
-                }
+                tmlim: 120
             } as Options;
 
             //Convert problem to glpk Interface
@@ -94,7 +87,8 @@ function transformSolverResult(lp: LP, result: Result): SolverResult {
     };
 
     // Erstelle Columns aus Variablen und Bounds
-    const columns: { [key: string]: ColumnData } = {"Unsupported": {Name: "NotSupported"} as ColumnData};
+    //const columns: { [key: string]: ColumnData } = {"Unsupported": {Name: "NotSupported"} as ColumnData};
+    const columns: { [key: string]: ColumnData } = {};
 
     // Falls es Schranken (bounds) gibt, iteriere darüber und sammle Infos
     if (lp.bounds) {
