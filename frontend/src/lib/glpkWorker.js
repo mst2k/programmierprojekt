@@ -14,54 +14,60 @@ self.onmessage = function (e) {
     function captureOutput(message) {
         output += `${message}\n`;
     }
-    glp_set_print_func(captureOutput);
+
+    let lp = null;
+    let tran = null;
 
     try {
-        // Setze die eigene Print-Funktion
         glp_set_print_func(log);
-
-        const lp = glp_create_prob();
+        lp = glp_create_prob();
 
         if (probtype === 'LP') {
             readLPFromString(lp, prob);
         } else if (probtype === 'GMPL') {
-            const tran = glp_mpl_alloc_wksp();
-            readGMPLFromString(tran, prob);
-            glp_mpl_generate(tran, null, captureOutput);
+            tran = glp_mpl_alloc_wksp();
+            if (glp_mpl_read_model_from_string(tran,null, prob,0) !== 0) {
+                throw new Error('Failed to read GMPL model');
+            }
+            if (glp_mpl_generate(tran, null) !== 0) {
+                throw new Error('Failed to generate GMPL model');
+            }
             glp_mpl_build_prob(tran, lp);
-            glp_mpl_postsolve(tran, lp, GLP_MIP);
         } else {
-            // Problemtyp wird nicht unterstützt
-            self.postMessage({ action: 'done', result: output_result, objective, output, error: Error(`Unsupported problem type: ${probtype}`).message });
-            return;
+            throw new Error(`Unsupported problem type: ${probtype}`);
         }
 
-        // Überprüfe, ob es ganzzahlige oder binäre Variablen gibt, um den MIP-Solver zu aktivieren
         const hasIntegerVariables = glp_get_num_int(lp) > 0;
 
         if (hasIntegerVariables) {
-            // Falls MIP aktivieren, benutze den MIP-Solver
             log('Solving as MIP...');
             var iocp = new IOCP({presolve: GLP_ON});
             glp_intopt(lp, iocp);
             objective = glp_mip_obj_val(lp);
             result = {};
             for (let i = 1; i <= glp_get_num_cols(lp); i++) {
-                result[glp_get_col_name(lp, i)] = glp_mip_col_val(lp, i);  // MIP-Werte auslesen
+                result[glp_get_col_name(lp, i)] = glp_mip_col_val(lp, i);
+            }
+            if (probtype === 'GMPL') {
+                glp_set_print_func(captureOutput);
+                glp_mpl_postsolve(tran, lp, GLP_MIP);
             }
         } else {
-            // Kontinuierliche Lösung mit Simplex
             log('Solving as LP...');
             const smcp = new SMCP({ presolve: GLP_ON });
             glp_simplex(lp, smcp);
             objective = glp_get_obj_val(lp);
             result = {};
             for (let i = 1; i <= glp_get_num_cols(lp); i++) {
-                result[glp_get_col_name(lp, i)] = glp_get_col_prim(lp, i);  // Simplex-Werte auslesen
+                result[glp_get_col_name(lp, i)] = glp_get_col_prim(lp, i);
+            }
+            if (probtype === 'GMPL') {
+                glp_set_print_func(captureOutput);
+                glp_mpl_postsolve(tran, lp, GLP_SOL);
             }
         }
 
-        output_result = createJSONReport(lp, hasIntegerVariables);  // JSON-Ausgabe erstellen
+        output_result = createJSONReport(lp, hasIntegerVariables);
         log('Optimization completed successfully.');
 
     } catch (err) {
@@ -73,17 +79,10 @@ self.onmessage = function (e) {
     self.postMessage({ action: 'done', result: output_result, objective, output });
 };
 
-
 // Function to read LP from string
 function readLPFromString(lp, problemString) {
     let pos = 0;
     glp_read_lp(lp, null, () => (pos < problemString.length ? problemString[pos++] : -1));
-}
-
-// Function to read GMPL from string
-function readGMPLFromString(tran, problemString) {
-    let pos = 0;
-    glp_mpl_read_model(tran, null, () => (pos < problemString.length ? problemString[pos++] : -1), false);
 }
 
 // Function to read MPS from string

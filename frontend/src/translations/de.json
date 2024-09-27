@@ -101,6 +101,14 @@
             "try": "Jetzt ausprobieren",
             "ORTeamRights": "2024 OR Solver Team. Alle Rechte vorbehalten."
     },
+    "converterPage": {
+        "title": "Konvertierer",
+        "codePlaceholder": "Geben Sie hier Ihren Code ein...",
+        "from": "Von",
+        "to": "Nach",
+        "execute": "Ausführen",
+        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
+    },
 
     "settings": "Einstellungen",
     "transportInput": {
@@ -154,4 +162,5 @@
         "editGMPL": "GMPL-Code bearbeiten",
         "closeGMPL": "Schließen"
     }
-  }
+}
+

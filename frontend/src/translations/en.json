@@ -152,5 +152,13 @@
     "transport": "Transport",
     "workforce": "Workforce",
     "knapsack": "Knapsack"
+    },
+    "converterPage": {
+        "title": "Converter",
+        "codePlaceholder": "Enter your code here...",
+        "from": "From",
+        "to": "To",
+        "execute": "Execute",
+        "noValidLpObject": "No Valid LP Object to Create Output"
+    }
 }
-  
