@@ -2,44 +2,37 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { X, ArrowRightFromLine } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/general/seperator"
-import { inputModes } from "@/components/pages/SolverPage"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
-import { FileExport } from "@/components/ui/general/fileExport"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/general/seperator.tsx";
+import {inputModes} from "@/components/pages/SolverPage.tsx";
+import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
+import {FileExport} from "@/components/ui/general/fileExport.tsx";
 
 interface SidebarProps {
-    currentInputVariant: string
-    setCurrentInputVariant: (variant: string) => void
-    currentSolver: Solvers | null
-    setCurrentSolver: (solver: Solvers) => void
-    currentProblem: string
-    currentLpFormat: ProblemFormats
+    currentInputVariant: string;
+    setCurrentInputVariant: (variant: string) => void;
+    currentSolver: Solvers | null;
+    setCurrentSolver: (solver: Solvers) => void;
+    currentProblem: string,
+    currentLpFormat: ProblemFormats,
 }
 
 type SolverTypes = {
-    id: number
-    content: Solvers
-    description: string
+    id: number;
+    content: Solvers;
+    description: string;
 }
 
-export default function Sidebar({
-                                    currentInputVariant,
-                                    setCurrentInputVariant,
-                                    currentSolver,
-                                    setCurrentSolver,
-                                    currentProblem,
-                                    currentLpFormat,
-                                }: SidebarProps) {
+export default function Sidebar( { currentInputVariant, setCurrentInputVariant, currentSolver, setCurrentSolver, currentProblem, currentLpFormat }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(true)
-    const { t } = useTranslation()
+    const {t} = useTranslation();
 
     const toggleSidebar = () => setIsOpen(!isOpen)
 
-    const solverTypes: SolverTypes[] = [
-        { id: 1, content: 'GLPKHgourvest', description: 'Description GLPKHgourvest' },
-        { id: 2, content: 'GLPKJavil', description: 'Description GLPKJavil' },
+
+    const solverTypes:SolverTypes[]=[
+        { id: 1, content: 'GLPKHgourvest',  description: 'Description GLPKHgourvest' },
+        { id: 2, content: 'GLPKJavil',  description: 'Description GLPKJavil' },
         { id: 3, content: 'Highs', description: 'Description Highs' },
     ]
 
@@ -108,23 +101,6 @@ export default function Sidebar({
                     </>
                 )}
             </div>
-
-            {/* Mobile Sidebar */}
-            <div className="md:hidden">
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="outline" size="icon" className="absolute top-[4rem] left-2 z-40">
-                            <ArrowRightFromLine className="h-4 w-4" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                        <div className="py-4">
-                            <h2 className="text-lg font-semibold mb-4">{t('sidebar.mode')}</h2>
-                            <SidebarContent />
-                        </div>
-                    </SheetContent>
-                </Sheet>
-            </div>
-        </>
+        </div>
     )
 }
