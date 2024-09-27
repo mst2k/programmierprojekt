@@ -151,8 +151,7 @@
     },
     "transport": "Transport",
     "workforce": "Workforce",
-    "knapsack": "Knapsack"
-    },
+    "knapsack": "Knapsack",
     "converterPage": {
         "title": "Converter",
         "codePlaceholder": "Enter your code here...",
