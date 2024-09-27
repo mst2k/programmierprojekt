@@ -36,13 +36,14 @@ function WelcomePage() {
             target: '.joyride-about',
             content: 'Learn more about our project and its academic context.',
         },
-        {
-            target: '.joyride-contact',
-            content: 'Ready to start? Click here to begin solving problems!',
-        },
+        // {
+        //     target: '.joyride-contact',
+        //     content: 'Ready to start? Click here to begin solving problems!',
+        // },
         {
             target: '.joyride-solver',
-            content: "Let's move to the Solver Page to solve your problems."
+            content: 'Ready to start? Click here to begin solving problems!',
+            //content: "Let's move to the Solver Page to solve your problems."
         },
         // {
         //     target: '.joyride-converter-input',
@@ -107,10 +108,10 @@ function WelcomePage() {
                     </div>
                 </section>
                 <section id="contact" className="py-16 bg-white">
-                    <div className="container mx-auto px-6 text-center joyride-contact">
+                    <div className="container mx-auto px-6 text-center joyride-solver">
                         <h2 className="text-3xl font-bold mb-4">{t('welcomePage.optimize')}</h2>
                         <p className="mb-8">{t('welcomePage.startSolv')}</p>
-                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white joyride-solver">
+                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white">
                         {t('welcomePage.try')}
                         </Button>
                     </div>

@@ -18,6 +18,9 @@ import { convertToLP, parseLP } from "@/hooks/converters/LPConverter.tsx";
 import { convertToMPS, parseMPS } from "@/hooks/converters/MPSConverter.tsx";
 import { parseGLPMAdvanced } from "@/hooks/converters/GLPKConverter.tsx";
 
+import GuidedTour from "@/components/ui/custom/GuidedTour";
+import { Step } from 'react-joyride';
+
 const convertOptions = [
     {name: "glpkInterface",
         from: (code:string):LP => {return JSON.parse(code)},
@@ -34,6 +37,7 @@ const CodeExecutionPage: React.FC = () => {
     const [from, setOptionFrom] = useState<string>('');
     const [to, setOptionTo] = useState<string>('');
     const [output, setOutput] = useState<string>('');
+    const [runTour, setRunTour] = useState(true);
 
     const handleExecute = async () => {
         if (from === to) {
@@ -55,16 +59,34 @@ const CodeExecutionPage: React.FC = () => {
         }
     };
 
+    const steps: Step[] = [
+        {
+            target: '.joyride-converter-input',
+            content: 'Here you can input your problem to convert between different formats.',
+        },
+        {
+            target: '.joyride-converter-output',
+            content: 'The converted problem will be displayed here.',
+        },
+    ];
+
     return (
         <div className="flex flex-col h-screen w-screen p-10">
+            <GuidedTour 
+                steps={steps}
+                run={runTour}
+                setRun={setRunTour} 
+            />
             <div className="mb-4">
-                <h1 className="text-xl font-bold mb-2">{t('converterPage.title')}</h1>
-                <Textarea
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    className="w-full h-40 p-4 border rounded-md mb-4"
-                    placeholder={t('converterPage.codePlaceholder')}
-                />
+                <h1 className="text-xl font-bold mb-2 ">{t('converterPage.title')}</h1>   
+                <div className="joyride-converter-input">
+                    <Textarea
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        className="w-full h-40 p-4 border rounded-md mb-4"
+                        placeholder={t('converterPage.codePlaceholder')}
+                    />
+                </div>
                 <div className="flex space-x-10 mb-4">
                     <Select onValueChange={(e) => setOptionFrom(e)}>
                         <SelectTrigger className="w-[280px]">
@@ -99,7 +121,9 @@ const CodeExecutionPage: React.FC = () => {
                 </Button>
             </div>
             <div>
-                <CodeArea data={output} />
+                <div className='joyride-converter-output'>
+                    <CodeArea data={output} />
+                </div>
             </div>
         </div>
     );
