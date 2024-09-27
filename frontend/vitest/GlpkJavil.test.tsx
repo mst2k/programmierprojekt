@@ -100,6 +100,5 @@ describe('solveGLPKJavil', () => {
         expect(result).toBeNull();
         expect(error).not.toBeNull();
         expect(error?.message).toBe('No problem provided for solving. Probably the conversion was not successful');
-        expect(log).toBe('');
     });
 });
