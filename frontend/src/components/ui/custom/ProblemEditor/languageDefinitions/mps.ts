@@ -1,3 +1,4 @@
+import { TFunction } from "i18next";
 import { EditorLanguage, ErrorCheckFunction, EditorErrorInfo } from "../ProblemEditor";
 
 export const MPSTokens: EditorLanguage = {
@@ -58,7 +59,7 @@ export const MPSTokens: EditorLanguage = {
   },
 };
 
-export const checkMPSErrors: ErrorCheckFunction = (code: string): EditorErrorInfo => {
+export const checkMPSErrors: ErrorCheckFunction = (code: string, t: TFunction): EditorErrorInfo => {
   const errors: { message: string; line: number }[] = [];
   const lines = code.split('\n');
 
@@ -100,7 +101,7 @@ export const checkMPSErrors: ErrorCheckFunction = (code: string): EditorErrorInf
         case 'ROWS':
           if (!['N', 'L', 'G', 'E'].includes(trimmedLine[0])) {
             errors.push({
-              message: 'Invalid row type. Must be N, L, G, or E.',
+              message: t("editorComponent.errors.mps.invalidRowType"),
               line: actualLineNumber,
             });
           }
@@ -117,35 +118,31 @@ export const checkMPSErrors: ErrorCheckFunction = (code: string): EditorErrorInf
 
   if (!hasName) {
     errors.push({
-      message: 'MPS file must start with a NAME section',
+      message: t("editorComponent.errors.mps.missingNameSection"),
       line: 1,
     });
   }
-
   if (!hasRows) {
     errors.push({
-      message: 'MPS file must include a ROWS section',
+      message: t("editorComponent.errors.mps.missingRowsSection"),
       line: 1,
     });
   }
-
   if (!hasColumns) {
     errors.push({
-      message: 'MPS file must include a COLUMNS section',
+      message: t("editorComponent.errors.mps.missingColumnsSection"),
       line: 1,
     });
   }
-
   if (!hasRHS) {
     errors.push({
-      message: 'MPS file must include an RHS section',
+      message: t("editorComponent.errors.mps.missingRHSSection"),
       line: 1,
     });
   }
-
   if (!hasEndata) {
     errors.push({
-      message: 'MPS file must end with an ENDATA statement',
+      message: t("editorComponent.errors.mps.missingENDATA"),
       line: lines.length,
     });
   }
