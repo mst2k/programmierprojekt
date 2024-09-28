@@ -3,7 +3,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react"; // Optional: Icon für den Button
 
-const JsonDisplay: React.FC<{ data: string }> = ({ data }) => {
+interface CodeAreaProps {
+    data: string;
+    className?: string;
+}
+
+const JsonDisplay: React.FC<CodeAreaProps> = ({ data, className }) => {
     const [isCopied, setIsCopied] = useState(false);
 
     const handleCopy = () => {
@@ -17,7 +22,7 @@ const JsonDisplay: React.FC<{ data: string }> = ({ data }) => {
     };
 
     return (
-        <div className="relative">
+        <div className={`relative ${className}`}>
             <Textarea
                 value={data}
                 readOnly

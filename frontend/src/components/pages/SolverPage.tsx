@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
@@ -9,7 +10,6 @@ import EasyModelInput from "@/components/ui/general/easyModelInput.tsx";
 
 import GuidedTour from "@/components/ui/custom/GuidedTour";
 import { Step } from 'react-joyride';
-import { useLocation } from 'react-router-dom';
 
 export const inputModes: string[] = [
     "general",
@@ -28,7 +28,7 @@ const SolverPage = () => {
     const [solveTrigger, setSolveTrigger] = useState<number>(0);
     const [resultComponent, setResultComponent] = useState(<></>)
     const [inputComponent, setInputComponent] = useState(<></>)
-    const [runTour, setRunTour] = useState(true);
+    const [runTour, setRunTour] = useState(false);
     
     const allStates =  {  
         currentSolver, setCurrentSolver,
@@ -54,10 +54,12 @@ const SolverPage = () => {
     }, [currentSolver]);
 
     useEffect(() => {
-        // Check if the user navigated from the welcome page guide tour
-        if( location.state && location.state.fromWelcomeGuideTour) {
-            setRunTour(true);
-        }
+        //check whether fromWelcomeGuideTour is set (=> comes from WelcomePage via guideTour )
+       if (location.state && location.state.fromWelcomeGuideTour) {
+        setRunTour(true); 
+    } else {
+        setRunTour(false);
+    }
     }, [location]);
 
     const steps: Step[] = [
@@ -69,10 +71,15 @@ const SolverPage = () => {
             target: '.joyride-solver-result',
             content: 'The results of your solved problem will appear here.',
         },
-        // {
-        //     target: '.joyride-converter',
-        //     content: "Let's move to the Converter Page to convert between different formats.",
-        // },
+        {
+            target: '.joyride-solv-conv',
+            content: "Let's move to the Converter Page to convert between different formats.",
+            placement: 'center'
+        },
+        {
+            target: '.joyride-converter',
+            content: '',
+        },
     ];
 
     return (
@@ -98,9 +105,10 @@ const SolverPage = () => {
                         </div>
                     </div>
                     <div className="min-h-[25%] p-4 joyride-solver-result">
-                        <h2 className="text-lg font-semibold">{t('displaySolution')}</h2>
+                        <h2 className="text-lg font-semibold joyride-solv-conv">{t('displaySolution')}</h2>
                         {resultComponent}
                     </div>
+                    <div className="joyride-converter"/>
                 </main>
             </div>
         </div>

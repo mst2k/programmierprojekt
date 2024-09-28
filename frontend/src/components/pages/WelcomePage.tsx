@@ -14,7 +14,7 @@ function WelcomePage() {
     const [runTour, setRunTour] = useState(false);
 
     const navigateToSolver = () => {
-        navigate('/solver');
+        navigate('/solver' );
         window.scrollTo(0,0);
     }
 
@@ -36,23 +36,15 @@ function WelcomePage() {
             target: '.joyride-about',
             content: 'Learn more about our project and its academic context.',
         },
-        // {
-        //     target: '.joyride-contact',
-        //     content: 'Ready to start? Click here to begin solving problems!',
-        // },
+        {
+            target: '.joyride-contact',
+            content: 'Ready to start? Click here to begin solving problems!',
+        },
         {
             target: '.joyride-solver',
-            content: 'Ready to start? Click here to begin solving problems!',
-            //content: "Let's move to the Solver Page to solve your problems."
+            // content: 'Let's move to the Solver Page to solve your problems.',
+            content: ''
         },
-        // {
-        //     target: '.joyride-converter-input',
-        //     content: 'On the Converter page, you can input your problem to convert between different formats.',
-        // },
-        // {
-        //     target: '.joyride-converter-output',
-        //     content: 'The converted problem will be displayed here.',
-        // },
     ];
     
     return (
@@ -108,10 +100,10 @@ function WelcomePage() {
                     </div>
                 </section>
                 <section id="contact" className="py-16 bg-white">
-                    <div className="container mx-auto px-6 text-center joyride-solver">
+                    <div className="container mx-auto px-6 text-center joyride-contact">
                         <h2 className="text-3xl font-bold mb-4">{t('welcomePage.optimize')}</h2>
                         <p className="mb-8">{t('welcomePage.startSolv')}</p>
-                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white">
+                        <Button variant="secondary" size="lg" onClick={navigateToSolver} className="bg-[#3498db] hover:bg-[#2980b9] text-white joyride-solver">
                         {t('welcomePage.try')}
                         </Button>
                     </div>
