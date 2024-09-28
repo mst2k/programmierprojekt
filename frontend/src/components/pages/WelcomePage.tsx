@@ -48,7 +48,7 @@ function WelcomePage() {
     ];
     
     return (
-        <div className="flex flex-col min-h-screen w-screen bg-[#f0f0f0]">            
+        <div className="flex flex-col min-h-screen w-screen bg-muted dark:bg-muted">            
             <GuidedTour
                 steps={steps}
                 run={runTour}

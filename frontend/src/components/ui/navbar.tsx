@@ -12,21 +12,27 @@ import { useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import Logo from '/logo.svg'
 import { useTranslation } from "react-i18next"
-import { Menu } from 'lucide-react'
+import { Menu, Sun, Moon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { useTheme } from "@/components/ui/general/themeProvider"
 
 export function NavigationMenuDemo() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
+    const { theme, setTheme } = useTheme();
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
+    }
+
+    const toggleTheme = () => {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
     }
 
     const components: { title: string; lang: string; description: string }[] = [
@@ -84,6 +90,12 @@ export function NavigationMenuDemo() {
                             <NavigationMenuSingleTrigger onClick={()=> navigate('/about/')}>{t('about')}</NavigationMenuSingleTrigger>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
+                            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+                                {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
+                                <span className="sr-only">Toggle theme</span>
+                            </Button>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavigationMenuTrigger>{t('language')}</NavigationMenuTrigger> {/* menue-item title*/}
                             <NavigationMenuContent>
                                 <ul className="grid w-[200px] gap-3 p-4 md:w-[150] lg:w-[300px]">
@@ -125,6 +137,9 @@ export function NavigationMenuDemo() {
                             </Button>
                             <Button variant="ghost" className="w-full justify-start" onClick={() => { navigate('/about/'); setIsOpen(false); }}>
                                 {t('about')}
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start" onClick={() => { toggleTheme(); setIsOpen(false); }}>
+                                {theme === 'dark' ? t('lightMode') : t('darkMode')}
                             </Button>
                             <NavigationMenu>
                                 <NavigationMenuList>

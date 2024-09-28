@@ -11,12 +11,20 @@ export default {
     			sm: 'calc(var(--radius) - 4px)'
     		},
     		colors: {
-    			background: 'hsl(var(--background))',
-    			foreground: 'hsl(var(--foreground))',
+    			background: {
+					DEFAULT: 'hsl(var(--background))',
+					dark: 'hsl(var(--background-dark))'
+				  },
+    			foreground: {
+					DEFAULT: 'hsl(var(--foreground))',
+					dark: 'hsl(var(--foreground-dark))'
+				  },
     			card: {
-    				DEFAULT: 'hsl(var(--card))',
-    				foreground: 'hsl(var(--card-foreground))'
-    			},
+					DEFAULT: 'hsl(var(--card))',
+					foreground: 'hsl(var(--card-foreground))',
+					dark: 'hsl(var(--card-dark))',
+					'foreground-dark': 'hsl(var(--card-foreground-dark))'
+				  },
     			popover: {
     				DEFAULT: 'hsl(var(--popover))',
     				foreground: 'hsl(var(--popover-foreground))'
@@ -26,12 +34,16 @@ export default {
     				foreground: 'hsl(var(--primary-foreground))'
     			},
     			secondary: {
-    				DEFAULT: 'hsl(var(--secondary))',
-    				foreground: 'hsl(var(--secondary-foreground))'
-    			},
+					DEFAULT: '#3498db',
+					foreground: 'white',
+					dark: '#4299e1',
+					'foreground-dark': 'white'
+				  },
     			muted: {
     				DEFAULT: '#f0f0f0',//'hsl(var(--muted))',
-    				foreground: 'hsl(var(--muted-foreground))'
+    				foreground: 'hsl(var(--muted-foreground))',
+					dark: '#2c3e50',
+          			'foreground-dark': 'hsl(var(--muted-foreground-dark))'
     			},
     			accent: {
     				DEFAULT: 'hsl(var(--accent))',
