@@ -98,6 +98,14 @@
             "try": "Try OR Solver Now",
             "ORTeamRights": "2024 OR Solver Team. All rights reserved."
     },
+    "converterPage": {
+        "title": "Converter",
+        "codePlaceholder": "Enter your code here...",
+        "from": "From",
+        "to": "To",
+        "execute": "Execute",
+        "noValidLpObject": "No Valid LP Object to Create Output"
+    },
     "editorComponent": {
         "hasObjective": "Objective function",
         "hasRestrictions": "Restrictions",
@@ -124,3 +132,4 @@
         }
     }
 }
+
