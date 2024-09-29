@@ -12,18 +12,18 @@ export default function GuidedTour({ steps, run, setRun }: GuidedTourProps) {
   const [stepIndex, setStepIndex] = useState(0);
   const navigate = useNavigate();
 
-  const navigateToPage = ( value: 'solver' | 'converter') => {
-    let state: { fromWelcomeGuideTour?: boolean; fromSolverGuideTour?: boolean };
+  const navigateToPage = ( value: 'solver' | 'converter', index: number) => {
+    let state: { fromWelcomeGuideTour?: boolean; fromSolverGuideTour?: boolean; stepIndex: number };
 
     switch (value){
       case 'solver':
-        state = { fromWelcomeGuideTour: true };
+        state = { fromWelcomeGuideTour: true, stepIndex: index };
         break;
       case 'converter':
-        state = {fromSolverGuideTour: true};
+        state = {fromSolverGuideTour: true, stepIndex: index };
         break;
       default: 
-        state = {};
+        state = { stepIndex: index };
     }
 
     navigate(`/${value}`, {state});
@@ -37,37 +37,42 @@ export default function GuidedTour({ steps, run, setRun }: GuidedTourProps) {
   }, [run]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, type, index } = data;
-
+    const { status, type, index, action } = data;
+    //end 
     if (
       status === STATUS.FINISHED ||
-      status === STATUS.SKIPPED ||
-      status === STATUS.ERROR ||
-      type === 'error:target_not_found' ||
-      type === 'error'
-    ) {
-      if (status === STATUS.ERROR || type === 'error:target_not_found' || type === 'error') {
-        console.log("Error:", data);
-      }
+      status === STATUS.SKIPPED ){
+        setRun(false);
+        navigate('/');
+        return;
+    }
+    //error
+    if (
+      status === STATUS.ERROR || type === 'error:target_not_found' || type === 'error') {
+      console.log("Error:", data);
       setRun(false);
       navigate('/'); 
+      return; 
     }
+    
+    if (type === 'step:after') {
+      const nextIndex = index + (action === 'prev' ? -1 : 1)
+      setStepIndex(nextIndex);
 
-    else if (type === 'step:after') {
-        setStepIndex(index + (data.action === 'prev' ? -1 : 1));
       //check if navigation to another page is necessary
-        const targetString = steps[index + 1]?.target.toString();
-        if (targetString.includes('solver')) {
-          navigateToPage('solver');
-        } else if (targetString.includes('converter')) {
-          navigateToPage('converter');
-        } else if(targetString.includes('last')){
-          //last step, navigating to landing page after short delay
-          setTimeout(() => {
-            setRun(false);
-            navigate('/');
-          }, 2000); 
-        }
+      const currentTarget = steps[index].target.toString();
+      const targetString = steps[nextIndex]?.target.toString();
+
+      if (targetString.includes('solver') && !currentTarget.includes('solver')) {
+         navigateToPage('solver', nextIndex);
+      } else if (targetString.includes('converter') && !currentTarget.includes('converter')) {
+        navigateToPage('converter', nextIndex);
+      } else 
+    //last step, navigating to landing page after short delay
+    if(targetString.includes('last')){
+          setRun(false);
+          navigate('/'); window.scrollTo(0,0);
+      } 
     }
   };
 

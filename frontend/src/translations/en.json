@@ -105,5 +105,26 @@
         "to": "To",
         "execute": "Execute",
         "noValidLpObject": "No Valid LP Object to Create Output"
+    },
+    "guidedTour": {
+        "welcomePage": {
+            "welcome": "Welcome to our problem-solving platform!",
+            "features": "Explore our key features that make problem-solving easier.",
+            "about": "Learn more about our project and its academic context.",
+            "contact": "Ready to start? Click here to begin solving problems!"
+        },
+        "solverPage": {
+            "input": "Here you can input your problem in various formats.",
+            "result": "The results of your solved problem will appear here.",
+            "solv-conv": "Let's move to the Converter Page to convert between different formats."
+        },
+        "converterPage": {
+            "input": "Input your problem to convert between different formats.",
+            "format": "Select the source and target format for conversion.",
+            "exec": "Start the conversion.",
+            "output": "The converted result will appear here.",
+            "last_pt1": "The tour ends here.",
+            "last_pt2": "Have fun and success solving problems in the future! :)"
+        }
     }
 }

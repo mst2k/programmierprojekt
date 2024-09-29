@@ -72,31 +72,35 @@ const CodeExecutionPage: React.FC = () => {
     const steps: Step[] = [
         {
             target: '.joyride-converter-input',
-            content: 'Input your problem to convert between different formats.',  // {t('converterPage.title')}
+            content:  t('guidedTour.converterPage.input'), 
         },
         {
             target: '.joyride-converter-format',
-            content: 'Select the source and target format for conversion.', //t('converterPage.title')
+            content: t('guidedTour.converterPage.format'),
         },
         {
             target: '.joyride-converter-exec',
-            content: 'Start the conversion.', //t('converterPage.title')
+            content: t('guidedTour.converterPage.exec'),
         },
         {
             target: '.joyride-converter-output',
-            content: 'The converted result will appear here.',
+            content: t('guidedTour.converterPage.output'),
         },
         {
-            target: '.joyride-last',
+            target: '.joyride-bye',
             content: (
                 <React.Fragment>
-                    The tour ends here.
+                    {t('guidedTour.converterPage.last_pt1')}
                     <br />
                     <br />
-                    Good luck and have fun :)
+                    {t('guidedTour.converterPage.last_pt2')}
                 </React.Fragment>
             ),
             placement: 'center'
+        },
+        {
+            target: '.joyride-last',
+            content: '',
         }
     ];
 
@@ -154,6 +158,7 @@ const CodeExecutionPage: React.FC = () => {
                     </Button>
                 </div>
                 <CodeArea className="joyride-converter-output" data={output} />
+                <div className='joyride-bye'/>
                 <div className='joyride-last'/>
             </main>
         </div>

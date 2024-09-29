@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
 import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
@@ -65,15 +65,15 @@ const SolverPage = () => {
     const steps: Step[] = [
         {
             target: '.joyride-solver-input',
-            content: 'Here you can input your problem in various formats.',
+            content: t('guidedTour.solverPage.input'),
         },
         {
             target: '.joyride-solver-result',
-            content: 'The results of your solved problem will appear here.',
+            content:  t('guidedTour.solverPage.result'),
         },
         {
             target: '.joyride-solv-conv',
-            content: "Let's move to the Converter Page to convert between different formats.",
+            content:  t('guidedTour.solverPage.solv-conv'),
             placement: 'center'
         },
         {

@@ -25,20 +25,20 @@ function WelcomePage() {
     const steps: Step[] = [
         {
             target: '.joyride-welcome',
-            content: 'Welcome to our problem-solving platform!',
+            content: t('guidedTour.welcomePage.welcome'),
             disableBeacon: true,
         },
         {
             target: '.joyride-features',
-            content: 'Explore our key features that make problem-solving easier.',
+            content: t('guidedTour.welcomePage.features'),
         },
         {
             target: '.joyride-about',
-            content: 'Learn more about our project and its academic context.',
+            content: t('guidedTour.welcomePage.about'),
         },
         {
             target: '.joyride-contact',
-            content: 'Ready to start? Click here to begin solving problems!',
+            content: t('guidedTour.welcomePage.contact'),
         },
         {
             target: '.joyride-solver',
