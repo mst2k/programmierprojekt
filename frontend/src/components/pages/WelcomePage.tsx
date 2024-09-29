@@ -87,7 +87,7 @@ function WelcomePage() {
                 <section id="about" className="py-16 bg-white">
                     <div className="container mx-auto px-6 joyride-about">
                         <h2 className="text-3xl font-bold mb-8 text-center text-[#2c3e50]">{t('welcomePage.aboutProj')}</h2>
-                        <Card className="bg-[#f0f0f0] border-none shadow-lg">
+                        <Card className="bg-muted dark:bg-muted border-none shadow-lg">
                             <CardContent className="p-6">
                                 <p className="text-[#2c3e50] mb-4">
                                 {t('welcomePage.context')}
