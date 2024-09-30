@@ -105,7 +105,31 @@
         "to": "Nach",
         "execute": "Ausführen",
         "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
+    },
+    "editorComponent": {
+        "hasObjective": "Zielfunktion",
+        "hasRestrictions": "Restriktionen",
+        "hasNonNegativity": "Nicht-Negativitätsbedingung",
+        "errors": {
+            "gmpl": {
+                "missingSemilicon": " Deklaration wird nicht ordnungsgemäß mit einem Semikolon abgeschlossen",
+                "constraintMustHaveName": "Die Nebenbedingung muss einen Namen haben",
+                "invalidIdentifier": "Ungültiger Bezeichner. Nur alphanumerische Zeichen und Unterstriche sind erlaubt, und es muss mit einem Buchstaben oder Unterstrich beginnen",
+                "modelMustHaveObjective": "Das Modell muss eine Zielfunktion haben (maximize oder minimize)"
+            },
+            "lp": {
+                "constraintMissingOperator": "Die Nebenbedingung muss einen Vergleichsoperator enthalten (<=, >= oder =)",
+                "missingObjectiveFunction": "Die LP-Datei muss eine Zielfunktion enthalten (minimize oder maximize)"
+            },
+            "mps": {
+                "invalidRowType": "Ungültiger Zeilentyp. Muss N, L, G oder E sein.",
+                "missingNameSection": "Die MPS-Datei muss mit einem NAME-Abschnitt beginnen",
+                "missingRowsSection": "Die MPS-Datei muss einen ROWS-Abschnitt enthalten",
+                "missingColumnsSection": "Die MPS-Datei muss einen COLUMNS-Abschnitt enthalten",
+                "missingRHSSection": "Die MPS-Datei muss einen RHS-Abschnitt enthalten",
+                "missingENDATA": "Die MPS-Datei muss mit einer ENDATA-Anweisung enden"
+            }
+        }
     }
-
 }
 

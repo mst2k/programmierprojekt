@@ -105,5 +105,31 @@
         "to": "To",
         "execute": "Execute",
         "noValidLpObject": "No Valid LP Object to Create Output"
+    },
+    "editorComponent": {
+        "hasObjective": "Objective function",
+        "hasRestrictions": "Restrictions",
+        "hasNonNegativity": "Non-negativity constraint",
+        "errors": {
+            "gmpl": {
+                "missingSemilicon": " declaration is not properly closed with a semicolon",
+                "constraintMustHaveName": "Constraint must have a name",
+                "invalidIdentifier": "Invalid identifier. Only alphanumeric characters and underscore are allowed, and it must start with a letter or underscore",
+                "modelMustHaveObjective": "Model must have an objective function (maximize or minimize)"
+            },
+            "lp": {
+                "constraintMissingOperator": "Constraint must include a comparison operator (<=, >=, or =)",
+                "missingObjectiveFunction": "LP file must include an objective function (minimize or maximize)"
+            },
+            "mps": {
+                "invalidRowType": "Invalid row type. Must be N, L, G, or E.",
+                "missingNameSection": "MPS file must start with a NAME section",
+                "missingRowsSection": "MPS file must include a ROWS section",
+                "missingColumnsSection": "MPS file must include a COLUMNS section",
+                "missingRHSSection": "MPS file must include an RHS section",
+                "missingENDATA": "MPS file must end with an ENDATA statement"
+            }   
+        }
     }
 }
+
