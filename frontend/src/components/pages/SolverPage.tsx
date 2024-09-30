@@ -32,7 +32,7 @@ const SolverPage = () => {
         currentLpFormat, setCurrentLpFormat,
         currentProblem, setCurrentProblem,
         currentInputVariant, setCurrentInputVariant,
-        solveTrigger, setSolveTrigger}
+        solveTrigger, setSolveTrigger,}
 
 
     useEffect(() => {

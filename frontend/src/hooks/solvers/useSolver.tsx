@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import solveGLPKHgourvest from './GLPKHgourvest .tsx';
+import solveGLPKHgourvest from './GLPKHgourvest.tsx';
 import { SolverResult } from "@/interfaces/Result.tsx";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import {solveGLPKJavil} from "@/hooks/solvers/GLPKJavil.tsx";

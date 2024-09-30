@@ -182,8 +182,8 @@
                 "missingColumnsSection": "MPS file must include a COLUMNS section",
                 "missingRHSSection": "MPS file must include an RHS section",
                 "missingENDATA": "MPS file must end with an ENDATA statement"
-            }   
+            }
         }
     }
 }
-
+  
