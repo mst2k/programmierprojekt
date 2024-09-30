@@ -126,7 +126,32 @@
             "last_pt1": "Die Einführung endet hier.",
             "last_pt2": "Viel Freude und Erfolg beim künftigen Lösen von Problemen! :)"
         }
+    },
+    "lastTranslations":{
+        "welcomePage":{
+            "features": {
+                "feat1Title": "Viele Formate",
+                "feat1Description": "Unterstützt GMPL, LP, and MPS Problemformate",
+                "feat2Title": "Schnelle Resultate",
+                "feat2Description": "Effiziente Algorithmen für schnelle Lösungen",
+                "feat3Title": "Leichte Eingabe",
+                "feat3Description": "Benutzerfreundliche Eingabe und Lösung von Problemen"
+            }
+        },
+        "converterPage":{
+            "codearea": {
+                "copy": "Kopieren",
+                "copied": "Kopiert!",
+                "copyErr": "Fehler beim Kopieren:"
+            }
+        },
+        "solverPage":{
+            "ProblemEditor":{
+                "hasObjective": "Zielfunktion:",
+                "hasRestrictions": "Restriktionen",
+                "hasNN":"Nichtnegativitätsbedingungen:"
+            }
+        }
     }
-
 }
 

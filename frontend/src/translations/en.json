@@ -126,5 +126,31 @@
             "last_pt1": "The tour ends here.",
             "last_pt2": "Have fun and success solving problems in the future! :)"
         }
+    },
+    "lastTranslations":{
+        "welcomePage":{
+            "features": {
+                "feat1Title": "Multiple Formats",
+                "feat1Description": "Support for GMPL, LP, and MPS problem formats",
+                "feat2Title": "Fast Solving",
+                "feat2Description": "Efficient algorithms for quick problem resolution",
+                "feat3Title": "Easy Input",
+                "feat3Description": "User-friendly interface for problem input and solving"
+            }
+        },
+        "converterPage":{
+            "codearea": {
+                "copy": "Copy",
+                "copied": "Copied!",
+                "copyErr": "Error occured during copying:"
+            }
+        },
+        "solverPage":{
+            "ProblemEditor":{
+                "hasObjective": "Has Objective:",
+                "hasRestrictions": "Has Restrictions:",
+                "hasNN":"Has Non-Negativity:"
+            }
+        }
     }
 }

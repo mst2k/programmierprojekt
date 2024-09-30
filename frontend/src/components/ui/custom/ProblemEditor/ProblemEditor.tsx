@@ -5,6 +5,7 @@ import { checkGMPLErrors, GMPLTokens } from './languageDefinitions/gmpl';
 import { checkLPErrors, LPTokens } from './languageDefinitions/lp';
 import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
+import { useTranslation } from 'react-i18next';
 
 export interface EditorLanguage {
   // TODO: Define the language tokens, erst wenn ich die Tokens von LP und GMPL verglichen habe
@@ -42,6 +43,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   });
   const editorRef = useRef<any>(null);
   const monaco = useMonaco();
+  const {t} = useTranslation();
 
   const setupLanguage = (monaco: any) => {
     if (monaco) {
@@ -130,9 +132,9 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       </div>
       <div className='flex justify-around mt-2'>
         {/* TODO: loopen, wenn ich übersetzungen mache */}
-        <p className='flex items-center gap-2'>Has Objective: {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-        <p className='flex items-center gap-2'>Has Restrictions: {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-        <p className='flex items-center gap-2'>Has Non-Negativity: {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasObjective')} {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasRestrictions')} {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasNN')} {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
       </div>
     </div>
   );

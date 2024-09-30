@@ -68,18 +68,18 @@ function WelcomePage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <FeatureCard 
                                 icon={<Code className="w-12 h-12 text-[#3498db]" />}
-                                title="Multiple Formats"
-                                description="Support for GMPL, LP, and MPS problem formats"
+                                title= {t('lastTranslations.welcomePage.features.feat1Title')}
+                                description={t('lastTranslations.welcomePage.features.feat1Description')}
                             />
                             <FeatureCard 
                                 icon={<Zap className="w-12 h-12 text-[#e74c3c]" />}
-                                title="Fast Solving"
-                                description="Efficient algorithms for quick problem resolution"
+                                title={t('lastTranslations.welcomePage.features.feat2Title')}
+                                description={t('lastTranslations.welcomePage.features.feat2Description')}
                             />
                             <FeatureCard 
                                 icon={<BookOpen className="w-12 h-12 text-[#3498db]" />}
-                                title="Easy Input"
-                                description="User-friendly interface for problem input and solving"
+                                title={t('lastTranslations.welcomePage.features.feat3Title')}
+                                description={t('lastTranslations.welcomePage.features.feat3Description')}
                             />
                         </div>
                     </div>
