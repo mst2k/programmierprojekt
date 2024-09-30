@@ -1,3 +1,4 @@
+import { TFunction } from "i18next";
 import { EditorLanguage, ErrorCheckFunction, EditorErrorInfo } from "../ProblemEditor";
 
 
@@ -78,7 +79,7 @@ export const LPTokens: EditorLanguage = {
   },
 };
 
-export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo => {
+export const checkLPErrors: ErrorCheckFunction = (code: string, t: TFunction): EditorErrorInfo => {
   const errors: { message: string; line: number }[] = [];
   const lines = code.split('\n');
 
@@ -130,7 +131,7 @@ export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo
     if (inConstraintSection) {
       if (!trimmedLine.includes('<=') && !trimmedLine.includes('>=') && !trimmedLine.includes('=')) {
         errors.push({
-          message: 'Constraint must include a comparison operator (<=, >=, or =)',
+          message: t("editorComponent.errors.lp.constraintMissingOperator"),
           line: actualLineNumber,
         });
       }
@@ -148,7 +149,7 @@ export const checkLPErrors: ErrorCheckFunction = (code: string): EditorErrorInfo
 
   if (!hasObjective) {
     errors.push({
-      message: 'LP file must include an objective function (minimize or maximize)',
+      message: t("editorComponent.errors.lp.missingObjectiveFunction"),
       line: 1,
     });
   }
