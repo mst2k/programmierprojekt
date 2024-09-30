@@ -23,6 +23,10 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // browser: {
+    //   enabled: true,
+    //   name: 'chrome', // Sie können auch 'firefox' oder 'safari' verwenden
+    // },
     globals: true,
     coverage: {
       provider: 'v8',

@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Editor, useMonaco } from "@monaco-editor/react";
 import { ProblemFormats } from '@/interfaces/SolverConstants';
 import { checkGMPLErrors, GMPLTokens } from './languageDefinitions/gmpl';
 import { checkLPErrors, LPTokens } from './languageDefinitions/lp';
 import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
+
+import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 export interface EditorLanguage {
@@ -19,7 +21,7 @@ export interface EditorErrorInfo {
 }
 
 export interface ErrorCheckFunction {
-  (code: string): EditorErrorInfo;
+  (code: string, t: TFunction): EditorErrorInfo;
 }
 
 interface ProblemEditorProps {
@@ -28,13 +30,14 @@ interface ProblemEditorProps {
   onChange: (value: string) => void;
 }
 
-const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkErrors: ErrorCheckFunction }> = {
+const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkErrors: (code: string, t: TFunction) => EditorErrorInfo }> = {
   'GMPL': { tokens: GMPLTokens, checkErrors: checkGMPLErrors },
   'LP': { tokens: LPTokens, checkErrors: checkLPErrors },
   'MPS': { tokens: MPSTokens, checkErrors: checkMPSErrors },
 };
 
 export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
+  
   const { tokens, checkErrors } = formatConfigs[props.problemFormat];
   const [modelProperties, setModelProperties] = useState({
     hasObjective: false,
@@ -43,49 +46,27 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   });
   const editorRef = useRef<any>(null);
   const monaco = useMonaco();
-  const {t} = useTranslation();
-
-  const setupLanguage = (monaco: any) => {
-    if (monaco) {
-      monaco.languages.register({ id: props.problemFormat });
-      monaco.languages.setMonarchTokensProvider(props.problemFormat, tokens);
-    }
-  };
+  const { t, i18n } = useTranslation();
 
   const MARKER_OWNER = 'problem-editor-markers';
 
-  const clearMarkers = (editor: any, monaco: any) => {
+  const clearMarkers = useCallback((editor: any, monaco: any) => {
     const model = editor.getModel();
     monaco.editor.setModelMarkers(model, MARKER_OWNER, []);
-  };
+  }, []);
 
-  useEffect(() => {
-    if (monaco && editorRef.current) {
-      setupLanguage(monaco);
-      const model = editorRef.current.getModel();
-      monaco.editor.setModelLanguage(model, props.problemFormat);
-      
-      // Clear existing markers before applying new ones
-      clearMarkers(editorRef.current, monaco);
-      
-      const code = editorRef.current.getValue();
-      updateErrors(code, editorRef.current, monaco);
-    }
-  }, [props.problemFormat, monaco, props.value]);
-
-  const updateErrors = (code: string, editor: any, monaco: any) => {
-
-    //wenn kein code vorhanden ist, keine Fehler anzeigen
+  const updateErrors = useCallback((code: string, editor: any, monaco: any) => {
     if (!code) {
       setModelProperties({
         hasObjective: false,
         hasRestrictions: false,
         hasNonNegativity: false
       });
+      clearMarkers(editor, monaco);
       return;
     }
 
-    const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code);
+    const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code, t);
     const model = editor.getModel();
     monaco.editor.setModelMarkers(model, MARKER_OWNER, errors.map(err => ({
       severity: monaco.MarkerSeverity.Error,
@@ -96,12 +77,17 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       endColumn: model.getLineMaxColumn(err.line),
     })));
     setModelProperties({ hasObjective, hasRestrictions, hasNonNegativity });
-  };
+  }, [checkErrors, t, clearMarkers]);
+
+  useEffect(() => {
+    if (monaco && editorRef.current) {
+      const editor = editorRef.current;
+      const code = editor.getValue();
+      updateErrors(code, editorRef.current, monaco);
+    }
+  }, [monaco, updateErrors, i18n.language]);
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
-
-    clearMarkers(editor, monaco);
-
     editorRef.current = editor;
     setupLanguage(monaco);
     
@@ -113,6 +99,26 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
     const code = editor.getValue();
     updateErrors(code, editor, monaco);
   };
+
+  const setupLanguage = useCallback((monaco: any) => {
+    if (monaco) {
+      monaco.languages.register({ id: props.problemFormat });
+      monaco.languages.setMonarchTokensProvider(props.problemFormat, tokens);
+    }
+  }, [props.problemFormat, tokens]);
+
+  useEffect(() => {
+    if (monaco && editorRef.current) {
+      setupLanguage(monaco);
+      const model = editorRef.current.getModel();
+      monaco.editor.setModelLanguage(model, props.problemFormat);
+      
+      clearMarkers(editorRef.current, monaco);
+      
+      const code = editorRef.current.getValue();
+      updateErrors(code, editorRef.current, monaco);
+    }
+  }, [props.problemFormat, monaco, props.value, setupLanguage, clearMarkers, updateErrors]);
 
   return (
     <div className="flex flex-col h-full">
@@ -131,10 +137,12 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
         />
       </div>
       <div className='flex justify-around mt-2'>
-        {/* TODO: loopen, wenn ich übersetzungen mache */}
-        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasObjective')} {modelProperties.hasObjective ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasRestrictions')} {modelProperties.hasRestrictions ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-        <p className='flex items-center gap-2'>{t('lastTranslations.solverPage.ProblemEditor.hasNN')} {modelProperties.hasNonNegativity ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+          {
+            Object.keys(modelProperties).map((key) => (
+              // @ts-expect-error
+              <p key={key} className='flex items-center gap-2'>{t(`editorComponent.${key}`)}: {modelProperties[key] ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
+            ))
+          }
       </div>
     </div>
   );

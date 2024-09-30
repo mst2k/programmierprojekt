@@ -1,4 +1,5 @@
 import { EditorErrorInfo } from "../ProblemEditor";
+import { TFunction } from "i18next";
 
 export const GMPLTokens = {
     defaultToken: '',
@@ -59,10 +60,11 @@ export const GMPLTokens = {
   };
 
 
-  export function checkGMPLErrors(code: string): EditorErrorInfo {
+  export function checkGMPLErrors(code: string, t: TFunction): EditorErrorInfo {
+
     const errors: { message: string; line: number }[] = [];
     const lines = code.split('\n');
-  
+
     const keywordRequiringSemicolon = ['set', 'param', 'var'];
     const validIdentifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
     let inDataSection = false;
@@ -101,12 +103,14 @@ export const GMPLTokens = {
       if (!inDataSection) {
         // Model section checks
         
+
+
         // Check for declarations without semicolons
         const declarationKeyword = tokens.find(token => keywordRequiringSemicolon.includes(token.value));
         if (declarationKeyword) {
           if (openDeclaration) {
             errors.push({
-              message: `${openDeclaration.keyword} declaration is not properly closed with a semicolon`,
+              message: openDeclaration.keyword + t("editorComponent.errors.gmpl.missingSemilicon"),
               line: openDeclaration.line,
             });
           }
@@ -126,7 +130,7 @@ export const GMPLTokens = {
           hasRestrictions = true;
           if (!tokens.some(token => token.type === 'identifier')) {
             errors.push({
-              message: 'Constraint must have a name',
+              message: t("editorComponent.errors.gmpl.constraintMustHaveName"),
               line: actualLineNumber,
             });
           }
@@ -141,7 +145,7 @@ export const GMPLTokens = {
         tokens.forEach(token => {
           if (token.type === 'identifier' && !validIdentifierRegex.test(token.value)) {
             errors.push({
-              message: 'Invalid identifier. Only alphanumeric characters and underscore are allowed, and it must start with a letter or underscore',
+              message: t("editorComponent.errors.gmpl.invalidIdentifier"),
               line: actualLineNumber,
             });
           }
@@ -155,7 +159,7 @@ export const GMPLTokens = {
     // Check if any declaration was left open
     if (openDeclaration) {
       errors.push({
-        message: `${openDeclaration.keyword} declaration is not properly closed with a semicolon`,
+        message: openDeclaration.keyword + " " + t("editorComponent.errors.gmpl.missingSemilicon"),
         line: openDeclaration.line,
       });
     }

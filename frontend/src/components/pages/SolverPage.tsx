@@ -6,7 +6,11 @@ import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
 import Sidebar from "@/components/ui/custom/sidebar.tsx";
-import EasyModelInput from "@/components/ui/general/easyModelInput.tsx";
+
+import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
+import TransportationProblemUI from "@/components/ui/general/transportModelInput.tsx";
+import KnapsackProblemUI from "@/components/ui/general/knapsackModelInput.tsx";
+import WorkforceSchedulingUI from "@/components/ui/general/workforceScheduleModelInput.tsx";
 
 import GuidedTour from "@/components/ui/custom/GuidedTour";
 import { Step } from 'react-joyride';
@@ -14,7 +18,9 @@ import { Step } from 'react-joyride';
 export const inputModes: string[] = [
     "general",
     "easy",
-    "transport"
+    "transport",
+    "knapsack",
+    "workforce"
 ]
 
 const SolverPage = () => {
@@ -35,7 +41,7 @@ const SolverPage = () => {
         currentLpFormat, setCurrentLpFormat,
         currentProblem, setCurrentProblem,
         currentInputVariant, setCurrentInputVariant,
-        solveTrigger, setSolveTrigger}
+        solveTrigger, setSolveTrigger,}
 
 
     useEffect(() => {
@@ -46,6 +52,9 @@ const SolverPage = () => {
     useEffect(() => {
         if(currentInputVariant === 'general') setInputComponent(<BasicModelInput states={allStates}></BasicModelInput>);
         else if(currentInputVariant === 'easy') setInputComponent(<EasyModelInput states={allStates}></EasyModelInput>);
+        else if(currentInputVariant === 'transport') setInputComponent(<TransportationProblemUI states={allStates}></TransportationProblemUI>);
+        else if(currentInputVariant === 'knapsack') setInputComponent(<KnapsackProblemUI states={allStates}></KnapsackProblemUI>);
+        else if(currentInputVariant === 'workforce') setInputComponent(<WorkforceSchedulingUI states={allStates}></WorkforceSchedulingUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant, currentSolver, solveTrigger]);
 
@@ -83,7 +92,7 @@ const SolverPage = () => {
     ];
 
     return (
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen w-full"> {/* flex h-min-screen w-screen */}
             <GuidedTour 
                 steps={steps}
                 run={runTour}
@@ -98,7 +107,7 @@ const SolverPage = () => {
                 currentLpFormat={currentLpFormat}/>
             <div className="flex-1 flex flex-col">
                 <main className="flex-1 p-4 overflow-auto">
-                    <div className="min-h-[50%] border-b-2 border-gray-300 p-4">
+                    <div className="min-h-[50%] border-b-2 border-gray-300 p-4">  {/*h-min-1/2 h-auto border-b-2 border-gray-300 p-4*/}
                         <div className="joyride-solver-input">
                             <h2 className="text-lg font-semibold">{t('modelInput')}</h2>
                             {inputComponent}
