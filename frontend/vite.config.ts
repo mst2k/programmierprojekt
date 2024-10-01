@@ -33,6 +33,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['src/hooks/**/*'],
       exclude: [
+        'playwright-tests/**/*',
         'src/hooks/**/*.test.{js,ts,jsx,tsx}',
         'src/hooks/**/*.spec.{js,ts,jsx,tsx}',
       ],
