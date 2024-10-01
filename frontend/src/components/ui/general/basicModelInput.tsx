@@ -115,7 +115,7 @@ export default function BasicModelInput(states:any) {
                 clearUrlParams()
             }else{
                 setCurrentInputVariant(loadedParams.currentPage)
-                }
+            }
         }
     };
 
@@ -198,6 +198,57 @@ export default function BasicModelInput(states:any) {
         }
     }
 
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Erkennen des Dateiformats basierend auf der Dateiendung
+        const fileName = file.name.toLowerCase();
+        let format;
+        if (fileName.endsWith('.mps')) {
+            format = 'MPS';
+        } else if (fileName.endsWith('.lp')) {
+            format = 'LP';
+        } else if (fileName.endsWith('.mod') || fileName.endsWith('.gmpl')) {
+            format = 'GMPL';
+        } else {
+            alert('Nicht unterstütztes Dateiformat. Bitte laden Sie eine .mps, .lp oder .mod/.gmpl Datei hoch.');
+            return;
+        }
+
+        // Setzen des LP-Formats
+        setCurrentLpFormat(format);
+
+        // Lesen des Dateiinhalts
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const content = e.target.result;
+            //@ts-expect-error
+            setModelInput(content);
+        };
+        reader.onerror = (error) => {
+            console.error('Fehler beim Lesen der Datei:', error);
+            alert('Fehler beim Lesen der Datei. Bitte versuchen Sie es erneut.');
+        };
+        reader.readAsText(file);
+    };
+
+// Aktualisierte Upload-Button-Komponente
+    const UploadButton = () => (
+        <div>
+            <input
+                type="file"
+                id="file-upload"
+                className="hidden"
+                onChange={handleFileUpload}
+                accept=".mps,.lp,.mod,.gmpl"
+            />
+            <Button onClick={() => document.getElementById('file-upload').click()}>
+                {t('basicModelInput.upload')}
+            </Button>
+        </div>
+    );
+
     return (
         <TooltipProvider>
             <div className="w-full h-3 md:hidden"></div>
@@ -254,12 +305,22 @@ export default function BasicModelInput(states:any) {
                             </Tooltip>
                         )}
                     </div>
-                    <div className="flex justify-end pt-2">
-                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                    <div className="flex justify-between w-full">
+                        <div className="pt-2">
+                            <UploadButton>{t('basicModelInput.upload')}</UploadButton>
+                        </div>
+                        <div className="flex space-x-2 pt-2">
+                            <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
                             <AdvancedShareButton
-                                parameters={{currentSolver: currentSolver , currentLpFormat:currentLpFormat, currentProblem:currentProblem, currentPage: "general" }}
+                                parameters={{
+                                    currentSolver: currentSolver,
+                                    currentLpFormat: currentLpFormat,
+                                    currentProblem: currentProblem,
+                                    currentPage: "general"
+                                }}
                                 onParametersLoaded={handleParametersLoaded}
                             />
+                        </div>
                     </div>
                 </div>
             </div>
