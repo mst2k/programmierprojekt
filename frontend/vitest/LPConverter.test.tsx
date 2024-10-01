@@ -83,7 +83,7 @@ Subject To
  c2: 2 x1 + 3 x2 >= 50
  c3: 1 x1 = 40
 Bounds
- 0 <= x1
+ x1 <= 0
  x2 <= 199
 Binary
  x3

@@ -170,12 +170,16 @@
         }
     },
     "converterPage": {
-        "title": "Konvertierer",
-        "codePlaceholder": "Geben Sie hier Ihren Code ein...",
+        "title": "Code-Konverter",
+        "codePlaceholder": "Geben Sie hier Ihren Code ein",
         "from": "Von",
         "to": "Nach",
         "execute": "Ausführen",
-        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
+        "invalidConversionOption": "Ungültige Konvertierungsoption",
+        "parseError": "Parsing-Fehler",
+        "unknownParseError": "Unbekannter Parsing-Fehler aufgetreten",
+        "noValidLpObject": "Kein gültiges LP-Objekt erstellt",
+        "unknownError": "Ein unbekannter Fehler ist aufgetreten"
     },
     "guidedTour": {
         "welcomePage": {
@@ -253,7 +257,7 @@
         "title": "Eingabe für Personaleinsatzplanung",
         "employees": "Mitarbeiter",
         "employeeName": "Mitarbeitername",
-        "maxHours": "Maximale Stunden",
+        "maxHours": "Anzahl Schichten",
         "action": "Aktion",
         "addEmployee": "Mitarbeiter hinzufügen",
         "shifts": "Schichten",

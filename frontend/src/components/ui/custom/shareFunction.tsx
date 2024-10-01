@@ -51,7 +51,7 @@ const AdvancedShareButton = ({
     const generateShareLink = async () => {
         try {
             const urlParam = await buildUrlParameter(parameters);
-            const fullLink = `${window.location.origin}/#/solver?${urlParam}`;
+            const fullLink = `${window.location.origin}${window.location.pathname}/#/solver?${urlParam}`;
 
             setShareLink(fullLink);
             setShowAlert(true);

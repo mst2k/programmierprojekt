@@ -111,7 +111,7 @@ data;
     const handleGenerateGMPL = () => {
         const generatedCode = generateGMPL(items, capacity);
         setGmplCode(generatedCode);
-        triggerSolving(gmplCodeState)
+        triggerSolving(generatedCode);
         setIsGmplDialogOpen(true);
     };
 
