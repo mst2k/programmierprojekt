@@ -87,7 +87,7 @@ interface FeatureCardProps {
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
     return (
         <Card className="bg-white border-none shadow-lg overflow-hidden">
-            <div className="absolute top-0 right-0 w-16 h-16 bg-[#f0f0f0] rounded-full -mr-8 -mt-8"></div>
+            <div className="absolute top-0 right-0 w-16 h-16 bg-white rounded-full -mr-8 -mt-8"></div>
             <CardHeader>
                 <div className="flex justify-center mb-4 relative z-10">{icon}</div>
                 <CardTitle className="text-xl font-semibold text-center text-[#2c3e50]">{title}</CardTitle>
