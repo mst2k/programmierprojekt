@@ -17,7 +17,7 @@ function WelcomePage() {
     }
     
     return (
-        <div className="flex flex-col h-screen w-screen bg-[#f0f0f0]">            
+        <div className="flex flex-col min-h-screen w-screen bg-[#f0f0f0]">            
             <main className="flex-grow">
                 <section className="container mx-auto px-6 py-16 text-center">
                     <h1 className="text-5xl font-bold mb-4 text-[#2c3e50]">{t("welcomePage.solveProb")}</h1>
@@ -64,7 +64,7 @@ function WelcomePage() {
                         </Card>
                     </div>
                 </section>
-                <section id="contact" className="bg-[#2c3e50] text-white py-16">
+                <section id="contact" className="py-16 bg-white">
                     <div className="container mx-auto px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">{t('welcomePage.optimize')}</h2>
                         <p className="mb-8">{t('welcomePage.startSolv')}</p>
@@ -74,11 +74,6 @@ function WelcomePage() {
                     </div>
                 </section>
             </main>
-            <footer className="bg-[#2c3e50] text-white py-8">
-                <div className="container mx-auto px-6 text-center">
-                    <p>&copy; {t('welcomePage.ORTeamRights')}</p>
-                </div>
-            </footer>
         </div>
 
     )
