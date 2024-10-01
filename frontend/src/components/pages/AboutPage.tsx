@@ -29,52 +29,6 @@ interface TeamMember {
   };
 }
 
-const tl = useTranslation();
-
-// Teammitglieder explizit typisiert
-const teamMembers: TeamMember[] = [
-  {
-    name: tl("aboutPage.tmm1.name"),
-    position: tl("aboutPage.tmm1.position"),
-    description: tl("aboutPage.tmm1.description"),
-    expertise: {
-      technical: { value: 80, description: tl("aboutPage.tmm1.expTec") },
-      leadership: { value:40 , description: tl("aboutPage.tmm1.expLea") },
-      business: { value: 85, description: tl("aboutPage.tmm1.expBus") }
-    }
-  },
-  {
-    name: tl("aboutPage.tmm2.name"),
-    position: tl("aboutPage.tmm2.position"),
-    description: tl("aboutPage.tmm2.description"),
-    expertise: {
-      technical: { value: 95, description: tl("aboutPage.tmm2.expTec") },
-      leadership: { value: 60, description: tl("aboutPage.tmm2.expLea") },
-      business: { value: 70, description: tl("aboutPage.tmm2.expBus") }
-    }
-  },
-  {
-    name: tl("aboutPage.tmm3.name"),
-    position: tl("aboutPage.tmm3.position"),
-    description: tl("aboutPage.tmm3.position"),
-    expertise: {
-      technical: { value: 95, description: tl("aboutPage.tmm3.expTec") },
-      leadership: { value: 70, description: tl("aboutPage.tmm3.expLea") },
-      business: { value: 75, description: tl("aboutPage.tmm3.expBus") }
-    }
-  },
-  {
-    name: tl("aboutPage.tmm4.name"),
-    position: tl("aboutPage.tmm4.position"),
-    description: tl("aboutPage.tmm4.description"),
-    expertise: {
-      technical: { value: 35, description: tl("aboutPage.tmm4.expTec") },
-      leadership: { value: 95, description: tl("aboutPage.tmm4.expLea") },
-      business: { value: 90, description: tl("aboutPage.tmm4.expBus") }
-    }
-  }
-]
-
 // Props-Typen für ExpertiseBar-Komponente
 interface ExpertiseBarProps {
   expertise: Expertise;
@@ -106,6 +60,50 @@ export default function AboutPage() {
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined)
   const navigate = useNavigate();
   const {t} = useTranslation();
+
+  // Teammitglieder explizit typisiert
+  const teamMembers: TeamMember[] = [
+    {
+      name: t("aboutPage.tmm1.name"),
+      position: t("aboutPage.tmm1.position"),
+      description: t("aboutPage.tmm1.description"),
+      expertise: {
+        technical: { value: 80, description: t("aboutPage.tmm1.expTec") },
+        leadership: { value:40 , description: t("aboutPage.tmm1.expLea") },
+        business: { value: 85, description: t("aboutPage.tmm1.expBus") }
+      }
+    },
+    {
+      name: t("aboutPage.tmm2.name"),
+      position: t("aboutPage.tmm2.position"),
+      description: t("aboutPage.tmm2.description"),
+      expertise: {
+        technical: { value: 95, description: t("aboutPage.tmm2.expTec") },
+        leadership: { value: 60, description: t("aboutPage.tmm2.expLea") },
+        business: { value: 70, description: t("aboutPage.tmm2.expBus") }
+      }
+    },
+    {
+      name: t("aboutPage.tmm3.name"),
+      position: t("aboutPage.tmm3.position"),
+      description: t("aboutPage.tmm3.position"),
+      expertise: {
+        technical: { value: 95, description: t("aboutPage.tmm3.expTec") },
+        leadership: { value: 70, description: t("aboutPage.tmm3.expLea") },
+        business: { value: 75, description: t("aboutPage.tmm3.expBus") }
+      }
+    },
+    {
+      name: t("aboutPage.tmm4.name"),
+      position: t("aboutPage.tmm4.position"),
+      description: t("aboutPage.tmm4.description"),
+      expertise: {
+        technical: { value: 35, description: t("aboutPage.tmm4.expTec") },
+        leadership: { value: 95, description: t("aboutPage.tmm4.expLea") },
+        business: { value: 90, description: t("aboutPage.tmm4.expBus") }
+      }
+    }
+  ]
 
   const navigateToLicense = () => {
     navigate('/license');
