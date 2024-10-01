@@ -11,6 +11,9 @@
     "installationTitle": "Installation",
     "general": "Allgemein",
     "easy": "Einfach",
+    "transport": "Transport",
+    "workforce": "Schichtplan",
+    "knapsack": "Rucksack",
     "simplex": "Simplex",
     "modelInput": "Eingabe des Models",
     "differentLayout": "Unterschiedliches Layout je nach Problem",
@@ -164,6 +167,90 @@
             "expTec": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
             "expLea": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
             "expBus": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+        }
+    },
+    "converterPage": {
+        "title": "Konvertierer",
+        "codePlaceholder": "Geben Sie hier Ihren Code ein...",
+        "from": "Von",
+        "to": "Nach",
+        "execute": "Ausführen",
+        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
+    },
+    "transportInput": {
+        "title": "Eingabe für Transportproblem",
+        "plants": "Produktionswerke",
+        "plantName": "Werksname",
+        "capacity": "Kapazität",
+        "addPlant": "Werk hinzufügen",
+        "markets": "Märkte",
+        "marketName": "Marktname",
+        "demand": "Nachfrage",
+        "addMarket": "Markt hinzufügen",
+        "distances": "Entfernungen",
+        "plantMarket": "Werk \\ Markt",
+        "freightCost": "Frachtkosten (Pro Einheit und Distanz)",
+        "generateGMPL": "Lösen",
+        "showGMPL": "GMPL-Code anzeigen",
+        "editGMPL": "GMPL-Code bearbeiten",
+        "closeGMPL": "Schließen"
+    },
+    "knapsackInput": {
+        "title": "Eingabe für Rucksackproblem",
+        "items": "Gegenstände",
+        "itemName": "Gegenstandsname",
+        "weight": "Gewicht",
+        "value": "Wert",
+        "action": "Aktion",
+        "addItem": "Gegenstand hinzufügen",
+        "capacity": "Rucksackkapazität",
+        "generateGMPL": "Lösen",
+        "showGMPL": "GMPL-Code anzeigen",
+        "editGMPL": "GMPL-Code bearbeiten",
+        "closeGMPL": "Schließen"
+    },
+    "workforceInput":{
+        "title": "Eingabe für Personaleinsatzplanung",
+        "employees": "Mitarbeiter",
+        "employeeName": "Mitarbeitername",
+        "maxHours": "Maximale Stunden",
+        "action": "Aktion",
+        "addEmployee": "Mitarbeiter hinzufügen",
+        "shifts": "Schichten",
+        "shiftName": "Schichtname",
+        "requiredEmployees": "Benötigte Mitarbeiter",
+        "addShift": "Schicht hinzufügen",
+        "preferences": "Mitarbeiterpräferenzen",
+        "shiftEmployee": "Schicht \\ Mitarbeiter",
+        "preference": "Präferenz",
+        "generateGMPL": "Lösen",
+        "showGMPL": "GMPL-Code anzeigen",
+        "editGMPL": "GMPL-Code bearbeiten",
+        "closeGMPL": "Schließen"
+    },
+    "editorComponent": {
+        "hasObjective": "Zielfunktion",
+        "hasRestrictions": "Restriktionen",
+        "hasNonNegativity": "Nicht-Negativitätsbedingung",
+        "errors": {
+            "gmpl": {
+                "missingSemilicon": " Deklaration wird nicht ordnungsgemäß mit einem Semikolon abgeschlossen",
+                "constraintMustHaveName": "Die Nebenbedingung muss einen Namen haben",
+                "invalidIdentifier": "Ungültiger Bezeichner. Nur alphanumerische Zeichen und Unterstriche sind erlaubt, und es muss mit einem Buchstaben oder Unterstrich beginnen",
+                "modelMustHaveObjective": "Das Modell muss eine Zielfunktion haben (maximize oder minimize)"
+            },
+            "lp": {
+                "constraintMissingOperator": "Die Nebenbedingung muss einen Vergleichsoperator enthalten (<=, >= oder =)",
+                "missingObjectiveFunction": "Die LP-Datei muss eine Zielfunktion enthalten (minimize oder maximize)"
+            },
+            "mps": {
+                "invalidRowType": "Ungültiger Zeilentyp. Muss N, L, G oder E sein.",
+                "missingNameSection": "Die MPS-Datei muss mit einem NAME-Abschnitt beginnen",
+                "missingRowsSection": "Die MPS-Datei muss einen ROWS-Abschnitt enthalten",
+                "missingColumnsSection": "Die MPS-Datei muss einen COLUMNS-Abschnitt enthalten",
+                "missingRHSSection": "Die MPS-Datei muss einen RHS-Abschnitt enthalten",
+                "missingENDATA": "Die MPS-Datei muss mit einer ENDATA-Anweisung enden"
+            }
         }
     }
 }

@@ -1,7 +1,4 @@
-"use client"
-
-import { useState} from "react"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"

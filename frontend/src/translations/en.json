@@ -98,6 +98,93 @@
             "try": "Try OR Solver Now",
             "ORTeamRights": "2024 OR Solver Team. All rights reserved."
     },
+    "transportInput": {
+        "title": "Transportation Problem Input",
+        "plants": "Canning Plants",
+        "plantName": "Plant name",
+        "capacity": "Capacity",
+        "addPlant": "Add Plant",
+        "markets": "Markets",
+        "marketName": "Market name",
+        "demand": "Demand",
+        "addMarket": "Add Market",
+        "distances": "Distances",
+        "plantMarket": "Plant \\ Market",
+        "freightCost": "Freight Cost (per unit and distance)",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+        "knapsackInput":{
+        "title": "Knapsack Problem Input",
+        "items": "Items",
+        "itemName": "Item Name",
+        "weight": "Weight",
+        "value": "Value",
+        "action": "Action",
+        "addItem": "Add Item",
+        "capacity": "Knapsack Capacity",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+    "workforceInput": {
+        "title": "Workforce Scheduling Problem Input",
+        "employees": "Employees",
+        "employeeName": "Employee Name",
+        "maxHours": "Max Hours",
+        "action": "Action",
+        "addEmployee": "Add Employee",
+        "shifts": "Shifts",
+        "shiftName": "Shift Name",
+        "requiredEmployees": "Required Employees",
+        "addShift": "Add Shift",
+        "preferences": "Employee Preferences",
+        "shiftEmployee": "Shift \\ Employee",
+        "preference": "Preference",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+    "transport": "Transport",
+    "workforce": "Workforce",
+    "knapsack": "Knapsack",
+    "converterPage": {
+        "title": "Converter",
+        "codePlaceholder": "Enter your code here...",
+        "from": "From",
+        "to": "To",
+        "execute": "Execute",
+        "noValidLpObject": "No Valid LP Object to Create Output"
+    },
+    "editorComponent": {
+        "hasObjective": "Objective function",
+        "hasRestrictions": "Restrictions",
+        "hasNonNegativity": "Non-negativity constraint",
+        "errors": {
+            "gmpl": {
+                "missingSemilicon": " declaration is not properly closed with a semicolon",
+                "constraintMustHaveName": "Constraint must have a name",
+                "invalidIdentifier": "Invalid identifier. Only alphanumeric characters and underscore are allowed, and it must start with a letter or underscore",
+                "modelMustHaveObjective": "Model must have an objective function (maximize or minimize)"
+            },
+            "lp": {
+                "constraintMissingOperator": "Constraint must include a comparison operator (<=, >=, or =)",
+                "missingObjectiveFunction": "LP file must include an objective function (minimize or maximize)"
+            },
+            "mps": {
+                "invalidRowType": "Invalid row type. Must be N, L, G, or E.",
+                "missingNameSection": "MPS file must start with a NAME section",
+                "missingRowsSection": "MPS file must include a ROWS section",
+                "missingColumnsSection": "MPS file must include a COLUMNS section",
+                "missingRHSSection": "MPS file must include an RHS section",
+                "missingENDATA": "MPS file must end with an ENDATA statement"
+            }
+        }
+    },
     "licensePage":{
             "licenseTitle": "License (GNU GPL)",
             "licenseCaption": "This file is part of Programmierprojekt.",
