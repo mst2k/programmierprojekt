@@ -134,7 +134,7 @@
         "title": "Workforce Scheduling Problem Input",
         "employees": "Employees",
         "employeeName": "Employee Name",
-        "maxHours": "Max Hours",
+        "maxHours": "Max Shifts",
         "action": "Action",
         "addEmployee": "Add Employee",
         "shifts": "Shifts",

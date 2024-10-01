@@ -70,16 +70,16 @@ data;
     } = states.states;
 
     const addEmployee = () => {
-        setEmployees([...employees, { name: '', maxHours: '' }])
+        setEmployees([...employees, { name: '', maxHours: '' }]);
         // @ts-expect-error
-        setPreferences(preferences.map(row => [...row, '']))
-    }
+        setPreferences(prev => prev.map(row => [...row, '']));
+    };
 
     const addShift = () => {
-        setShifts([...shifts, { name: '', required: '' }])
+        setShifts([...shifts, { name: '', required: '' }]);
         // @ts-expect-error
-        setPreferences([...preferences, new Array(employees.length).fill('')])
-    }
+        setPreferences(prev => [...prev, new Array(employees.length).fill('')]);
+    };
 
     const removeEmployee = (index: number) => {
         const newEmployees = employees.filter((_, i) => i !== index)
@@ -108,10 +108,10 @@ data;
     }
 
     const updatePreference = (shiftIndex: number, employeeIndex: number, value: string) => {
-        const newPreferences = [...preferences]
+        const newPreferences = [...preferences];
         // @ts-expect-error
-        newPreferences[employeeIndex][shiftIndex] = value
-        setPreferences(newPreferences)
+        newPreferences[shiftIndex][employeeIndex] = value;
+        setPreferences(newPreferences);
     }
 
     function triggerSolving(gmpl: string) {
@@ -154,7 +154,7 @@ data;
     const handleGenerateGMPL = () => {
         const generatedCode = generateGMPL(employees, shifts, preferences);
         setGmplCode(generatedCode);
-        triggerSolving(gmplCodeState)
+        triggerSolving(generatedCode)
         setIsGmplDialogOpen(true);
     };
 
@@ -296,7 +296,7 @@ data;
                                     <TableCell key={employeeIndex}>
                                         <Input
                                             type="number"
-                                            value={preferences[employeeIndex]?.[shiftIndex] || ''}
+                                            value={preferences[shiftIndex]?.[employeeIndex] || ''}
                                             onChange={(e) => updatePreference(shiftIndex, employeeIndex, e.target.value)}
                                             placeholder={t('workforceInput.preference')}
                                         />

@@ -26,7 +26,7 @@ export function parseGMPL(lpString: string): LP {
     const objectiveName = objName.trim();
     const objectiveVars: Variable[] = parseGMPLVariables(objFunction);
 
-    const constraintsMatch = cleanedInput.match(/subject to/i);
+    const constraintsMatch = cleanedInput.match(/subject to|s\.t\./i)
     if (!constraintsMatch) {
         throw new Error('Constraints not found');
     }

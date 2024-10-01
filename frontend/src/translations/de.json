@@ -145,7 +145,7 @@
         "title": "Eingabe für Personaleinsatzplanung",
         "employees": "Mitarbeiter",
         "employeeName": "Mitarbeitername",
-        "maxHours": "Maximale Stunden",
+        "maxHours": "Anzahl Schichten",
         "action": "Aktion",
         "addEmployee": "Mitarbeiter hinzufügen",
         "shifts": "Schichten",

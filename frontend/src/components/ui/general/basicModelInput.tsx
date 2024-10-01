@@ -184,8 +184,12 @@ export default function BasicModelInput(states:any) {
 
 
     function triggerSolving(_:any, solveAnyway?: boolean) {
-
-        if (solveAnyway != true && selectedItem && selectedItem.status !== 'nativ') {
+        let conversion = false;
+        if(selectedItem?.content){
+            const cItem = items.find(item => item.id === parseInt(selectedItem.content)) || null
+            if(cItem?.status) conversion = cItem.status === "conversion";
+        }
+        if (solveAnyway != true && conversion) {
             setShowConverstionAlert(true);
         } else {
             if(selectedItem?.content){
