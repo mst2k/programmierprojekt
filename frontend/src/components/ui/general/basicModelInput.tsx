@@ -186,7 +186,7 @@ export default function BasicModelInput(states:any) {
     function triggerSolving(_:any, solveAnyway?: boolean) {
         let conversion = false;
         if(selectedItem?.content){
-            const cItem = items.find(item => item.id === parseInt(selectedItem.content)) || null
+            const cItem = items.find(item => item.content === selectedItem.content) || null
             if(cItem?.status) conversion = cItem.status === "conversion";
         }
         if (solveAnyway != true && conversion) {
