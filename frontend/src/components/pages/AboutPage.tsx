@@ -29,46 +29,48 @@ interface TeamMember {
   };
 }
 
+const tl = useTranslation();
+
 // Teammitglieder explizit typisiert
 const teamMembers: TeamMember[] = [
   {
-    name: "Elisabeth",
-    position: "Entwickelerin",
-    description: "Elisabeth ist bekannt für ihr starkes technisches Verständnis und ihre Fähigkeit, komplexe Geschäftsprozesse zu durchdringen. Sie bringt wertvolle Einsichten in die Entwicklung und Umsetzung technischer Lösungen mit und meistert technische Herausforderungen mit Bravour.",
+    name: tl("aboutPage.tmm1.name"),
+    position: tl("aboutPage.tmm1.position"),
+    description: tl("aboutPage.tmm1.description"),
     expertise: {
-      technical: { value: 80, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
-      leadership: { value:40 , description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
-      business: { value: 85, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
+      technical: { value: 80, description: tl("aboutPage.tmm1.expTec") },
+      leadership: { value:40 , description: tl("aboutPage.tmm1.expLea") },
+      business: { value: 85, description: tl("aboutPage.tmm1.expBus") }
     }
   },
   {
-    name: "Marcel",
-    position: "Entwickler",
-    description: "Marcel bringt umfassende Expertise in allen Bereichen der Softwareentwicklung mit. Mit seinem breiten Spektrum an technischen Fähigkeiten spielt er eine Schlüsselrolle in der Entwicklung von Frontend- und Backend-Lösungen.",
+    name: tl("aboutPage.tmm2.name"),
+    position: tl("aboutPage.tmm2.position"),
+    description: tl("aboutPage.tmm2.description"),
     expertise: {
-      technical: { value: 95, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
-      leadership: { value: 60, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
-      business: { value: 70, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
+      technical: { value: 95, description: tl("aboutPage.tmm2.expTec") },
+      leadership: { value: 60, description: tl("aboutPage.tmm2.expLea") },
+      business: { value: 70, description: tl("aboutPage.tmm2.expBus") }
     }
   },
   {
-    name: "Felix",
-    position: "Entwickler",
-    description: "Felix vereint technisches Know-how mit einem tiefen Verständnis für Designprozesse und User Experience. Er leitet kreative Prozesse und sorgt dafür, dass Projekte nicht nur technisch, sondern auch ästhetisch überzeugen.",
+    name: tl("aboutPage.tmm3.name"),
+    position: tl("aboutPage.tmm3.position"),
+    description: tl("aboutPage.tmm3.position"),
     expertise: {
-      technical: { value: 95, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
-      leadership: { value: 70, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
-      business: { value: 75, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
+      technical: { value: 95, description: tl("aboutPage.tmm3.expTec") },
+      leadership: { value: 70, description: tl("aboutPage.tmm3.expLea") },
+      business: { value: 75, description: tl("aboutPage.tmm3.expBus") }
     }
   },
   {
-    name: "Yannick",
-    position: "Product Owner/ Scrum Master",
-    description: "Yannick ist ein Produktmanager mit starkem Führungscharisma und ausgeprägten analytischen Fähigkeiten. Er bringt ein tiefes Verständnis für die Geschäftsanforderungen mit und sorgt dafür, dass datengetriebene Lösungen effizient umgesetzt werden.",
+    name: tl("aboutPage.tmm4.name"),
+    position: tl("aboutPage.tmm4.position"),
+    description: tl("aboutPage.tmm4.description"),
     expertise: {
-      technical: { value: 35, description: "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln." },
-      leadership: { value: 95, description: "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten." },
-      business: { value: 90, description: "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen." }
+      technical: { value: 35, description: tl("aboutPage.tmm4.expTec") },
+      leadership: { value: 95, description: tl("aboutPage.tmm4.expLea") },
+      business: { value: 90, description: tl("aboutPage.tmm4.expBus") }
     }
   }
 ]

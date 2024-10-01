@@ -132,6 +132,38 @@
             "Header": "Source Code",
             "text": "We believe in the power of the open-source community. Much of our code is publicly accessible to promote collaboration and innovation. By disclosing our source code, we not only want to create transparency but also give other developers the opportunity to learn from our work and build upon it.",
             "button": "Visit our GitHub"
+        },
+        "tmm1": {
+            "name": "Elisabeth",
+            "position": "Developer",
+            "description": "Elisabeth is known for her strong technical understanding and her ability to penetrate complex business processes. She brings valuable insight into the development and implementation of technical solutions and masters technical challenges with flying colours.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+         },
+        "tmm2": {
+            "name": "Marcel",
+            "position": "Developer",
+            "description": "Marcel brings extensive expertise in all areas of software development. With his broad range of technical skills, he plays a key role in the development of frontend and backend solutions.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm3": {
+            "name": "Felix",
+            "position": "Developer",
+            "description" : "Felix combines technical expertise with a deep understanding of design processes and user experience. He leads creative processes and ensures that projects are not only technically convincing, but also aesthetically pleasing.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm4": {
+            "name": "Yannick",
+            "position": "Product Owner/ Scrum Master",
+            "description": "Yannick is a product manager with strong leadership charisma and strong analytical skills. He brings a deep understanding of business requirements and ensures that data-driven solutions are implemented efficiently.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
         }
     }
 }
