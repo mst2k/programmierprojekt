@@ -8,6 +8,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from "@/components/ui/general/footer.tsx";
 import AboutPage from './components/pages/AboutPage';
 import BenchmarkComponent from './components/pages/Benchmark';
+import LicensePage from "@/components/pages/LicensePage.tsx";
 
 const Layout = () => {
     return (
@@ -35,6 +36,8 @@ function App() {
               <Route path="/converter" element={<ConverterPage />} /> {/* /converter route */}
               <Route path="/about" element={<AboutPage />} /> {/* about route */}
               <Route path="/benchmark" element={<BenchmarkComponent />} /> {/* about route */}
+              <Route path="/license" element={<LicensePage />} /> {/* about route */}
+
               </Route>
           </Routes>
       </HashRouter>
