@@ -2,7 +2,7 @@ import { LP } from "@/interfaces/glpkJavil/LP.tsx";
 import { Bound } from "@/interfaces/glpkJavil/Bound.tsx";
 import { Variable } from "@/interfaces/glpkJavil/Variable.tsx";
 import {Bnds, GLP_MAX, GLP_MIN} from "@/interfaces/glpkJavil/Bnds.tsx";
-import { GLP_UP, GLP_LO, GLP_FX, GLP_FR } from "@/interfaces/glpkJavil/Bnds.tsx";
+import { GLP_UP, GLP_LO, GLP_FX, GLP_FR, GLP_DB } from "@/interfaces/glpkJavil/Bnds.tsx";
 
 // Funktion zur Konvertierung eines LP-Objekts in das LP-Format
 export function convertToLP(lpData: LP): string {
@@ -235,28 +235,45 @@ function parseLPConstraint(constraint: string): { vars: Variable[], bound: Bnds 
 
 // Hilfsfunktion zum Parsen der Schranken (Bounds)
 function parseLPBound(boundStr: string): Bound | null {
-    // Regex to handle "<= x <=" and also "lb <= x" and "x <= ub"
-    const regex = /(\d*\.?\d*)?\s*(<=|>=|free)?\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*(<=|>=|=|free)?\s*(\d*\.?\d*)?/;
-    const match = regex.exec(boundStr);
+    // Regex to handle various bound formats
+    const regex = /^([-]?\d*\.?\d*)?\s*(<=|>=|=)?\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*(<=|>=|=)?\s*([-]?\d*\.?\d*)?$/;
+    const match = regex.exec(boundStr.trim());
 
     if (match) {
-        const lb = match[1] ? parseFloat(match[1]) : undefined;
-        const varName = match[3];
-        const ub = match[5] ? parseFloat(match[5]) : undefined;
-        let type;
-        if (match[2] === "<=" && match[4] === "<=") {
-            type = GLP_UP; // lb <= x <= ub
-        } else if (match[2] === ">=") {
-            type = GLP_LO; // lb >= x
-        } else if (match[4] === "=") {
-            type = GLP_FX; // x = ub
-        } else if (match[2] === "free" || match[4] === "free"){
-            type = GLP_FR;
-        }
-        else{
-            type = GLP_UP; // Default to 1 if only one bound is present (x <= ub or lb <= x)
+        const [, lbStr, leftOp, varName, rightOp, ubStr] = match;
+        let lb = lbStr ? parseFloat(lbStr) : undefined;
+        let ub = ubStr ? parseFloat(ubStr) : undefined;
+        let type: number;
+
+        // Handle 'free' case
+        if (boundStr.toLowerCase().includes('free')) {
+            return {
+                type: GLP_FR,
+                name: varName,
+                lb: -Infinity,
+                ub: Infinity
+            } as Bound;
         }
 
+        // Determine bound type
+        if (leftOp && rightOp) {
+            if (leftOp === '<=' && rightOp === '<=') {
+                type = GLP_DB; // Double bound
+            } else if (leftOp === '>=' && rightOp === '>=') {
+                type = GLP_DB; // Double bound (reverse order)
+                [lb, ub] = [ub, lb]; // Swap lb and ub
+            } else {
+                return null; // Invalid combination
+            }
+        } else if (leftOp === '<=' || rightOp === '<=') {
+            type = GLP_UP;
+        } else if (leftOp === '>=' || rightOp === '>=') {
+            type = GLP_LO;
+        } else if (leftOp === '=' || rightOp === '=') {
+            type = GLP_FX;
+        } else {
+            type = GLP_FR; // No bounds specified, assume free
+        }
 
         return {
             type,

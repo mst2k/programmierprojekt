@@ -36,22 +36,43 @@ const CodeExecutionPage: React.FC = () => {
     const [output, setOutput] = useState<string>('');
 
     const handleExecute = async () => {
-        if (from === to) {
-            setOutput(code)
-            return
-        }
-        let lpObject: LP | Promise<LP> | undefined = undefined;
+        try {
+            if (from === to) {
+                setOutput(code);
+                return;
+            }
 
-        const fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
-        if (fromFunction) {
-            lpObject = await fromFunction.from(code);
-        }
-        const toFunction = convertOptions.find(c => c.name === to) ?? undefined;
-        if (toFunction) {
-            if (lpObject) {
-                setOutput(toFunction.to(lpObject as LP));
-            } else
-                throw t('converterPage.noValidLpObject');
+            let lpObject: LP | undefined = undefined;
+
+            const fromFunction = convertOptions.find(c => c.name === from);
+            const toFunction = convertOptions.find(c => c.name === to);
+
+            if (!fromFunction || !toFunction) {
+                throw new Error(t('converterPage.invalidConversionOption'));
+            }
+
+            try {
+                lpObject = await Promise.resolve(fromFunction.from(code));
+            } catch (error) {
+                if (error instanceof Error) {
+                    throw new Error(`${t('converterPage.parseError')}: ${error.message}`);
+                } else {
+                    throw new Error(t('converterPage.unknownParseError'));
+                }
+            }
+
+            if (!lpObject) {
+                throw new Error(t('converterPage.noValidLpObject'));
+            }
+
+            const result = toFunction.to(lpObject);
+            setOutput(result);
+        } catch (error) {
+            if (error instanceof Error) {
+                setOutput(`Error: ${error.message}`);
+            } else {
+                setOutput(t('converterPage.unknownError'));
+            }
         }
     };
 
