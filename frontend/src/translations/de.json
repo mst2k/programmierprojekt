@@ -177,6 +177,46 @@
         "execute": "Ausführen",
         "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
     },
+    "guidedTour": {
+        "welcomePage": {
+            "welcome": "Willkommen auf unserer Problemlösungsplattform!",
+            "features": "Erkunde unsere Hauptfunktionen, die das Lösen von Problemen vereinfachen.",
+            "about": "Lerne mehr über dieses Projekt und dessen Hintergrund.",
+            "contact": "Bereit, loszulegen? Klicke hier, um mit dem Lösen zu beginnen."
+        },
+        "solverPage": {
+            "input": "Hier kannst du dein Problem ganz bequem in verschiedenen Formaten eingeben.",
+            "result": "Deine Ergebnisse erscheinen hier.",
+            "solv-conv": "Wechseln wir zur nun Konvertierer-Seite. Hier kannst du dein Problem automatisch in verschiedene Formaten umwandeln."
+        },
+        "converterPage": {
+            "input": "Gib hier dein Problem ein und lasse es in verschiedene Formate konvertieren.",
+            "format": "Wähle dein Ausgangs- und dein gewünschtes Zielformat aus.",
+            "exec": "Starte die Konvertierung.",
+            "output": "Das konvertierte Problem erscheint hier.",
+            "last_pt1": "Die Einführung endet hier.",
+            "last_pt2": "Viel Freude und Erfolg beim künftigen Lösen von Problemen! :)"
+        }
+    },
+    "lastTranslations":{
+        "welcomePage":{
+            "features": {
+                "feat1Title": "Viele Formate",
+                "feat1Description": "Unterstützt GMPL, LP, and MPS Problemformate",
+                "feat2Title": "Schnelle Resultate",
+                "feat2Description": "Effiziente Algorithmen für schnelle Lösungen",
+                "feat3Title": "Leichte Eingabe",
+                "feat3Description": "Benutzerfreundliche Eingabe und Lösung von Problemen"
+            }
+        },
+        "converterPage":{
+            "codearea": {
+                "copy": "Kopieren",
+                "copied": "Kopiert!",
+                "copyErr": "Fehler beim Kopieren:"
+            }
+        }
+    },
     "transportInput": {
         "title": "Eingabe für Transportproblem",
         "plants": "Produktionswerke",

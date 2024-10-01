@@ -160,6 +160,46 @@
         "execute": "Execute",
         "noValidLpObject": "No Valid LP Object to Create Output"
     },
+    "guidedTour": {
+        "welcomePage": {
+            "welcome": "Welcome to our problem-solving platform!",
+            "features": "Explore our key features that make problem-solving easier.",
+            "about": "Learn more about our project and its academic context.",
+            "contact": "Ready to start? Click here to begin solving problems!"
+        },
+        "solverPage": {
+            "input": "Here you can input your problem in various formats.",
+            "result": "The results of your solved problem will appear here.",
+            "solv-conv": "Let's move to the Converter Page to convert between different formats."
+        },
+        "converterPage": {
+            "input": "Input your problem to convert between different formats.",
+            "format": "Select the source and target format for conversion.",
+            "exec": "Start the conversion.",
+            "output": "The converted result will appear here.",
+            "last_pt1": "The tour ends here.",
+            "last_pt2": "Have fun and success solving problems in the future! :)"
+        }
+    },
+    "lastTranslations":{
+        "welcomePage":{
+            "features": {
+                "feat1Title": "Multiple Formats",
+                "feat1Description": "Support for GMPL, LP, and MPS problem formats",
+                "feat2Title": "Fast Solving",
+                "feat2Description": "Efficient algorithms for quick problem resolution",
+                "feat3Title": "Easy Input",
+                "feat3Description": "User-friendly interface for problem input and solving"
+            }
+        },
+        "converterPage":{
+            "codearea": {
+                "copy": "Copy",
+                "copied": "Copied!",
+                "copyErr": "Error occured during copying:"
+            }
+        }
+    },
     "editorComponent": {
         "hasObjective": "Objective function",
         "hasRestrictions": "Restrictions",
