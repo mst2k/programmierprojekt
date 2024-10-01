@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { GithubIcon, FileTextIcon, UsersIcon, BookOpenIcon, CodeIcon, PresentationIcon } from "lucide-react"
 import { FC } from "react"
 import { useTranslation } from 'react-i18next';
+import {useNavigate} from "react-router-dom";
 
 // Typ für Expertise
 interface Expertise {
