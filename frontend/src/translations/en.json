@@ -26,7 +26,7 @@
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
     "send": "Send",
-    "mode": "Mode",
+    "mode": "Mode",  
     "solvertype": "Solver Type",
     "otherProbs": "Other standard problems",
     "toggleSolver": "Toggle Solver",
@@ -184,6 +184,73 @@
                 "missingENDATA": "MPS file must end with an ENDATA statement"
             }
         }
+    },
+    "licensePage":{
+            "licenseTitle": "License (GNU GPL)",
+            "licenseCaption": "This file is part of Programmierprojekt.",
+            "section1": "Programmierprojekt is Free Software: You may redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 of the License, or (at your option) any later published version.”",
+            "section2": "Programmierprojekt is provided in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public Licence for more details.",
+            "section3": "You should have received a copy of the GNU General Public Licence together with this program. If not, see https://www.gnu.org/licenses.",
+            "buttonText": "Back",
+            "update": "last update"
+    },
+    "aboutPage": {
+        "title": "About us",
+        "cpt1": {
+            "Header": "Our Story",
+            "Text1": "As part of the dual study program in Business Informatics at Osnabrück University of Applied Sciences, we were able to apply our expertise in the areas of Operations Research and the fundamentals of web development during the 5th semester.",
+            "Text2": "During the first four semesters, we were taught knowledge and skills that must be applied in a bundled manner in this project to achieve the project's goal.",
+            "Text3": "The project team is rather heterogeneous in its knowledge and skills, so different perspectives have led to a promising web application."
+        },
+        "cpt2": {
+            "Header": "The Team",
+            "skills": {
+                "technical": "Ability to understand technical challenges and develop efficient solutions.",
+                "leadership": "Competence in leading teams, mentoring, and coordinating projects.",
+                "business": "Ability to recognize business requirements and strategically translate them into technological or operational solutions."
+            }
+        },
+        "cpt3": {
+            "Header": "Licenses",
+            "text": "To fulfill the required functions for the project, certain solver libraries had to be used. The licenses used by the libraries were also taken into account. The libraries use Apache 2.0, MIT, ISC, and GNU GPL licenses. Therefore, we are bound to publish this project under GNU GPL as well.",
+            "button": "Full License Terms"
+        },
+        "cpt4": {
+            "Header": "Source Code",
+            "text": "We believe in the power of the open-source community. Much of our code is publicly accessible to promote collaboration and innovation. By disclosing our source code, we not only want to create transparency but also give other developers the opportunity to learn from our work and build upon it.",
+            "button": "Visit our GitHub"
+        },
+        "tmm1": {
+            "name": "Elisabeth",
+            "position": "Developer",
+            "description": "Elisabeth is known for her strong technical understanding and her ability to penetrate complex business processes. She brings valuable insight into the development and implementation of technical solutions and masters technical challenges with flying colours.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+         },
+        "tmm2": {
+            "name": "Marcel",
+            "position": "Developer",
+            "description": "Marcel brings extensive expertise in all areas of software development. With his broad range of technical skills, he plays a key role in the development of frontend and backend solutions.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm3": {
+            "name": "Felix",
+            "position": "Developer",
+            "description" : "Felix combines technical expertise with a deep understanding of design processes and user experience. He leads creative processes and ensures that projects are not only technically convincing, but also aesthetically pleasing.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm4": {
+            "name": "Yannick",
+            "position": "Product Owner/ Scrum Master",
+            "description": "Yannick is a product manager with strong leadership charisma and strong analytical skills. He brings a deep understanding of business requirements and ensures that data-driven solutions are implemented efficiently.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        }
     }
 }
-  

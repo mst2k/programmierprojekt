@@ -101,6 +101,74 @@
             "try": "Jetzt ausprobieren",
             "ORTeamRights": "2024 OR Solver Team. Alle Rechte vorbehalten."
     },
+    "licensePage":{
+            "licenseTitle": "Lizenz (GNU GPL)",
+            "licenseCaption": "Diese Datei ist Teil von Programmierprojekt.",
+            "section1": "Programmierprojekt ist Freie Software: Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation, Version 3 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version, weiter verteilen und/oder modifizieren.",
+            "section2": "Programmierprojekt wird in der Hoffnung, dass es nützlich sein wird, aber OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. Siehe die GNU General Public License für weitere Details.",
+            "section3": " Sie sollten eine Kopie der GNU General Public License zusammen mit diesem Programm erhalten haben. Wenn nicht, siehe https://www.gnu.org/licenses.",
+            "buttonText": "Zurück",
+            "update": "Letzte Aktualisierung"
+    },
+    "aboutPage": {
+        "title": "Über uns",
+        "cpt1": {
+            "Header": "Unsere Geschichte",
+            "Text1": "Im Rahmen des dualen Studiums im Fach Wirtschaftsinformatik an  der Hochschule Osnabrück durften wir im 5. Semester unsere Fachkenntnisse aus dem Bereichen Operations Research und den Grundlagen der Webentwicklung anwenden.",
+            "Text2": "Im Laufe der ersten vier Semester wurden uns dabei Kenntnisse und Fertigkeiten vermittelt die in diesem Projekt gebündelt angewandt werden müssen um das Ziel dieses Projekts zu erreichen.",
+            "Text3": "Das Projektteam ist in seinen Kenntnisse und Fähigkeiten eher heterogen, sodass verschiedene Sichtweisen zu einer vielversprechenden Webanwendung geführt haben."
+        },
+        "cpt2": {
+            "Header": "Das Team",
+            "skills": {
+                "technical": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
+                "leadership": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
+                "business": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+            }
+         },
+        "cpt3": {
+            "Header": "Lizenzen",
+            "text": "Um die benötigten Funktionen für das Projekt zu erfüllen mussten bestimmte Solver-Bibliotheken angesprochen werden. Dabei wurde auch die von den Bibliotheken verwendete Lizenz beachtet. Die Bibliotheken verwenden Apache 2.0, MIT, ISC und GNU GPL Lizenzen. Daher sind wir daran gebunden dieses Projekt ebenfalls unter GNU GPL zu veröffentlichen.",
+            "button": "Vollständige Lizenzbedingungen"
+        },
+        "cpt4": {
+            "Header": "Quellcode",
+            "text": "Wir glauben an die Kraft der Open-Source-Gemeinschaft. Ein Großteil unseres Codes ist öffentlich zugänglich, um Zusammenarbeit und Innovation zu fördern. Durch die Offenlegung unseres Quellcodes möchten wir nicht nur Transparenz schaffen, sondern auch anderen Entwicklern die Möglichkeit geben, von unserer Arbeit zu lernen und darauf aufzubauen.",
+            "button": "Besuchen Sie unser GitHub"
+        },
+        "tmm1": {
+            "name": "Elisabeth",
+            "position": "Entwicklerin",
+            "description": "Elisabeth ist bekannt für ihr starkes technisches Verständnis und ihre Fähigkeit, komplexe Geschäftsprozesse zu durchdringen. Sie bringt wertvolle Einsichten in die Entwicklung und Umsetzung technischer Lösungen mit und meistert technische Herausforderungen mit Bravour.",
+            "expTec": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
+            "expLea": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
+            "expBus": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+        },
+        "tmm2": {
+            "name": "Marcel",
+            "position": "Entwickler",
+            "description": "Marcel bringt umfassende Expertise in allen Bereichen der Softwareentwicklung mit. Mit seinem breiten Spektrum an technischen Fähigkeiten spielt er eine Schlüsselrolle in der Entwicklung von Frontend- und Backend-Lösungen.",
+            "expTec": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
+            "expLea": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
+            "expBus": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+        },
+        "tmm3": {
+            "name": "Felix",
+            "position": "Entwickler",
+            "description" : "Felix vereint technisches Know-how mit einem tiefen Verständnis für Designprozesse und User Experience. Er leitet kreative Prozesse und sorgt dafür, dass Projekte nicht nur technisch, sondern auch ästhetisch überzeugen.",
+            "expTec": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
+            "expLea": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
+            "expBus": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+        },
+        "tmm4": {
+            "name": "Yannick",
+            "position": "Product Owner/ Scrum Master",
+            "description": "Yannick ist ein Produktmanager mit starkem Führungscharisma und ausgeprägten analytischen Fähigkeiten. Er bringt ein tiefes Verständnis für die Geschäftsanforderungen mit und sorgt dafür, dass datengetriebene Lösungen effizient umgesetzt werden.",
+            "expTec": "Fähigkeit, technische Herausforderungen zu verstehen und effiziente Lösungen zu entwickeln.",
+            "expLea": "Kompetenz in der Leitung von Teams, Mentoring und Koordination von Projekten.",
+            "expBus": "Fähigkeit, Geschäftsanforderungen zu erkennen und sie strategisch in technologische oder operative Lösungen umzusetzen."
+        }
+    },
     "converterPage": {
         "title": "Konvertierer",
         "codePlaceholder": "Geben Sie hier Ihren Code ein...",
@@ -185,4 +253,5 @@
             }
         }
     }
-  }
+}
+
