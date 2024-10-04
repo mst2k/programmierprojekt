@@ -50,53 +50,78 @@ const CodeExecutionPage: React.FC = () => {
     }, [location]);
 
     const handleExecute = async () => {
-        if (from === to) {
-            setOutput(code)
-            return
-        }
-        let lpObject: LP | Promise<LP> | undefined = undefined;
+        try {
+            if (from === to) {
+                setOutput(code);
+                return;
+            }
 
-        const fromFunction = convertOptions.find(c => c.name === from) ?? undefined;
-        if (fromFunction) {
-            lpObject = await fromFunction.from(code);
-        }
-        const toFunction = convertOptions.find(c => c.name === to) ?? undefined;
-        if (toFunction) {
-            if (lpObject) {
-                setOutput(toFunction.to(lpObject as LP));
-            } else
-                throw t('converterPage.noValidLpObject');
+            let lpObject: LP | undefined = undefined;
+
+            const fromFunction = convertOptions.find(c => c.name === from);
+            const toFunction = convertOptions.find(c => c.name === to);
+
+            if (!fromFunction || !toFunction) {
+                throw new Error(t('converterPage.invalidConversionOption'));
+            }
+
+            try {
+                lpObject = await Promise.resolve(fromFunction.from(code));
+            } catch (error) {
+                if (error instanceof Error) {
+                    throw new Error(`${t('converterPage.parseError')}: ${error.message}`);
+                } else {
+                    throw new Error(t('converterPage.unknownParseError'));
+                }
+            }
+
+            if (!lpObject) {
+                throw new Error(t('converterPage.noValidLpObject'));
+            }
+
+            const result = toFunction.to(lpObject);
+            setOutput(result);
+        } catch (error) {
+            if (error instanceof Error) {
+                setOutput(`Error: ${error.message}`);
+            } else {
+                setOutput(t('converterPage.unknownError'));
+            }
         }
     };
 
     const steps: Step[] = [
         {
             target: '.joyride-converter-input',
-            content: 'Input your problem to convert between different formats.',  // {t('converterPage.title')}
+            content:  t('guidedTour.converterPage.input'), 
         },
         {
             target: '.joyride-converter-format',
-            content: 'Select the source and target format for conversion.', //t('converterPage.title')
+            content: t('guidedTour.converterPage.format'),
         },
         {
             target: '.joyride-converter-exec',
-            content: 'Start the conversion.', //t('converterPage.title')
+            content: t('guidedTour.converterPage.exec'),
         },
         {
             target: '.joyride-converter-output',
-            content: 'The converted result will appear here.',
+            content: t('guidedTour.converterPage.output'),
         },
         {
-            target: '.joyride-last',
+            target: '.joyride-bye',
             content: (
                 <React.Fragment>
-                    The tour ends here.
+                    {t('guidedTour.converterPage.last_pt1')}
                     <br />
                     <br />
-                    Good luck and have fun :)
+                    {t('guidedTour.converterPage.last_pt2')}
                 </React.Fragment>
             ),
             placement: 'center'
+        },
+        {
+            target: '.joyride-last',
+            content: '',
         }
     ];
 
@@ -154,6 +179,7 @@ const CodeExecutionPage: React.FC = () => {
                     </Button>
                 </div>
                 <CodeArea className="joyride-converter-output" data={output} />
+                <div className='joyride-bye'/>
                 <div className='joyride-last'/>
             </main>
         </div>

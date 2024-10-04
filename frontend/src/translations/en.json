@@ -98,12 +98,203 @@
             "try": "Try OR Solver Now",
             "ORTeamRights": "2024 OR Solver Team. All rights reserved."
     },
+    "transportInput": {
+        "title": "Transportation Problem Input",
+        "plants": "Canning Plants",
+        "plantName": "Plant name",
+        "capacity": "Capacity",
+        "addPlant": "Add Plant",
+        "markets": "Markets",
+        "marketName": "Market name",
+        "demand": "Demand",
+        "addMarket": "Add Market",
+        "distances": "Distances",
+        "plantMarket": "Plant \\ Market",
+        "freightCost": "Freight Cost (per unit and distance)",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+        "knapsackInput":{
+        "title": "Knapsack Problem Input",
+        "items": "Items",
+        "itemName": "Item Name",
+        "weight": "Weight",
+        "value": "Value",
+        "action": "Action",
+        "addItem": "Add Item",
+        "capacity": "Knapsack Capacity",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+    "workforceInput": {
+        "title": "Workforce Scheduling Problem Input",
+        "employees": "Employees",
+        "employeeName": "Employee Name",
+        "maxHours": "Max Shifts",
+        "action": "Action",
+        "addEmployee": "Add Employee",
+        "shifts": "Shifts",
+        "shiftName": "Shift Name",
+        "requiredEmployees": "Required Employees",
+        "addShift": "Add Shift",
+        "preferences": "Employee Preferences",
+        "shiftEmployee": "Shift \\ Employee",
+        "preference": "Preference",
+        "generateGMPL": "Solve",
+        "showGMPL": "Show GMPL Code",
+        "editGMPL": "Edit GMPL Code",
+        "closeGMPL": "Close"
+    },
+    "transport": "Transport",
+    "workforce": "Workforce",
+    "knapsack": "Knapsack",
     "converterPage": {
-        "title": "Converter",
-        "codePlaceholder": "Enter your code here...",
+        "title": "Code Converter",
+        "codePlaceholder": "Enter your code here",
         "from": "From",
         "to": "To",
         "execute": "Execute",
-        "noValidLpObject": "No Valid LP Object to Create Output"
+        "invalidConversionOption": "Invalid conversion option",
+        "parseError": "Parse error",
+        "unknownParseError": "Unknown parsing error occurred",
+        "noValidLpObject": "No valid LP object created",
+        "unknownError": "An unknown error occurred"
+    },
+    "guidedTour": {
+        "welcomePage": {
+            "welcome": "Welcome to our problem-solving platform!",
+            "features": "Explore our key features that make problem-solving easier.",
+            "about": "Learn more about our project and its academic context.",
+            "contact": "Ready to start? Click here to begin solving problems!"
+        },
+        "solverPage": {
+            "input": "Here you can input your problem in various formats.",
+            "result": "The results of your solved problem will appear here.",
+            "solv-conv": "Let's move to the Converter Page to convert between different formats."
+        },
+        "converterPage": {
+            "input": "Input your problem to convert between different formats.",
+            "format": "Select the source and target format for conversion.",
+            "exec": "Start the conversion.",
+            "output": "The converted result will appear here.",
+            "last_pt1": "The tour ends here.",
+            "last_pt2": "Have fun and success solving problems in the future! :)"
+        }
+    },
+    "lastTranslations":{
+        "welcomePage":{
+            "features": {
+                "feat1Title": "Multiple Formats",
+                "feat1Description": "Support for GMPL, LP, and MPS problem formats",
+                "feat2Title": "Fast Solving",
+                "feat2Description": "Efficient algorithms for quick problem resolution",
+                "feat3Title": "Easy Input",
+                "feat3Description": "User-friendly interface for problem input and solving"
+            }
+        },
+        "converterPage":{
+            "codearea": {
+                "copy": "Copy",
+                "copied": "Copied!",
+                "copyErr": "Error occured during copying:"
+            }
+        }
+    },
+    "editorComponent": {
+        "hasObjective": "Objective function",
+        "hasRestrictions": "Restrictions",
+        "hasNonNegativity": "Non-negativity constraint",
+        "errors": {
+            "gmpl": {
+                "missingSemilicon": " declaration is not properly closed with a semicolon",
+                "constraintMustHaveName": "Constraint must have a name",
+                "invalidIdentifier": "Invalid identifier. Only alphanumeric characters and underscore are allowed, and it must start with a letter or underscore",
+                "modelMustHaveObjective": "Model must have an objective function (maximize or minimize)"
+            },
+            "lp": {
+                "constraintMissingOperator": "Constraint must include a comparison operator (<=, >=, or =)",
+                "missingObjectiveFunction": "LP file must include an objective function (minimize or maximize)"
+            },
+            "mps": {
+                "invalidRowType": "Invalid row type. Must be N, L, G, or E.",
+                "missingNameSection": "MPS file must start with a NAME section",
+                "missingRowsSection": "MPS file must include a ROWS section",
+                "missingColumnsSection": "MPS file must include a COLUMNS section",
+                "missingRHSSection": "MPS file must include an RHS section",
+                "missingENDATA": "MPS file must end with an ENDATA statement"
+            }
+        }
+    },
+    "licensePage":{
+            "licenseTitle": "License (GNU GPL)",
+            "licenseCaption": "This file is part of Programmierprojekt.",
+            "section1": "Programmierprojekt is Free Software: You may redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 of the License, or (at your option) any later published version.”",
+            "section2": "Programmierprojekt is provided in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public Licence for more details.",
+            "section3": "You should have received a copy of the GNU General Public Licence together with this program. If not, see https://www.gnu.org/licenses.",
+            "buttonText": "Back",
+            "update": "last update"
+    },
+    "aboutPage": {
+        "title": "About us",
+        "cpt1": {
+            "Header": "Our Story",
+            "Text1": "As part of the dual study program in Business Informatics at Osnabrück University of Applied Sciences, we were able to apply our expertise in the areas of Operations Research and the fundamentals of web development during the 5th semester.",
+            "Text2": "During the first four semesters, we were taught knowledge and skills that must be applied in a bundled manner in this project to achieve the project's goal.",
+            "Text3": "The project team is rather heterogeneous in its knowledge and skills, so different perspectives have led to a promising web application."
+        },
+        "cpt2": {
+            "Header": "The Team",
+            "skills": {
+                "technical": "Ability to understand technical challenges and develop efficient solutions.",
+                "leadership": "Competence in leading teams, mentoring, and coordinating projects.",
+                "business": "Ability to recognize business requirements and strategically translate them into technological or operational solutions."
+            }
+        },
+        "cpt3": {
+            "Header": "Licenses",
+            "text": "To fulfill the required functions for the project, certain solver libraries had to be used. The licenses used by the libraries were also taken into account. The libraries use Apache 2.0, MIT, ISC, and GNU GPL licenses. Therefore, we are bound to publish this project under GNU GPL as well.",
+            "button": "Full License Terms"
+        },
+        "cpt4": {
+            "Header": "Source Code",
+            "text": "We believe in the power of the open-source community. Much of our code is publicly accessible to promote collaboration and innovation. By disclosing our source code, we not only want to create transparency but also give other developers the opportunity to learn from our work and build upon it.",
+            "button": "Visit our GitHub"
+        },
+        "tmm1": {
+            "name": "Elisabeth",
+            "position": "Developer",
+            "description": "Elisabeth is known for her strong technical understanding and her ability to penetrate complex business processes. She brings valuable insight into the development and implementation of technical solutions and masters technical challenges with flying colours.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+         },
+        "tmm2": {
+            "name": "Marcel",
+            "position": "Developer",
+            "description": "Marcel brings extensive expertise in all areas of software development. With his broad range of technical skills, he plays a key role in the development of frontend and backend solutions.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm3": {
+            "name": "Felix",
+            "position": "Developer",
+            "description" : "Felix combines technical expertise with a deep understanding of design processes and user experience. He leads creative processes and ensures that projects are not only technically convincing, but also aesthetically pleasing.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        },
+        "tmm4": {
+            "name": "Yannick",
+            "position": "Product Owner/ Scrum Master",
+            "description": "Yannick is a product manager with strong leadership charisma and strong analytical skills. He brings a deep understanding of business requirements and ensures that data-driven solutions are implemented efficiently.",
+            "expTec": "Ability to understand technical challenges and develop efficient solutions.",
+            "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
+            "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
+        }
     }
 }

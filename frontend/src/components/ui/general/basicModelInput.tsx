@@ -19,6 +19,8 @@ import {
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import {useTranslation} from "react-i18next";
 import { ProblemEditor } from '../custom/ProblemEditor/ProblemEditor'
+import {clearUrlParams} from "@/hooks/urlBuilder.tsx"
+import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 
 type Item = {
     id: number;
@@ -32,13 +34,14 @@ export default function BasicModelInput(states:any) {
 
     const {
         currentSolver,
-//        setCurrentSolver,
-//        currentLpFormat,
         setCurrentLpFormat,
-//        currentProblem,
+        currentProblem,
         setCurrentProblem,
+        currentLpFormat,
         solveTrigger,
-        setSolveTrigger
+        setSolveTrigger,
+        setCurrentInputVariant,
+        setCurrentSolver
     }: {
         currentSolver: Solvers;
         setCurrentSolver: (solver: Solvers) => void;
@@ -48,6 +51,8 @@ export default function BasicModelInput(states:any) {
         setCurrentProblem: (problem: string) => void;
         solveTrigger: number,
         setSolveTrigger: (problem: number) => void
+        currentInputVariant: string,
+        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
     const [selectedItem, setSelectedItem] = useState<Item | null>({ id: 1, content: "GMPL", status: "nativ", description: t('description_gmpl') })
@@ -96,6 +101,23 @@ export default function BasicModelInput(states:any) {
         }
     }
 
+
+    //SHARE BUTTON FUCTIONS
+    const handleParametersLoaded = (loadedParams:{[key: string]: string}) => {
+        console.log('Geladene Parameter:', loadedParams);
+        if(loadedParams.currentPage){
+            if(loadedParams.currentPage==="general"){
+                if(loadedParams.currentSolver && loadedParams.currentLpFormat && loadedParams.currentPage && loadedParams.currentSolver){
+                    setCurrentLpFormat(loadedParams.currentLPFormat as ProblemFormats)
+                    setModelInput(loadedParams.currentProblem as string)
+                    setCurrentSolver(loadedParams.currentSolver as Solvers)
+                }
+                clearUrlParams()
+            }else{
+                setCurrentInputVariant(loadedParams.currentPage)
+                }
+        }
+    };
 
     useEffect(() => {
         switch (currentSolver) {
@@ -159,9 +181,15 @@ export default function BasicModelInput(states:any) {
         }
     }
 
-    function triggerSolving(_:any, solveAnyway?: boolean) {
 
-        if (solveAnyway != undefined && selectedItem && selectedItem.status !== 'nativ') {
+
+    function triggerSolving(_:any, solveAnyway?: boolean) {
+        let conversion = false;
+        if(selectedItem?.content){
+            const cItem = items.find(item => item.content === selectedItem.content) || null
+            if(cItem?.status) conversion = cItem.status === "conversion";
+        }
+        if (solveAnyway != true && conversion) {
             setShowConverstionAlert(true);
         } else {
             if(selectedItem?.content){
@@ -232,6 +260,10 @@ export default function BasicModelInput(states:any) {
                     </div>
                     <div className="flex justify-end pt-2">
                         <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                            <AdvancedShareButton
+                                parameters={{currentSolver: currentSolver , currentLpFormat:currentLpFormat, currentProblem:currentProblem, currentPage: "general" }}
+                                onParametersLoaded={handleParametersLoaded}
+                            />
                     </div>
                 </div>
             </div>
