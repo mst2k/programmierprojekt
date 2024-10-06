@@ -22,6 +22,7 @@ const Layout = () => {
             <main>
                 <Outlet/>
             </main>
+            <Separator className="my-1 mb-0"/>
             <Footer></Footer>
         </>
     )
@@ -39,8 +40,7 @@ function App() {
               <Route path="/about" element={<AboutPage />} /> {/* about route */}
               <Route path="/benchmark" element={<BenchmarkComponent />} /> {/* about route */}
               <Route path="/license" element={<LicensePage />} /> {/* about route */}
-
-              </Route>
+            </Route>
           </Routes>
       </HashRouter>
     </ThemeProvider>
