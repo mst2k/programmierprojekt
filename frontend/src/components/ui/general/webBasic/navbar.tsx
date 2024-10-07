@@ -7,7 +7,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuSingleTrigger
-} from "../ui/general/navigationmenu"
+} from "@/components/ui/navigationmenu"
 import { useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import Logo from '/logo.svg'
@@ -19,7 +19,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { useTheme } from "@/components/ui/general/themeProvider"
+import { useTheme } from "@/hooks/themeProvider.tsx"
 
 export function NavigationMenuDemo() {
     const navigate = useNavigate();
