@@ -1,20 +1,29 @@
 
 import { useState, useEffect, KeyboardEvent } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/select.tsx"
+import { Input } from "@/components/ui/input.tsx"
 import { Trash2, Plus } from 'lucide-react'
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from 'react-i18next'
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
+/**
+ * Eays Input
+ *
+ * Returns easy input mask to the user. The user is guided through a process where he needs to add all information
+ * about a specific lp problem (objective, constraints, non zero, etc)
+ *
+ * @param states various states that need to be synced about various pages (sidebar, result, etc.)
+ *
+ * */
 export default function EnhancedStatusSelect(states:any) {
     const { t } = useTranslation();
     const {

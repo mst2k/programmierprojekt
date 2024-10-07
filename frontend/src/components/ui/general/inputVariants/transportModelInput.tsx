@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { PlusCircle, MinusCircle } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { Label } from "@/components/ui/label.tsx"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import {useTranslation} from "react-i18next";
 import {Dialog, DialogContent, DialogTitle} from "@radix-ui/react-dialog";
@@ -12,6 +12,17 @@ import {ProblemEditor} from "@/components/ui/custom/ProblemEditor/ProblemEditor.
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
+/**
+ * Transport Problem
+ *
+ * Returns a Ui Mask to enter a Transport problem.
+ *
+ * The problem part of a GMPL transport problem is already predefined. The user is guided through entering the
+ * data part
+ *
+ * @param states various states that need to be synced about various pages (sidebar, result, etc.)
+ *
+ * */
 export default function TransportationProblemUI(states:any) {
     const gmplInit = `
 # A TRANSPORTATION PROBLEM

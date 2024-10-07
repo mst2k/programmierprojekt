@@ -8,7 +8,7 @@ import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
 
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import {useTheme} from "@/components/ui/general/themeProvider.tsx";
+import {useTheme} from "@/hooks/themeProvider.tsx";
 
 
 export interface EditorLanguage {

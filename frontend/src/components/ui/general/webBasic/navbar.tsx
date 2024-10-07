@@ -7,7 +7,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuSingleTrigger
-} from "../ui/general/navigationmenu"
+} from "@/components/ui/navigationmenu"
 import { useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import Logo from '/logo.svg'
@@ -19,7 +19,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { useTheme } from "@/components/ui/general/themeProvider"
+import { useTheme } from "@/hooks/themeProvider.tsx"
 
 export function NavigationMenuDemo() {
     const navigate = useNavigate();
@@ -96,7 +96,7 @@ export function NavigationMenuDemo() {
                             </Button>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger className="bg-background" >{t('language')}</NavigationMenuTrigger> {/* menue-item title   |  dark:bg-background-dark dark:text-foreground-dark*/}  
+                            <NavigationMenuTrigger className="bg-background" >{t('language')}</NavigationMenuTrigger> {/* menue-item title   |  dark:bg-background-dark dark:text-foreground-dark*/}
                             <NavigationMenuContent>
                                 <ul className="grid w-[200px] gap-3 p-4 md:w-[150] lg:w-[300px]">
                                     {components.map((component) => (

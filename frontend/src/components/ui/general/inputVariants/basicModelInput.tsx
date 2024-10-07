@@ -1,12 +1,12 @@
 import {useState, useEffect, useRef} from 'react'
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button.tsx"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip.tsx"
 import { InfoIcon } from 'lucide-react'
 import {
     Dialog,
@@ -15,10 +15,10 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog.tsx"
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import {useTranslation} from "react-i18next";
-import { ProblemEditor } from '../custom/ProblemEditor/ProblemEditor'
+import { ProblemEditor } from '../../custom/ProblemEditor/ProblemEditor.tsx'
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 
@@ -29,6 +29,14 @@ type Item = {
     description: string;
 }
 
+/**
+ * Basic Input
+ *
+ * Returns a text editor with syntax highlighting. The Editor can handle GMPL, LP and MPS.
+ *
+ * @param states various states that need to be synced about various pages (sidebar, result, etc.)
+ *
+ * */
 export default function BasicModelInput(states:any) {
     const { t } = useTranslation()
 
