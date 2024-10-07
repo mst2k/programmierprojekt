@@ -1,30 +1,17 @@
 import { useState } from 'react'
-import { PlusCircle, MinusCircle } from 'lucide-react'
-import { Button } from "@/components/ui/button.tsx"
-import { Input } from "@/components/ui/input.tsx"
-import { Label } from "@/components/ui/label.tsx"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
+import { Plus, Trash2 } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
 import { useTranslation } from "react-i18next"
 import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog"
-import { DialogHeader } from "@/components/ui/dialog.tsx"
-import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor.tsx"
+import { DialogHeader } from "@/components/ui/dialog"
+import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
-
-
-/**
- * Knapsack Input
- *
- * Returns a Ui Mask to enter a Knapsack Problem.
- *
- * The problem part of a GMPL knapsack problem is already predefined. The user is guided through entering the
- * data part
- *
- * @param states various states that need to be synced about various pages (sidebar, result, etc.)
- *
- * */
 export default function KnapsackProblemUI(states: any) {
     const gmplInit = `
 # A KNAPSACK PROBLEM
@@ -197,16 +184,18 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    <Button onClick={() => removeItem(index)} size="icon" variant="ghost">
-                                        <MinusCircle className="h-4 w-4" />
-                                    </Button>
+                                    {items.length > 1 && (
+                                        <Button onClick={() => removeItem(index)} size="icon" variant="ghost">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addItem} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('knapsackInput.addItem')}
+                <Button onClick={addItem} className="py-2 text-sm ml-auto block">
+                    <Plus className=" h-4 w-4" />{/*mr-2  {t('knapsackInput.addItem')} */}
                 </Button>
             </div>
 
@@ -220,7 +209,7 @@ data;
                     placeholder={t('knapsackInput.capacity')}
                 />
             </div>
-            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+            <div className="flex items-center justify-end">
                 <Button className="" onClick={handleGenerateGMPL}>{t('knapsackInput.generateGMPL')}</Button>
                 <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('knapsackInput.showGMPL')}</Button>
                 <AdvancedShareButton

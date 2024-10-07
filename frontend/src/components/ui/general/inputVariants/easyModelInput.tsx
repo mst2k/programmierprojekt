@@ -188,7 +188,7 @@ export default function EnhancedStatusSelect(states:any) {
             </Select>
             <h3 className="font-bold mb-2">{t('orFunction')}</h3>
             <Input 
-                placeholder="Zielfunktion eingeben" 
+                placeholder= {t('enterOFunc')}
                 value={objectiveFunction}
                 onChange={(e) => updateObjectiveFunction(e.target.value)}
             />
@@ -197,7 +197,7 @@ export default function EnhancedStatusSelect(states:any) {
                 <div key={index} className="flex items-center space-x-2">
                     <Input
                         key={index}
-                        placeholder={`Restriktion ${index + 1}`}
+                        placeholder={ t('Res') + `${index + 1}`}
                         value={restriction}
                         onChange={(e) => updateRestriction(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'restriction', index)}
@@ -217,7 +217,7 @@ export default function EnhancedStatusSelect(states:any) {
                 <div key={index} className="flex items-center space-x-2">
                     <Input
                         key ={index}
-                        placeholder={`Einschränkung ${index + 1}`} //z.B. 0 <= x1 <= 40
+                        placeholder={ t('easyInput.bound') + `${index + 1}`} //z.B. 0 <= x1 <= 40
                         value={bound} 
                         onChange={(e) => updateBound(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'bound', index)}
@@ -257,7 +257,7 @@ export default function EnhancedStatusSelect(states:any) {
                         {renderTabContent()}
                     </div>
                     <div className="flex justify-end">
-                        <Button onClick={triggerSolving}>{t('send')}</Button>
+                        <Button onClick={triggerSolving}>{t('solve')}</Button>
                         <AdvancedShareButton
                             parameters={{
                                 optimizationType: optimizationType,

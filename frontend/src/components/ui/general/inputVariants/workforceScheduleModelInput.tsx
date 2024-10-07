@@ -1,28 +1,16 @@
 import { useState } from 'react'
-import { PlusCircle, MinusCircle } from 'lucide-react'
-import { Button } from "@/components/ui/button.tsx"
-import { Input } from "@/components/ui/input.tsx"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
+import { Plus, Trash2 } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
 import { useTranslation } from "react-i18next"
 import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog"
-import { DialogHeader } from "@/components/ui/dialog.tsx"
-import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor.tsx"
+import { DialogHeader } from "@/components/ui/dialog"
+import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
-
-/** Workforce Schedule
- *
- *
- * Returns a Ui Mask to enter a Workforce Schedule Problem.
- *
- * The problem part of a GMPL workforce schedule problem is already predefined. The user is guided through entering the
- * data part
- *
- * @param states various states that need to be synced about various pages (sidebar, result, etc.)
- *
- * */
 export default function WorkforceSchedulingUI(states: any) {
     const gmplInit = `
 # WORKFORCE SCHEDULING PROBLEM
@@ -232,16 +220,18 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
+                                    {employees.length > 1 && (
                                     <Button onClick={() => removeEmployee(index)} size="icon" variant="ghost">
-                                        <MinusCircle className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addEmployee} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addEmployee')}
+                <Button onClick={addEmployee} className="py-2 text-sm ml-auto block">
+                    <Plus className="h-4 w-4" /> {/*mr-2 {t('workforceInput.addEmployee')} */}
                 </Button>
             </div>
 
@@ -274,16 +264,18 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
+                                    {shifts.length > 1 && (
                                     <Button onClick={() => removeShift(index)} size="icon" variant="ghost">
-                                        <MinusCircle className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addShift} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addShift')}
+                <Button onClick={addShift} className="py-2 text-sm ml-auto block">
+                    <Plus className="h-4 w-4" /> {/*mr-2  {t('workforceInput.addShift')}*/}
                 </Button>
             </div>
 
@@ -317,7 +309,7 @@ data;
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+            <div className="flex items-center justify-end">
                 <Button className="mb" onClick={handleGenerateGMPL}>{t('workforceInput.generateGMPL')}</Button>
                 <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('workforceInput.showGMPL')}</Button>
                 <AdvancedShareButton

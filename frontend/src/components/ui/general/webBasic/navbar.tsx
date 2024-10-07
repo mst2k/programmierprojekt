@@ -32,7 +32,7 @@ export function NavigationMenuDemo() {
     }
 
     const toggleTheme = () => {
-        setTheme(theme === "light" ? "dark": "light")
+        setTheme(theme === 'dark' ? 'light' : 'dark');
     }
 
     const components: { title: string; lang: string; description: string }[] = [
@@ -96,7 +96,7 @@ export function NavigationMenuDemo() {
                             </Button>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger className="bg-background" >{t('language')}</NavigationMenuTrigger> {/* menue-item title   |  dark:bg-background-dark dark:text-foreground-dark*/}
+                            <NavigationMenuTrigger className="bg-background" >{t('language')}</NavigationMenuTrigger> {/* menue-item title   |  dark:bg-background-dark dark:text-foreground-dark*/}  
                             <NavigationMenuContent>
                                 <ul className="grid w-[200px] gap-3 p-4 md:w-[150] lg:w-[300px]">
                                     {components.map((component) => (
@@ -140,12 +140,12 @@ export function NavigationMenuDemo() {
                                 {t('about')}
                             </Button>
                             <Button variant="ghost" className="w-full justify-start" onClick={() => { toggleTheme(); setIsOpen(false); }}>
-                                {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
+                                {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" /> }
                             </Button>
                             <NavigationMenu>
                                 <NavigationMenuList>
                                     <NavigationMenuItem>
-                                        <NavigationMenuTrigger className="bg-background  ">{t("language")}</NavigationMenuTrigger>
+                                        <NavigationMenuTrigger className="bg-background  ">{t('language')}</NavigationMenuTrigger>
                                         <NavigationMenuContent>
                                             <ul className="grid w-[200px] gap-3 p-4 bg-background  ">
                                                 {components.map((component) => (
