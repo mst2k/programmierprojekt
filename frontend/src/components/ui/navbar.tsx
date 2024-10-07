@@ -140,12 +140,12 @@ export function NavigationMenuDemo() {
                                 {t('about')}
                             </Button>
                             <Button variant="ghost" className="w-full justify-start" onClick={() => { toggleTheme(); setIsOpen(false); }}>
-                                {theme === 'dark' ? t('lightMode') : t('darkMode')}
+                                {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
                             </Button>
                             <NavigationMenu>
                                 <NavigationMenuList>
                                     <NavigationMenuItem>
-                                        <NavigationMenuTrigger className="bg-background  ">{t('language')}</NavigationMenuTrigger>
+                                        <NavigationMenuTrigger className="bg-background  ">{t("language")}</NavigationMenuTrigger>
                                         <NavigationMenuContent>
                                             <ul className="grid w-[200px] gap-3 p-4 bg-background  ">
                                                 {components.map((component) => (

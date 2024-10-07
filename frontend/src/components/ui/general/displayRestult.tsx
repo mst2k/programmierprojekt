@@ -53,7 +53,7 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
     }
 
     return (
-        <Card className="w-full max-w-4xl mx-auto">
+        <Card className="w-full max-w-4xl mx-auto bg-background">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-2xl font-bold">{`${lpSolver} ${t('solver_result_title')}`}</CardTitle>
                 <div className="flex items-center space-x-2">
