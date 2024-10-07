@@ -84,7 +84,7 @@ export default function AboutPage() {
     {
       name: t("aboutPage.tmm3.name"),
       position: t("aboutPage.tmm3.position"),
-      description: t("aboutPage.tmm3.position"),
+      description: t("aboutPage.tmm3.description"),
       expertise: {
         technical: { value: 95, description: t("aboutPage.tmm3.expTec") },
         leadership: { value: 70, description: t("aboutPage.tmm3.expLea") },
@@ -109,7 +109,7 @@ export default function AboutPage() {
   }
 
   return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-4xl font-bold mb-8 text-center">{t("aboutPage.title")}</h1>
 
         <Accordion type="single" collapsible className="w-full space-y-4" value={openAccordion} onValueChange={setOpenAccordion}>
@@ -145,7 +145,7 @@ export default function AboutPage() {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {teamMembers.map((member) => (
                     <Card key={member.name}>
                       <CardContent className="pt-6">

@@ -1,20 +1,29 @@
 
 import { useState, useEffect, KeyboardEvent } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/select.tsx"
+import { Input } from "@/components/ui/input.tsx"
 import { Trash2, Plus } from 'lucide-react'
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from 'react-i18next'
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
+/**
+ * Eays Input
+ *
+ * Returns easy input mask to the user. The user is guided through a process where he needs to add all information
+ * about a specific lp problem (objective, constraints, non zero, etc)
+ *
+ * @param states various states that need to be synced about various pages (sidebar, result, etc.)
+ *
+ * */
 export default function EnhancedStatusSelect(states:any) {
     const { t } = useTranslation();
     const {
@@ -179,7 +188,7 @@ export default function EnhancedStatusSelect(states:any) {
             </Select>
             <h3 className="font-bold mb-2">{t('orFunction')}</h3>
             <Input 
-                placeholder="Zielfunktion eingeben" 
+                placeholder= {t('enterOFunc')}
                 value={objectiveFunction}
                 onChange={(e) => updateObjectiveFunction(e.target.value)}
             />
@@ -188,7 +197,7 @@ export default function EnhancedStatusSelect(states:any) {
                 <div key={index} className="flex items-center space-x-2">
                     <Input
                         key={index}
-                        placeholder={`Restriktion ${index + 1}`}
+                        placeholder={ t('Res') + `${index + 1}`}
                         value={restriction}
                         onChange={(e) => updateRestriction(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'restriction', index)}
@@ -208,7 +217,7 @@ export default function EnhancedStatusSelect(states:any) {
                 <div key={index} className="flex items-center space-x-2">
                     <Input
                         key ={index}
-                        placeholder={`Einschränkung ${index + 1}`} //z.B. 0 <= x1 <= 40
+                        placeholder={ t('easyInput.bound') + `${index + 1}`} //z.B. 0 <= x1 <= 40
                         value={bound} 
                         onChange={(e) => updateBound(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'bound', index)}
@@ -248,7 +257,7 @@ export default function EnhancedStatusSelect(states:any) {
                         {renderTabContent()}
                     </div>
                     <div className="flex justify-end">
-                        <Button onClick={triggerSolving}>{t('send')}</Button>
+                        <Button onClick={triggerSolving}>{t('solve')}</Button>
                         <AdvancedShareButton
                             parameters={{
                                 optimizationType: optimizationType,

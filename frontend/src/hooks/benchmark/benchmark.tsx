@@ -11,7 +11,7 @@ function useBenchmark() {
     const {solve:solveHighs} = useSolver(" ", problemType, "Highs")
     const [benchmarkResults, setBenchmarkResults] = useState<any>(null)
     async function benchmarkAllSolvers(problem:string, problemType:ProblemFormats, bmLog:(arg: string)=>void) {
-        const browserSolvers = ['glpkHgourvest', 'glpkJavil', 'highs'];
+        const browserSolvers = ['glpkHgourvest', 'highs'];
         const results:{[key: string]: any; } = {};
 
         // Browser Solvers

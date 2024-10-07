@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PlusCircle, MinusCircle } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -68,16 +68,16 @@ data;
     } = states.states;
 
     const addEmployee = () => {
-        setEmployees([...employees, { name: '', maxHours: '' }])
+        setEmployees([...employees, { name: '', maxHours: '' }]);
         // @ts-expect-error
-        setPreferences(preferences.map(row => [...row, '']))
-    }
+        setPreferences(prev => prev.map(row => [...row, '']));
+    };
 
     const addShift = () => {
-        setShifts([...shifts, { name: '', required: '' }])
+        setShifts([...shifts, { name: '', required: '' }]);
         // @ts-expect-error
-        setPreferences([...preferences, new Array(employees.length).fill('')])
-    }
+        setPreferences(prev => [...prev, new Array(employees.length).fill('')]);
+    };
 
     const removeEmployee = (index: number) => {
         const newEmployees = employees.filter((_, i) => i !== index)
@@ -106,10 +106,10 @@ data;
     }
 
     const updatePreference = (shiftIndex: number, employeeIndex: number, value: string) => {
-        const newPreferences = [...preferences]
+        const newPreferences = [...preferences];
         // @ts-expect-error
-        newPreferences[employeeIndex][shiftIndex] = value
-        setPreferences(newPreferences)
+        newPreferences[shiftIndex][employeeIndex] = value;
+        setPreferences(newPreferences);
     }
 
     function triggerSolving(gmpl: string) {
@@ -152,7 +152,7 @@ data;
     const handleGenerateGMPL = () => {
         const generatedCode = generateGMPL(employees, shifts, preferences);
         setGmplCode(generatedCode);
-        triggerSolving(gmplCodeState)
+        triggerSolving(generatedCode)
         setIsGmplDialogOpen(true);
     };
 
@@ -220,16 +220,18 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
+                                    {employees.length > 1 && (
                                     <Button onClick={() => removeEmployee(index)} size="icon" variant="ghost">
-                                        <MinusCircle className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addEmployee} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addEmployee')}
+                <Button onClick={addEmployee} className="py-2 text-sm ml-auto block">
+                    <Plus className="h-4 w-4" /> {/*mr-2 {t('workforceInput.addEmployee')} */}
                 </Button>
             </div>
 
@@ -262,16 +264,18 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
+                                    {shifts.length > 1 && (
                                     <Button onClick={() => removeShift(index)} size="icon" variant="ghost">
-                                        <MinusCircle className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addShift} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('workforceInput.addShift')}
+                <Button onClick={addShift} className="py-2 text-sm ml-auto block">
+                    <Plus className="h-4 w-4" /> {/*mr-2  {t('workforceInput.addShift')}*/}
                 </Button>
             </div>
 
@@ -294,7 +298,7 @@ data;
                                     <TableCell key={employeeIndex}>
                                         <Input
                                             type="number"
-                                            value={preferences[employeeIndex]?.[shiftIndex] || ''}
+                                            value={preferences[shiftIndex]?.[employeeIndex] || ''}
                                             onChange={(e) => updatePreference(shiftIndex, employeeIndex, e.target.value)}
                                             placeholder={t('workforceInput.preference')}
                                         />
@@ -305,7 +309,7 @@ data;
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+            <div className="flex items-center justify-end">
                 <Button className="mb" onClick={handleGenerateGMPL}>{t('workforceInput.generateGMPL')}</Button>
                 <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('workforceInput.showGMPL')}</Button>
                 <AdvancedShareButton

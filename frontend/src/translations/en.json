@@ -25,7 +25,7 @@
     "enterOFunc": "Enter objective function",
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
-    "send": "Send",
+    "solve": "Solve",
     "mode": "Mode",  
     "solvertype": "Solver Type",
     "otherProbs": "Other standard problems",
@@ -65,7 +65,8 @@
     "bounds": "Bounds",
     "solver": "Solver",
     "basicModelInput" : {
-        "solve": "Sovle"
+        "solve": "Sovle",
+        "upload": "Upload Problem"
     },
     "sidebar": {
         "export": "Export",
@@ -134,7 +135,7 @@
         "title": "Workforce Scheduling Problem Input",
         "employees": "Employees",
         "employeeName": "Employee Name",
-        "maxHours": "Max Hours",
+        "maxHours": "Max Shifts",
         "action": "Action",
         "addEmployee": "Add Employee",
         "shifts": "Shifts",
@@ -153,12 +154,16 @@
     "workforce": "Workforce",
     "knapsack": "Knapsack",
     "converterPage": {
-        "title": "Converter",
-        "codePlaceholder": "Enter your code here...",
+        "title": "Code Converter",
+        "codePlaceholder": "Enter your code here",
         "from": "From",
         "to": "To",
         "execute": "Execute",
-        "noValidLpObject": "No Valid LP Object to Create Output"
+        "invalidConversionOption": "Invalid conversion option",
+        "parseError": "Parse error",
+        "unknownParseError": "Unknown parsing error occurred",
+        "noValidLpObject": "No valid LP object created",
+        "unknownError": "An unknown error occurred"
     },
     "guidedTour": {
         "welcomePage": {
@@ -292,5 +297,14 @@
             "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
             "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
         }
+    },
+    "easyInput":{
+        "bound": "Bound"
+    },
+    "sharableLink":{
+        "linkGenerated": "Link generated!",
+        "linkCopied": "Link was copied!",
+        "close": "Close",
+        "copy": "Copy"
     }
 }

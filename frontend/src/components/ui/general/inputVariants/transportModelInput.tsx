@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PlusCircle, MinusCircle } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -283,24 +283,26 @@ data;\n`
                             placeholder={t('transportInput.capacity')}
                             className="mr-2"
                         />
+                        {plants.length > 1 && (
                         <Button onClick={() => removePlant(index)} size="icon" variant="ghost">
-                            <MinusCircle className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4" />
                         </Button>
+                        )}
                     </div>
                 ))}
-                <Button onClick={addPlant} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t('transportInput.addPlant')}
+                <Button onClick={addPlant} className="py-2 text-sm ml-auto block">
+                     <Plus className="h-4 w-4" />{/*mr-2 {t('transportInput.addPlant')} */}
                 </Button>
             </div>
 
             <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Markets</h2>
+                <h2 className="text-xl font-semibold mb-2">{t("transportInput.markets")}</h2>
                 {markets.map((market, index) => (
                     <div key={index} className="flex items-center mb-2">
                         <Input
                             value={market.name}
                             onChange={(e) => updateMarket(index, 'name', e.target.value)}
-                            placeholder="Market name"
+                            placeholder={t("transportInput.marketName")}
                             className="mr-2"
                         />
                         <Input
@@ -310,13 +312,15 @@ data;\n`
                             placeholder={t("transportInput.demand")}
                             className="mr-2"
                         />
+                        {markets.length > 1 && (
                         <Button onClick={() => removeMarket(index)} size="icon" variant="ghost">
-                            <MinusCircle className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4" />
                         </Button>
+                        )}
                     </div>
                 ))}
-                <Button onClick={addMarket} className="mt-2">
-                    <PlusCircle className="mr-2 h-4 w-4" /> {t("transportInput.addMarket")}
+                <Button onClick={addMarket} className="py-2 text-sm ml-auto block">
+                    <Plus className="h-4 w-4" /> {/*mr-2 {t("transportInput.addMarket")}*/}
                 </Button>
             </div>
 
@@ -362,7 +366,7 @@ data;\n`
                 />
             </div>
 
-            <div className="flex flex-row items-center space-x-2 w-full mb-2">
+            <div className="flex items-center justify-end">
                 <Button className={"mb"} onClick={handleGenerateGMPL}>{t('transportInput.generateGMPL')}</Button>
                 <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('transportInput.showGMPL')}</Button>
                 <AdvancedShareButton

@@ -29,7 +29,7 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "send": "Abschicken",
+    "solve": "Lösen",
     "solvertype": "Lösertyp",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
@@ -68,7 +68,8 @@
     "bounds": "Beschränkungen",
     "solver": "Löser",
     "basicModelInput" : {
-        "solve": "Lösen"
+        "solve": "Lösen",
+        "upload": "Problem Hochladen"
     },
     "sidebar": {
         "export": "Exportieren",
@@ -170,12 +171,16 @@
         }
     },
     "converterPage": {
-        "title": "Konvertierer",
-        "codePlaceholder": "Geben Sie hier Ihren Code ein...",
+        "title": "Code-Konverter",
+        "codePlaceholder": "Geben Sie hier Ihren Code ein",
         "from": "Von",
         "to": "Nach",
         "execute": "Ausführen",
-        "noValidLpObject": "Kein gültiges LP-Objekt zum Erstellen der Ausgabe"
+        "invalidConversionOption": "Ungültige Konvertierungsoption",
+        "parseError": "Parsing-Fehler",
+        "unknownParseError": "Unbekannter Parsing-Fehler aufgetreten",
+        "noValidLpObject": "Kein gültiges LP-Objekt erstellt",
+        "unknownError": "Ein unbekannter Fehler ist aufgetreten"
     },
     "guidedTour": {
         "welcomePage": {
@@ -253,7 +258,7 @@
         "title": "Eingabe für Personaleinsatzplanung",
         "employees": "Mitarbeiter",
         "employeeName": "Mitarbeitername",
-        "maxHours": "Maximale Stunden",
+        "maxHours": "Anzahl Schichten",
         "action": "Aktion",
         "addEmployee": "Mitarbeiter hinzufügen",
         "shifts": "Schichten",
@@ -292,6 +297,15 @@
                 "missingENDATA": "Die MPS-Datei muss mit einer ENDATA-Anweisung enden"
             }
         }
+    },
+    "easyInput":{
+        "bound": "Beschränkung"
+    },
+    "sharableLink":{
+        "linkGenerated": "Link generiert!",
+        "linkCopied": "Link wurde kopiert!",
+        "close": "Schließen",
+        "copy": "Kopieren"
     }
 }
 

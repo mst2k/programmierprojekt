@@ -1,22 +1,25 @@
 import { Link } from 'react-router-dom'
 import { Github } from "lucide-react"
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
+    const {t} = useTranslation();
+
     return (
-        <footer className="bg-muted py-8 mt-auto">
+        <footer className="py-8 mt-auto bg-muted/50">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Links</h3>
                         <ul className="space-y-2">
                             <li>
-                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/"}>
-                                    Startseite
+                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/"} onClick={() => window.scrollTo(0, 0)}>
+                                    {t('title')}
                                 </Link>
                             </li>
                             <li>
-                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/about/"}>
-                                    Über uns
+                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/about/"} onClick={() => window.scrollTo(0, 0)}>
+                                    {t('about')}
                                 </Link>
                             </li>
                         </ul>
