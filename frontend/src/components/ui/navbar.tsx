@@ -32,7 +32,7 @@ export function NavigationMenuDemo() {
     }
 
     const toggleTheme = () => {
-        document.documentElement.classList.toggle('dark');
+        setTheme(theme === "light" ? "dark": "light")
     }
 
     const components: { title: string; lang: string; description: string }[] = [

@@ -66,7 +66,7 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
                 {result.Status === 'Optimal' && (
                     <p className="text-lg font-semibold mb-4">{t('objective_value')}: {result.ObjectiveValue}</p>
                 )}
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <Tabs value={activeTab} onValueChange={setActiveTab} className={""}>
                     <TabsList className="grid w-full grid-cols-5">
                         <TabsTrigger value="columns">{t('tab_columns')}</TabsTrigger>
                         <TabsTrigger value="rows">{t('tab_rows')}</TabsTrigger>

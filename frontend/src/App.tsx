@@ -30,7 +30,7 @@ const Layout = () => {
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="app-theme">
+    <ThemeProvider>
       <HashRouter>
           <Routes>
           <Route element={<Layout />}>
