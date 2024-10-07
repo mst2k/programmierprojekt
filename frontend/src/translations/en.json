@@ -25,7 +25,7 @@
     "enterOFunc": "Enter objective function",
     "chooseOrType": "Choose the Optimization Type",
     "nnb": "Non Negativity Condition",
-    "send": "Send",
+    "solve": "Solve",
     "mode": "Mode",  
     "solvertype": "Solver Type",
     "otherProbs": "Other standard problems",
@@ -296,5 +296,14 @@
             "expLea": "Expertise in leading teams, mentoring and coordinating projects.",
             "expBus": "Ability to recognise business requirements and translate them strategically into technological or operational solutions."
         }
+    },
+    "easyInput":{
+        "bound": "Bound"
+    },
+    "sharableLink":{
+        "linkGenerated": "Link generated!",
+        "linkCopied": "Link was copied!",
+        "close": "Close",
+        "copy": "Copy"
     }
 }

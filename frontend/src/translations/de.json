@@ -29,7 +29,7 @@
     "chooseOrType": "Wähle einen Opimierungstyp",
     "nnb": "Nichtnegativitätsbedingung",
     "mode": "Modus",
-    "send": "Abschicken",
+    "solve": "Lösen",
     "solvertype": "Lösertyp",
     "otherProbs": "Andere Standard Probleme",
     "toggleSolver": "Umschalt-Löser",
@@ -296,6 +296,15 @@
                 "missingENDATA": "Die MPS-Datei muss mit einer ENDATA-Anweisung enden"
             }
         }
+    },
+    "easyInput":{
+        "bound": "Beschränkung"
+    },
+    "sharableLink":{
+        "linkGenerated": "Link generiert!",
+        "linkCopied": "Link wurde kopiert!",
+        "close": "Schließen",
+        "copy": "Kopieren"
     }
 }
 

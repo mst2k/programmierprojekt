@@ -7,19 +7,19 @@ import {
     AlertTitle,
 } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
-import {buildUrlParameter, parseUrlParameter} from "@/hooks/urlBuilder.tsx";
-
-// Importieren Sie hier Ihre buildUrlParameter und parseUrlParameter Funktionen
-// import { buildUrlParameter, parseUrlParameter } from './urlUtils';
+import { buildUrlParameter, parseUrlParameter } from "@/hooks/urlBuilder.tsx";
+import { useTranslation } from 'react-i18next';
 
 const AdvancedShareButton = ({
-                                 parameters,
-                                 onParametersLoaded
-                             }: {parameters: any, onParametersLoaded:any}) => {
+    parameters,
+    onParametersLoaded
+}: {parameters: any, onParametersLoaded: any}) => {
     const [shareLink, setShareLink] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
-    const linkInputRef = useRef(null);
+    const linkInputRef = useRef<HTMLInputElement>(null);
+    const { t } = useTranslation();
+    const copySuccessTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const loadParametersFromUrl = async () => {
@@ -48,6 +48,14 @@ const AdvancedShareButton = ({
         loadParametersFromUrl();
     }, [onParametersLoaded]);
 
+    useEffect(() => {
+        // Clear copySuccess when shareLink changes
+        setCopySuccess(false);
+        if (copySuccessTimeoutRef.current) {
+            clearTimeout(copySuccessTimeoutRef.current);
+        }
+    }, [shareLink]);
+
     const generateShareLink = async () => {
         try {
             const urlParam = await buildUrlParameter(parameters);
@@ -57,13 +65,6 @@ const AdvancedShareButton = ({
             setShowAlert(true);
             setCopySuccess(false);
 
-            navigator.clipboard.writeText(fullLink).then(() => {
-                console.log('Link copied to clipboard');
-                setCopySuccess(true);
-            }).catch(err => {
-                console.error('Failed to copy link: ', err);
-            });
-
             setTimeout(() => setShowAlert(false), 10000);
         } catch (error) {
             console.error('Failed to generate share link:', error);
@@ -72,10 +73,22 @@ const AdvancedShareButton = ({
 
     const handleManualCopy = () => {
         if (linkInputRef.current) {
-            // @ts-expect-error
             linkInputRef.current.select();
-            document.execCommand('copy');
-            setCopySuccess(true);
+            navigator.clipboard.writeText(linkInputRef.current.value)
+                .then(() => {
+                    console.log('Link copied to clipboard');
+                    setCopySuccess(true);
+                    if (copySuccessTimeoutRef.current) {
+                        clearTimeout(copySuccessTimeoutRef.current);
+                    }
+                    copySuccessTimeoutRef.current = setTimeout(() => {
+                        setCopySuccess(false);
+                    }, 10000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy link: ', err);
+                    setCopySuccess(false);
+                });
         }
     };
 
@@ -88,7 +101,7 @@ const AdvancedShareButton = ({
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full">
                         <Alert>
-                            <AlertTitle>Link generiert!</AlertTitle>
+                            <AlertTitle>{t('sharableLink.linkGenerated')}</AlertTitle>
                             <AlertDescription>
                                 <div className="mt-2 flex items-center space-x-2">
                                     <Input
@@ -98,17 +111,17 @@ const AdvancedShareButton = ({
                                         className="flex-grow"
                                     />
                                     <Button onClick={handleManualCopy} size="sm">
-                                        <Copy className="h-4 w-4 mr-2" />
-                                        Kopieren
+                                        <Copy className="h-4 w-4 mr-2"/>
+                                        {t('sharableLink.copy')}
                                     </Button>
                                 </div>
                                 {copySuccess && (
-                                    <p className="mt-2 text-sm text-green-600">Link wurde kopiert!</p>
+                                    <p className="mt-2 text-sm text-green-600">{t('sharableLink.linkCopied')}</p>
                                 )}
                             </AlertDescription>
                         </Alert>
                         <div className="mt-4 text-right">
-                            <Button onClick={() => setShowAlert(false)} variant="outline">Schließen</Button>
+                            <Button onClick={() => setShowAlert(false)} variant="outline">{t('sharableLink.close')}</Button>
                         </div>
                     </div>
                 </div>

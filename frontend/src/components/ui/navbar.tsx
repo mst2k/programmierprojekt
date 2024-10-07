@@ -140,7 +140,7 @@ export function NavigationMenuDemo() {
                                 {t('about')}
                             </Button>
                             <Button variant="ghost" className="w-full justify-start" onClick={() => { toggleTheme(); setIsOpen(false); }}>
-                                {theme === 'dark' ? t('lightMode') : t('darkMode')}
+                                {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" /> }
                             </Button>
                             <NavigationMenu>
                                 <NavigationMenuList>

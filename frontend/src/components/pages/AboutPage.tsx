@@ -84,7 +84,7 @@ export default function AboutPage() {
     {
       name: t("aboutPage.tmm3.name"),
       position: t("aboutPage.tmm3.position"),
-      description: t("aboutPage.tmm3.position"),
+      description: t("aboutPage.tmm3.description"),
       expertise: {
         technical: { value: 95, description: t("aboutPage.tmm3.expTec") },
         leadership: { value: 70, description: t("aboutPage.tmm3.expLea") },
