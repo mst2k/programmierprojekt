@@ -1,6 +1,6 @@
 // import { useTranslation } from "react-i18next";
 
-import BasicModelInput from "@/components/ui/general/inputVariants/basicModelInput.tsx";
+import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
