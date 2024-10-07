@@ -123,7 +123,7 @@ export default function BasicModelInput(states:any) {
                 clearUrlParams()
             }else{
                 setCurrentInputVariant(loadedParams.currentPage)
-                }
+            }
         }
     };
 
@@ -210,6 +210,62 @@ export default function BasicModelInput(states:any) {
         }
     }
 
+    const handleFileUpload = async (event:any) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Erkennen des Dateiformats basierend auf der Dateiendung
+        const fileName = file.name.toLowerCase();
+        let format;
+        if (fileName.endsWith('.mps')) {
+            format = 'MPS';
+        } else if (fileName.endsWith('.lp')) {
+            format = 'LP';
+        } else if (fileName.endsWith('.mod') || fileName.endsWith('.gmpl')) {
+            format = 'GMPL';
+        } else {
+            alert('Nicht unterstütztes Dateiformat. Bitte laden Sie eine .mps, .lp oder .mod/.gmpl Datei hoch.');
+            return;
+        }
+
+        // Setzen des LP-Formats
+        setCurrentLpFormat(format as ProblemFormats);
+
+        // Lesen des Dateiinhalts
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            //@ts-expect-error
+            const content = e.target.result;
+            //@ts-expect-error
+            setModelInput(content);
+        };
+        reader.onerror = (error) => {
+            console.error('Fehler beim Lesen der Datei:', error);
+            alert('Fehler beim Lesen der Datei. Bitte versuchen Sie es erneut.');
+        };
+        reader.readAsText(file);
+    };
+
+    const UploadButton = () => {
+        const fileInputRef = useRef(null);
+
+        return (
+            <div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    accept=".mps,.lp,.mod,.gmpl"
+                />
+                {/* @ts-expect-error*/}
+                <Button onClick={() => fileInputRef.current.click()}>
+                    {t('basicModelInput.upload')}
+                </Button>
+            </div>
+        );
+    };
+
     return (
         <TooltipProvider>
             <div className="w-full h-3 md:hidden"></div>
@@ -220,12 +276,12 @@ export default function BasicModelInput(states:any) {
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
                         className="w-full mb-1"
                     >
-                        <TabsList className="grid w-full grid-cols-3 bg-background gap-2">
+                        <TabsList className="grid w-full grid-cols-3 gap-2">
                             {items.map((item) => (
                                 <TabsTrigger
                                     key={item.id}
                                     value={item.id.toString()}
-                                    className="relative data-[state=active]:bg-muted data-[state=inactive]:bg-background data-[state=inactive]:text-muted-foreground flex items-center justify-center"
+                                    className="relative flex items-center justify-center"
                                 >
                                     <span>{item.content}</span>
                                     <span
@@ -254,7 +310,7 @@ export default function BasicModelInput(states:any) {
                                     onTouchStart={toggleTooltip}
                                     ref={tooltipRef}
                                 >
-                                    <InfoIcon className="h-4 w-4" />
+                                    <InfoIcon className="h-4 w-4 " />
                                     <span className="sr-only">Info</span>
                                 </TooltipTrigger>
                                 <TooltipContent
@@ -266,12 +322,22 @@ export default function BasicModelInput(states:any) {
                             </Tooltip>
                         )}
                     </div>
-                    <div className="flex justify-end pt-2">
-                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                    <div className="flex justify-between w-full">
+                        <div className="pt-2">
+                            <UploadButton/>
+                        </div>
+                        <div className="flex space-x-2 pt-2">
+                            <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
                             <AdvancedShareButton
-                                parameters={{currentSolver: currentSolver , currentLpFormat:currentLpFormat, currentProblem:currentProblem, currentPage: "general" }}
+                                parameters={{
+                                    currentSolver: currentSolver,
+                                    currentLpFormat: currentLpFormat,
+                                    currentProblem: currentProblem,
+                                    currentPage: "general"
+                                }}
                                 onParametersLoaded={handleParametersLoaded}
                             />
+                        </div>
                     </div>
                 </div>
             </div>

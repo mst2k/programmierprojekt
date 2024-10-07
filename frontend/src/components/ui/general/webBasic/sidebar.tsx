@@ -98,14 +98,14 @@ export default function Sidebar({
                         isOpen ? "w-64" : "w-16"
                     }`}
                 >
-                    <div className="flex justify-between items-center p-2 border-b">
+                    <div className="flex justify-between items-center p-2 border-b bg-background">
                         {isOpen && <h2 className="text-lg font-semibold">{t('sidebar.mode')}</h2>}
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             onClick={toggleSidebar}
-                            className="top-20 z-20 transition-all duration-300 bg-stone-50 hover:bg-stone-50"
+                            className="top-20 z-20 transition-all duration-300"
                         >
-                            {isOpen ? <X className="h-4 w-4 text-black" /> : <ArrowRightFromLine className="h-4 w-4 text-black" />}
+                            {isOpen ? <X className="h-4 w-4" /> : <ArrowRightFromLine className="h-4 w-4" />}
                         </Button>
                     </div>
                     {isOpen && <SidebarContent />}

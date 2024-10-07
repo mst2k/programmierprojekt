@@ -68,7 +68,8 @@
     "bounds": "Beschränkungen",
     "solver": "Löser",
     "basicModelInput" : {
-        "solve": "Lösen"
+        "solve": "Lösen",
+        "upload": "Problem Hochladen"
     },
     "sidebar": {
         "export": "Exportieren",

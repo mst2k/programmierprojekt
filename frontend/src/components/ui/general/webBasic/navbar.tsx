@@ -7,9 +7,9 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuSingleTrigger
-} from "../../navigationmenu.tsx"
+} from "../ui/general/navigationmenu"
 import { useNavigate } from "react-router-dom"
-import { cn } from "@/lib/utils.ts"
+import { cn } from "@/lib/utils"
 import Logo from '/logo.svg'
 import { useTranslation } from "react-i18next"
 import { Menu } from 'lucide-react'
