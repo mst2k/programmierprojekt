@@ -15,8 +15,8 @@ export default function LicensePage() {
     }
 
     return (
-        <div className="container mx-auto p-4 max-w-3xl">
-            <Card>
+        <div className="flex flex-col min-h-screen w-screen p-10"> {/* hier auch flex flex-col h-screen w-screen ?*/}
+            <Card className="container mx-auto p-4 max-w-3xl">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold">{t("licensePage.licenseTitle")}</CardTitle>
                     <CardDescription>Open-Source-Softwarelizenz</CardDescription>

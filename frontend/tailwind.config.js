@@ -2,9 +2,9 @@
 export default {
 
 	darkMode: ["class"],
-	content: ["./src/**/*.{js,jsx,ts,tsx}"],
-	theme: {
-    	extend: {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
     		borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
@@ -30,7 +30,7 @@ export default {
     				foreground: 'hsl(var(--secondary-foreground))'
     			},
     			muted: {
-    				DEFAULT: '#f0f0f0',//'hsl(var(--muted))',
+    				DEFAULT: 'hsl(var(--muted))',//'hsl(var(--muted))',
     				foreground: 'hsl(var(--muted-foreground))'
     			},
     			accent: {

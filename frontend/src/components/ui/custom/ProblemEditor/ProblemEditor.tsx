@@ -8,6 +8,8 @@ import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
 
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
+import {useTheme} from "@/components/ui/general/themeProvider.tsx";
+
 
 export interface EditorLanguage {
   // TODO: Define the language tokens, erst wenn ich die Tokens von LP und GMPL verglichen habe
@@ -37,7 +39,7 @@ const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkError
 };
 
 export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
-  
+
   const { tokens, checkErrors } = formatConfigs[props.problemFormat];
   const [modelProperties, setModelProperties] = useState({
     hasObjective: false,
@@ -47,6 +49,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
   const editorRef = useRef<any>(null);
   const monaco = useMonaco();
   const { t, i18n } = useTranslation();
+  const { theme: colorTheme,  } = useTheme();
 
   const MARKER_OWNER = 'problem-editor-markers';
 
@@ -87,15 +90,16 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
     }
   }, [monaco, updateErrors, i18n.language]);
 
+
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
     setupLanguage(monaco);
-    
+
     editor.onDidChangeModelContent(() => {
       const code = editor.getValue();
       updateErrors(code, editor, monaco);
     });
-    
+
     const code = editor.getValue();
     updateErrors(code, editor, monaco);
   };
@@ -112,9 +116,9 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       setupLanguage(monaco);
       const model = editorRef.current.getModel();
       monaco.editor.setModelLanguage(model, props.problemFormat);
-      
+
       clearMarkers(editorRef.current, monaco);
-      
+
       const code = editorRef.current.getValue();
       updateErrors(code, editorRef.current, monaco);
     }
@@ -126,6 +130,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
         <Editor
           onMount={handleEditorDidMount}
           defaultLanguage={props.problemFormat}
+          theme={colorTheme==="dark" ? "vs-dark": "vs-light"}
           value={props.value}
           onChange={(value) => props.onChange(value || '')}
           options={{

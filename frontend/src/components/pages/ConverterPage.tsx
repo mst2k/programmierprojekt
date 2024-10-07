@@ -134,7 +134,7 @@ const CodeExecutionPage: React.FC = () => {
             />
             <main className="flex-grow">
                 <div className="mb-4">
-                    <h1 className="text-xl font-bold mb-2 ">{t('converterPage.title')}</h1>   
+                    <h1 className="text-xl font-bold mb-2">{t('converterPage.title')}</h1>   
                     <div className="joyride-converter-input">
                         <Textarea
                             value={code}

@@ -268,12 +268,12 @@ export default function BasicModelInput(states:any) {
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
                         className="w-full mb-1"
                     >
-                        <TabsList className="grid w-full grid-cols-3 bg-background gap-2">
+                        <TabsList className="grid w-full grid-cols-3 gap-2">
                             {items.map((item) => (
                                 <TabsTrigger
                                     key={item.id}
                                     value={item.id.toString()}
-                                    className="relative data-[state=active]:bg-muted data-[state=inactive]:bg-background data-[state=inactive]:text-muted-foreground flex items-center justify-center"
+                                    className="relative flex items-center justify-center"
                                 >
                                     <span>{item.content}</span>
                                     <span
@@ -302,7 +302,7 @@ export default function BasicModelInput(states:any) {
                                     onTouchStart={toggleTooltip}
                                     ref={tooltipRef}
                                 >
-                                    <InfoIcon className="h-4 w-4" />
+                                    <InfoIcon className="h-4 w-4 " />
                                     <span className="sr-only">Info</span>
                                 </TooltipTrigger>
                                 <TooltipContent
