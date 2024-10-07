@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/seperator.tsx"
 import { inputModes } from "@/components/pages/SolverPage.tsx"
 import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
-import { FileExport } from "@/components/ui/general/fileExport.tsx"
+import { FileExport } from "@/components/ui/custom/fileExport.tsx"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx"
 
 interface SidebarProps {

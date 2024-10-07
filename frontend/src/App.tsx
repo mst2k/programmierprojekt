@@ -8,7 +8,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from "@/components/ui/general/webBasic/footer.tsx";
 import AboutPage from './components/pages/AboutPage';
 import BenchmarkComponent from './components/pages/Benchmark';
-import { ThemeProvider } from './components/ui/general/themeProvider';
+import { ThemeProvider } from './hooks/themeProvider.tsx';
 import LicensePage from "@/components/pages/LicensePage.tsx";
 
 const Layout = () => {

@@ -19,7 +19,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { useTheme } from "@/components/ui/general/themeProvider"
+import { useTheme } from "@/hooks/themeProvider.tsx"
 
 export function NavigationMenuDemo() {
     const navigate = useNavigate();

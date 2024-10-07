@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 import {
     Sheet,
     SheetContent,
@@ -7,7 +7,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet.tsx"
 import { ProblemFormats } from "@/interfaces/SolverConstants.tsx";
 import {LP} from "@/interfaces/glpkJavil/LP.tsx";
 import {convertToGMPL} from "@/hooks/converters/GMPLConverter.tsx";
