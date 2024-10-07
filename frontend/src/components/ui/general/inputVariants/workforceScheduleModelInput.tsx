@@ -1,16 +1,28 @@
 import { useState } from 'react'
 import { PlusCircle, MinusCircle } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
+import { Button } from "@/components/ui/button.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
+import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from "react-i18next"
 import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog"
-import { DialogHeader } from "@/components/ui/dialog"
-import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
+import { DialogHeader } from "@/components/ui/dialog.tsx"
+import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor.tsx"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
 
+
+/** Workforce Schedule
+ *
+ *
+ * Returns a Ui Mask to enter a Workforce Schedule Problem.
+ *
+ * The problem part of a GMPL workforce schedule problem is already predefined. The user is guided through entering the
+ * data part
+ *
+ * @param states various states that need to be synced about various pages (sidebar, result, etc.)
+ *
+ * */
 export default function WorkforceSchedulingUI(states: any) {
     const gmplInit = `
 # WORKFORCE SCHEDULING PROBLEM

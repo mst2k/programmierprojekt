@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 import { X, ArrowRightFromLine } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/general/seperator"
-import { inputModes } from "@/components/pages/SolverPage"
-import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants"
-import { FileExport } from "@/components/ui/general/fileExport"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx"
+import { Separator } from "@/components/ui/seperator.tsx"
+import { inputModes } from "@/components/pages/SolverPage.tsx"
+import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
+import { FileExport } from "@/components/ui/general/fileExport.tsx"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx"
 
 interface SidebarProps {
     currentInputVariant: string

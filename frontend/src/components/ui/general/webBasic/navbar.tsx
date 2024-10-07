@@ -7,18 +7,18 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuSingleTrigger
-} from "../ui/general/navigationmenu"
+} from "../../navigationmenu.tsx"
 import { useNavigate } from "react-router-dom"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils.ts"
 import Logo from '/logo.svg'
 import { useTranslation } from "react-i18next"
 import { Menu } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button.tsx"
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet.tsx"
 
 export function NavigationMenuDemo() {
     const navigate = useNavigate();

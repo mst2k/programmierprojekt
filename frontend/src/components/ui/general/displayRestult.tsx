@@ -14,11 +14,29 @@ interface GLPKSolverProps {
     lpSolver: Solvers
 }
 
+
+
+/**
+ * Result Component
+ *
+ * This component handles solving and displaying of a given problem in a given format. You also need to pass the
+ * solver the component should use.
+ *
+ * The component triggers solving on EVERY RERENDER!!! (be careful) and returns the output of the solver
+ * (result, constraints, variable values, logs)
+ *
+ * @component
+ * @param {string} lpProblem  - Problem to Solve
+ * @param {ProblemFormats} problemType - Problem Format
+ * @param {Solvers} lpSolver - Solver to user
+ *
+ */
 export default function ResultComponent({ lpProblem, problemType, lpSolver }: GLPKSolverProps) {
     const { t } = useTranslation() // Initialize translation function
     const { result, isLoading, error, log } = useSolver(lpProblem, problemType, lpSolver)
     const [activeTab, setActiveTab] = useState("columns")
 
+    //Display loading animation while the solver is working
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-64">
@@ -27,6 +45,7 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
         )
     }
 
+    //Display the error if solving was successful
     if (error) {
         return (
             <Card className="w-full max-w-4xl mx-auto bg-red-50">
@@ -52,6 +71,7 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
         Unknown: "bg-gray-500"
     }
 
+    //Result if solved successful
     return (
         <Card className="w-full max-w-4xl mx-auto">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

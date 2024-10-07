@@ -19,8 +19,10 @@ import {parseGLPMAdvanced} from "@/hooks/converters/GLPKConverter.tsx";
 /**
  * FileExport Component
  *
- * This component provides a UI for exporting mathematical programming problems
- * in various file formats (GMPL, LP, MPS).
+ * This component provides a UI-Button for exporting mathematical programming problems
+ * in various file formats (GMPL, LP, MPS). you have to pass the problem and the format. The Button handles
+ * coversion internally
+ *
  *
  * @component
  * @param {Object} props - The properties passed to the component

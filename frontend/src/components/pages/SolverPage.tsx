@@ -1,14 +1,14 @@
 // import { useTranslation } from "react-i18next";
 
-import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
+import BasicModelInput from "@/components/ui/general/inputVariants/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
-import Sidebar from "@/components/ui/custom/sidebar.tsx";
-import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
-import TransportationProblemUI from "@/components/ui/general/transportModelInput.tsx";
-import KnapsackProblemUI from "@/components/ui/general/knapsackModelInput.tsx";
-import WorkforceSchedulingUI from "@/components/ui/general/workforceScheduleModelInput.tsx";
+import Sidebar from "@/components/ui/general/webBasic/sidebar.tsx";
+import EasyModelInput from "@/components/ui/general/inputVariants/easyModelInput.tsx"
+import TransportationProblemUI from "@/components/ui/general/inputVariants/transportModelInput.tsx";
+import KnapsackProblemUI from "@/components/ui/general/inputVariants/knapsackModelInput.tsx";
+import WorkforceSchedulingUI from "@/components/ui/general/inputVariants/workforceScheduleModelInput.tsx";
 
 export const inputModes:string[] = [
     "general",
