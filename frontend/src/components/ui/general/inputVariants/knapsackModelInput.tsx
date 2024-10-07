@@ -184,18 +184,16 @@ data;
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    {items.length > 1 && (
                                     <Button onClick={() => removeItem(index)} size="icon" variant="ghost">
-                                        <Trash2 className="h-4 w-4" />
+                                        <MinusCircle className="h-4 w-4" />
                                     </Button>
-                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <Button onClick={addItem} className="py-2 text-sm ml-auto block">
-                     <Plus className=" h-4 w-4" />{/*mr-2  {t('knapsackInput.addItem')} */}
+                <Button onClick={addItem} className="mt-2">
+                    <PlusCircle className="mr-2 h-4 w-4" /> {t('knapsackInput.addItem')}
                 </Button>
             </div>
 
@@ -209,7 +207,7 @@ data;
                     placeholder={t('knapsackInput.capacity')}
                 />
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex flex-row items-center space-x-2 w-full mb-2">
                 <Button className="" onClick={handleGenerateGMPL}>{t('knapsackInput.generateGMPL')}</Button>
                 <Button className="ml-2" onClick={() => {setIsGmplDialogOpen(true)}}>{t('knapsackInput.showGMPL')}</Button>
                 <AdvancedShareButton

@@ -65,7 +65,8 @@
     "bounds": "Bounds",
     "solver": "Solver",
     "basicModelInput" : {
-        "solve": "Sovle"
+        "solve": "Sovle",
+        "upload": "Upload Problem"
     },
     "sidebar": {
         "export": "Export",
