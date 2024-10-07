@@ -7,7 +7,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuSingleTrigger
-} from "../ui/general/navigationmenu"
+} from "@/components/ui/navigationmenu"
 import { useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import Logo from '/logo.svg'
