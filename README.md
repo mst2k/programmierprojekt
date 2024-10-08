@@ -4,7 +4,8 @@
 
 <img src="./frontend/public/logo.svg" alt="OR Solver Logo" width="200" height="200">
 
-Powerful web-based Operations Research problem solver
+Powerful web-based Operations Research problem solver interface
+[running in your browser](https://mst2k.github.io/programmierprojekt/)
 
 [![GitHub last release](https://img.shields.io/github/v/release/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/commits/main)
@@ -12,7 +13,7 @@ Powerful web-based Operations Research problem solver
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/pulls)
 [![License](https://img.shields.io/github/license/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/blob/main/LICENSE)
 
-[Features](#features) • [Demo](#demo) • [Installation](#installation) • [Usage](#usage) • [Contributing](#contributing) • [License](#license)
+[Features](#features) • [Demo](#demo) • [Installation](#installation) • [Usage](#usage) • [Performance Testing](#performance-testing) • [Development](#development) • [Contributing](#contributing) • [License](#license)
 
 </div>
 
@@ -24,11 +25,15 @@ Powerful web-based Operations Research problem solver
 - 🔧 Multiple solvers: GLPKHgourvest, GLPKJavil, Highs
 - 🔄 Format conversion between different OR problem types
 - 🌐 User-friendly web interface
+- 🌍 Multi-language support (English, German)
+- 📱 Responsive design for mobile and desktop
+- 🌓 Dark mode for comfortable viewing
 
 ## Demo
 
 <div align="center">
   <img src="./frontend/public/demo_en.gif" alt="OR Solver Demo" width="600">
+  <h2><a href="https://mst2k.github.io/programmierprojekt/">Try the OR Solver now!</a></h2>
 </div>
 
 ## Installation
