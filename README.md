@@ -6,6 +6,7 @@
 
 Powerful web-based Operations Research problem solver
 
+[![GitHub last release](https://img.shields.io/github/v/release/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues-raw/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/pulls)
@@ -70,6 +71,27 @@ To use the OR Solver:
 2. Choose a solver (GLPKHgourvest, GLPKJavil, Highs)
 3. Input your problem in GMPL, LP, or MPS format
 4. Click "Solve" to get results
+
+## Performance Testing
+
+We have implemented local performance tests to compare the efficiency of three open-source solver libraries (in JavaScript and WebAssembly formats) against their native counterparts. These tests help us evaluate the performance trade-offs of using web-based solver implementations.
+
+Key aspects of our performance testing:
+- Compares three solver libraries:
+  - [GLPKHgourvest](https://github.com/hgourvest/glpk.js) (JavaScript)
+  - [GLPKJavil](https://github.com/jvail/glpk.js/) (WebAssembly) 
+  - [Highs](https://github.com/lovasoa/highs-js) (WebAssembly)
+- Tests both JavaScript and WebAssembly (WASM) versions against native solver installations
+- Evaluates performance across different problem types and sizes
+
+For detailed information on how to run these tests and interpret the results, please refer to our [Performance Testing Guide](./performanceLocal/README.md).
+
+These tests are crucial for:
+- Quantifying the performance impact of using web-based solver libraries
+- Understanding the trade-offs between different solver implementations
+- Helping users make informed decisions about which solver to use for their specific needs
+
+We encourage users and contributors to review these performance results and contribute to our testing efforts, helping us provide accurate performance insights for the OR community.
 
 ## Development
 
