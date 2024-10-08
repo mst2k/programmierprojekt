@@ -39,10 +39,15 @@ self.onmessage = function (e) {
 
         const hasIntegerVariables = glp_get_num_int(lp) > 0;
 
+        let start;
+        let end;
+
         if (hasIntegerVariables) {
             log('Solving as MIP...');
             var iocp = new IOCP({presolve: GLP_ON});
+            start = performance.now();
             glp_intopt(lp, iocp);
+            end =  performance.now();
             objective = glp_mip_obj_val(lp);
             result = {};
             for (let i = 1; i <= glp_get_num_cols(lp); i++) {
@@ -55,7 +60,9 @@ self.onmessage = function (e) {
         } else {
             log('Solving as LP...');
             const smcp = new SMCP({ presolve: GLP_ON });
+            start = performance.now();
             glp_simplex(lp, smcp);
+            end =  performance.now();
             objective = glp_get_obj_val(lp);
             result = {};
             for (let i = 1; i <= glp_get_num_cols(lp); i++) {
@@ -66,8 +73,10 @@ self.onmessage = function (e) {
                 glp_mpl_postsolve(tran, lp, GLP_SOL);
             }
         }
+        const duration = (end-start)/1000;
 
         output_result = createJSONReport(lp, hasIntegerVariables);
+        output_result.DurationSolving = duration;
         log('Optimization completed successfully.');
 
     } catch (err) {

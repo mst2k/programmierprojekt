@@ -5,17 +5,22 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import useBenchmark from "@/hooks/benchmark/benchmark.tsx"
 
 type ProblemFormats = "GMPL" | "LP"
 
+type SolverResult = {
+    executionTime: number;
+    durationSolving: number;
+}
+
 type BenchmarkResult = {
-    "glpkHgourvest": number
-    "glpkJavil": number
-    "highs": number
-    "glpk(Backend)": number
-    "highs(Backend)": number
+    "glpkHgourvest": SolverResult;
+    "glpkJavil": SolverResult;
+    "highs": SolverResult;
+    "glpk(Backend)": SolverResult;
+    "highs(Backend)": SolverResult;
 }
 
 export default function BenchmarkComponent() {
@@ -24,11 +29,7 @@ export default function BenchmarkComponent() {
     const [logData, setLogData] = useState<string>("")
     const [loadedResults, setLoadedResults] = useState<BenchmarkResult | null>(null)
     const {runBenchmark, benchmarkResults} = useBenchmark()
-    const loadResultsInputRef = useRef<HTMLInputElement | null>(null); // null statt undefined
-
-// Und dann in JSX
-    <input ref={loadResultsInputRef} />
-
+    const loadResultsInputRef = useRef<HTMLInputElement | null>(null)
 
     function bmLog(newLog: string) {
         setLogData(prevLog => `${prevLog}\n${newLog}`)
@@ -51,7 +52,11 @@ export default function BenchmarkComponent() {
     }
 
     const formatData = (data: BenchmarkResult) => {
-        return Object.entries(data).map(([name, value]) => ({ name, value }))
+        return Object.entries(data).map(([name, result]) => ({
+            name,
+            executionTime: result.executionTime,
+            durationSolving: result.durationSolving
+        }))
     }
 
     const exportResults = () => {
@@ -135,7 +140,9 @@ export default function BenchmarkComponent() {
                                     <XAxis dataKey="name" />
                                     <YAxis />
                                     <Tooltip />
-                                    <Bar dataKey="value" fill="#8884d8" />
+                                    <Legend />
+                                    <Bar dataKey="executionTime" fill="#8884d8" name="Total Execution Time" />
+                                    <Bar dataKey="durationSolving" fill="#82ca9d" name="Solving Duration" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
