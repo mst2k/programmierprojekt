@@ -61,7 +61,7 @@
     "column_primal": "Primal",
     "column_dual": "Dual",
     "column_index": "Index",
-    "description_gmpl": "GMPL ist eine Modellierungssprache zur Beschreibung von linearen und gemischt-ganzzahligen Optimierungsproblemen. Sie erlaubt die Definition von Variablen, Nebenbedingungen und Zielfunktionen. Beispiel:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
+    "description_gmpl": "GMPL ist eine Modellierungssprache zur Beschreibung von linearen und gemischt-ganzzahligen Optimierungsproblemen. Sie erlaubt die Definition von Variablen, Nebenbedingungen und Zielfunktionen. Beispiel:\n\nvar x >=0;\nvar y >=0;\nmaximize z: 3 * x + 2 * y;\nsubject to c1: x + y <= 10;\nsolve;",
     "description_lp": "Das CPLEX LP-Format wird zur Darstellung von linearen Optimierungsproblemen verwendet. Es verwendet eine zeilenbasierte Syntax zur Definition der Zielfunktion und der Nebenbedingungen. Beispiel:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
     "description_mps": "MPS ist ein weit verbreitetes Dateiformat zur Darstellung von linearen und ganzzahligen Optimierungsproblemen. Es ist spaltenorientiert und besteht aus verschiedenen Abschnitten wie ROWS, COLUMNS und RHS. Beispiel:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
     "settings": "Einstellungen",

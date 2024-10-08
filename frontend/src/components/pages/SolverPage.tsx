@@ -56,20 +56,21 @@ const SolverPage = () => {
     }, [currentSolver]);
 
     return (
-        <div className="flex h-min-screen w-screen">
+        <div className="flex flex-col md:flex-row min-h-screen bg-background">
             <Sidebar
                 currentInputVariant={currentInputVariant}
                 setCurrentInputVariant={setCurrentInputVariant}
                 currentSolver={currentSolver}
                 setCurrentSolver={setCurrentSolver}
                 currentProblem={currentProblem}
-                currentLpFormat={currentLpFormat}/>
-            <div className="flex-1 flex flex-col">
-                <main className="flex-1 p-4 overflow-auto">
-                    <div className="h-min-1/2 h-auto border-b-2 border-gray-300 p-4">
+                currentLpFormat={currentLpFormat}
+            />
+            <div className="flex-1 flex flex-col w-full max-w-4xl mx-auto px-4 md:px-8">
+                <main className="flex-1 flex flex-col gap-8 py-8">
+                    <div className="border-b-2 border-gray-300 pb-8">
                         {inputComponent}
                     </div>
-                    <div className="h-auto p-4">
+                    <div>
                         {resultComponent}
                     </div>
                 </main>
