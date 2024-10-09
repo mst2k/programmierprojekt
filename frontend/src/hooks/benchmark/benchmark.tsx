@@ -1,39 +1,43 @@
-// Annahme: Die Browser-Solver-Funktionen sind im globalen Scope verfügbar
-import useSolver from "@/hooks/solvers/useSolver.tsx";
-import {lpString} from "@/interfaces/TestData.tsx";
-import {useState} from "react";
-import {ProblemFormats} from "@/interfaces/SolverConstants.tsx";
+import { lpString } from "@/interfaces/TestData.tsx";
+import { useState } from "react";
+import { ProblemFormats } from "@/interfaces/SolverConstants.tsx";
+import solveGLPKHgourvest from "@/hooks/solvers/GLPKHgourvest.tsx";
+import {solveGLPKJavil} from "@/hooks/solvers/GLPKJavil.tsx";
+import solveHiGHS from "@/hooks/solvers/HiGHS.tsx";
 
 function useBenchmark() {
-    const problemType="GMPL"
-    const {solve:solveGlpkHgourvest} = useSolver(" ", problemType, "GLPKHgourvest");
-    const {solve:solveGlpkJavil} = useSolver(" ", problemType, "GLPKJavil")
-    const {solve:solveHighs} = useSolver(" ", problemType, "Highs")
-    const [benchmarkResults, setBenchmarkResults] = useState<any>(null)
-    async function benchmarkAllSolvers(problem:string, problemType:ProblemFormats, bmLog:(arg: string)=>void) {
+    const [benchmarkResults, setBenchmarkResults] = useState<any>(null);
+
+    async function benchmarkAllSolvers(problem: string, problemType: ProblemFormats, bmLog: (arg: string) => void) {
         const browserSolvers = ['glpkHgourvest', 'highs'];
-        const results:{[key: string]: any; } = {};
+        const results: { [key: string]: any } = {};
 
         // Browser Solvers
         for (const solver of browserSolvers) {
             console.log(`Running solver in browser: ${solver}`);
             bmLog(`Running solver in browser: ${solver}`);
+            let solveResult = null;
             const start = performance.now();
+
             try {
-                switch(solver) {
+                switch (solver) {
                     case 'glpkHgourvest':
-                        await solveGlpkHgourvest(problem, problemType, "GLPKHgourvest")
+                        solveResult = await solveGLPKHgourvest(problem, problemType);
                         break;
                     case 'glpkJavil':
-                        await solveGlpkJavil(problem, problemType, "GLPKJavil");
+                        solveResult = await solveGLPKJavil(problem, problemType);
                         break;
                     case 'highs':
-                        await solveHighs(problem, problemType, "Highs");
+                        solveResult = await solveHiGHS(problem, problemType);
                         break;
                 }
+
                 const end = performance.now();
                 const executionTime = (end - start) / 1000; // Umrechnung in Sekunden
-                results[solver] = executionTime;
+                results[solver] = {
+                    executionTime,
+                    durationSolving: solveResult?.result?.DurationSolving, // Direktes Abrufen des Ergebnisses
+                };
             } catch (error) {
                 console.error(`Error in browser solver ${solver}:`, error);
             }
@@ -45,13 +49,13 @@ function useBenchmark() {
         try {
             const response = await fetch('http://localhost:8080/api/benchmark', {
                 method: 'POST',
-                 headers: {
-                     'Content-Type': 'application/json',
-                 },
-                 body: JSON.stringify({
-                     problem: problem,
-                     problem_type: problemType
-                 }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    problem: problem,
+                    problem_type: problemType
+                }),
             });
 
             if (!response.ok) {
@@ -60,20 +64,28 @@ function useBenchmark() {
 
             const data = await response.json();
             console.log(data);
-            results["glpk(Backend)"] = data["glpk"]["execution_time"];
-            results["highs(Backend)"] = data["highs"]["execution_time"];
+            results["glpk(Backend)"] = {
+                executionTime: data["glpk"]["execution_time"],
+                durationSolving: data["glpk"]["solution_time"]
+            };
+            results["highs(Backend)"] = {
+                executionTime: data["highs"]["execution_time"],
+                durationSolving: data["highs"]["solution_time"]
+            };
         } catch (error) {
             console.error(`Error in API solver:`, error);
         }
+
         return results;
     }
-    async function runBenchmark(problem?:string, problemType?:ProblemFormats, bmLog?: (arg: string)=>void) {
-        if(problemType === undefined || problem === undefined){
+
+    async function runBenchmark(problem?: string, problemType?: ProblemFormats, bmLog?: (arg: string) => void) {
+        if (problemType === undefined || problem === undefined) {
             problem = lpString; // Ihr Optimierungsproblem hier
             problemType = 'LP' as ProblemFormats; // oder 'GMPL'
         }
-        if(!bmLog){
-            bmLog = (log:string) => {console.log(log)} ;
+        if (!bmLog) {
+            bmLog = (log: string) => { console.log(log); };
         }
 
         try {
@@ -84,5 +96,8 @@ function useBenchmark() {
             console.error('Error running benchmark:', error);
         }
     }
-    return {runBenchmark, benchmarkResults};
-} export default useBenchmark;
+
+    return { runBenchmark, benchmarkResults };
+}
+
+export default useBenchmark;

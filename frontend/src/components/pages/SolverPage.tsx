@@ -1,16 +1,15 @@
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import BasicModelInput from "@/components/ui/general/basicModelInput.tsx";
+import BasicModelInput from "@/components/ui/general/inputVariants/basicModelInput.tsx";
 import {useEffect, useState} from "react";
 import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx";
 import ResultComponent from "@/components/ui/general/displayRestult.tsx";
-import Sidebar from "@/components/ui/custom/sidebar.tsx";
-
-import EasyModelInput from "@/components/ui/general/easyModelInput.tsx"
-import TransportationProblemUI from "@/components/ui/general/transportModelInput.tsx";
-import KnapsackProblemUI from "@/components/ui/general/knapsackModelInput.tsx";
-import WorkforceSchedulingUI from "@/components/ui/general/workforceScheduleModelInput.tsx";
+import Sidebar from "@/components/ui/general/webBasic/sidebar.tsx";
+import EasyModelInput from "@/components/ui/general/inputVariants/easyModelInput.tsx"
+import TransportationProblemUI from "@/components/ui/general/inputVariants/transportModelInput.tsx";
+import KnapsackProblemUI from "@/components/ui/general/inputVariants/knapsackModelInput.tsx";
+import WorkforceSchedulingUI from "@/components/ui/general/inputVariants/workforceScheduleModelInput.tsx";
 
 import GuidedTour from "@/components/ui/custom/GuidedTour";
 import { Step } from 'react-joyride';
@@ -29,7 +28,6 @@ export const inputModes: string[] = [
 const SolverPage = () => {
     const {t} = useTranslation();
     const location = useLocation();
-
     const [currentSolver, setCurrentSolver] = useState<Solvers>("GLPKHgourvest");
     const [currentLpFormat, setCurrentLpFormat] = useState<ProblemFormats>("GMPL")
     const [currentProblem, setCurrentProblem] = useState<string>("");
@@ -62,6 +60,8 @@ const SolverPage = () => {
         else if(currentInputVariant === 'workforce') setInputComponent(<WorkforceSchedulingUI states={allStates}></WorkforceSchedulingUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant, currentSolver, solveTrigger]);
+
+
 
     useEffect(() => {
         console.log("current Solver:", currentSolver);

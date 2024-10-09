@@ -50,16 +50,23 @@ def solve_with_glpk(problem, problem_type):
         iocp = swiglpk.glp_iocp()
         swiglpk.glp_init_iocp(iocp)
         iocp.presolve = 1
+        start_time = time.time()
         ret = swiglpk.glp_intopt(lp, iocp)
+        end_time = time.time()
+        duration = end_time - start_time
         if ret != 0:
             raise ValueError(f"GLPK integer optimizer failed with return code {ret}")
         status = swiglpk.glp_mip_status(lp)
+
         z = swiglpk.glp_mip_obj_val(lp)
     else:
         # Solve LP
         parm = swiglpk.glp_smcp()
         swiglpk.glp_init_smcp(parm)
+        start_time = time.time()
         ret = swiglpk.glp_simplex(lp, parm)
+        end_time = time.time()
+        duration = end_time - start_time
         if ret != 0:
             raise ValueError(f"GLPK simplex solver failed with return code {ret}")
         status = swiglpk.glp_get_status(lp)
@@ -72,7 +79,7 @@ def solve_with_glpk(problem, problem_type):
         swiglpk.glp_mpl_free_wksp(tran)
     swiglpk.glp_delete_prob(lp)
 
-    return z
+    return z, duration
 
 def convert_gmpl_to_lp(problem):
     tran = swiglpk.glp_mpl_alloc_wksp()
@@ -124,9 +131,11 @@ def solve_with_highs(problem, problem_type):
         raise ValueError(f"Unsupported problem type for HiGHS: {problem_type}")
 
     os.unlink(tmp_name)
-
+    start = time.time()
     h.run()
-    return h.getObjectiveValue()
+    end = time.time()
+    duration = end - start
+    return h.getObjectiveValue(), duration
 
 def benchmark_solvers(problem, problem_type, solvers=['glpk', 'highs']):
     results = {}
@@ -135,9 +144,9 @@ def benchmark_solvers(problem, problem_type, solvers=['glpk', 'highs']):
         start_time = time.time()
         try:
             if solver == 'glpk':
-                solution = solve_with_glpk(problem, problem_type)
+                solution, s_duration = solve_with_glpk(problem, problem_type)
             elif solver == 'highs':
-                solution = solve_with_highs(problem, problem_type)
+                solution, s_duration = solve_with_highs(problem, problem_type)
             else:
                 raise ValueError(f"Unsupported solver: {solver}")
 
@@ -145,12 +154,13 @@ def benchmark_solvers(problem, problem_type, solvers=['glpk', 'highs']):
             execution_time = end_time - start_time
             results[solver] = {
                 'execution_time': execution_time,
+                'solution_time' : s_duration,
                 'solution': solution,
-                'status': 'success'
             }
         except ValueError as e:
             results[solver] = {
                 'execution_time': None,
+                'solution_time' : None,
                 'solution': None,
                 'status': 'error',
                 'error_message': str(e)
@@ -158,6 +168,7 @@ def benchmark_solvers(problem, problem_type, solvers=['glpk', 'highs']):
         except Exception as e:
             results[solver] = {
                 'execution_time': None,
+                'solution_time' : None,
                 'solution': None,
                 'status': 'unexpected error',
                 'error_message': str(e)
@@ -169,14 +180,14 @@ DEFAULT_PROBLEM = """
 /* decision variables*/
 var x1 >= 0;
 var x2 >=0;
-/* Objective function */ 
-maximize label : 4*x1 +5*x2; 
+/* Objective function */
+maximize label : 4*x1 +5*x2;
 /* Constraints */
-subject to label1: x1 + 2*x2 <= 40; 
+subject to label1: x1 + 2*x2 <= 40;
 s.t. label2: 4*x1 + 3*x2 <= 120;
 end;
 """
-with open("./transportation_mediumgmpl.sec") as f:
+with open("transportation_medium_intgmpl.mod") as f:
     DEFAULT_PROBLEM=""
     for line in f.readlines():
         DEFAULT_PROBLEM+=line

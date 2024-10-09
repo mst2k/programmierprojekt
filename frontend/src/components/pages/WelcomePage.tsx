@@ -123,13 +123,13 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
     return (
-        <Card className="bg-white border-none shadow-lg overflow-hidden">
+        <Card className="bg-white border-none shadow-lg overflow-hidden bg-card text-card-foreground">
             <CardHeader>
                 <div className="flex justify-center mb-4 relative z-10">{icon}</div>
-                <CardTitle className="text-xl font-semibold text-center text-[#2c3e50]">{title}</CardTitle>
+                <CardTitle className="text-xl font-semibold text-center text-foreground">{title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-[#2c3e50] text-center">{description}</p>
+                <p className="text-card-foreground text-center">{description}</p>
             </CardContent>
         </Card>
     );
