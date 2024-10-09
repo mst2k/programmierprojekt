@@ -259,11 +259,27 @@ export default function BasicModelInput(states:any) {
                         )}
                     </div>
                     <div className="flex justify-end pt-2">
-                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
-                            <AdvancedShareButton
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                            </TooltipTrigger>
+                            <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                                <p className="text-sm">{t('tooltip.solveButton')}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                            <span>
+                                <AdvancedShareButton
                                 parameters={{currentSolver: currentSolver , currentLpFormat:currentLpFormat, currentProblem:currentProblem, currentPage: "general" }}
                                 onParametersLoaded={handleParametersLoaded}
-                            />
+                                />
+                            </span>
+                            </TooltipTrigger>
+                            <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                                <p className="text-sm">{t('tooltip.shareButton')}</p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 </div>
             </div>
