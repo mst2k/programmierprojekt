@@ -51,7 +51,7 @@ export default function Sidebar({
 
     const SidebarContent = () => (
         <TooltipProvider>
-            <div className="flex flex-col space-y-2 p-4">
+            <div className="flex flex-col space-y-2 p-4 joyride-solver-sidebar-masks">
                 {inputModes.map((itype) => (
                     <Tooltip key={itype}>
                         <TooltipTrigger asChild>
@@ -74,7 +74,7 @@ export default function Sidebar({
                 <h2 className="text-lg font-semibold">{t('sidebar.solver')}</h2>
                 <Separator className="my-2 mx-auto h-[1%]" />
             </div>
-            <div className="flex flex-col space-y-2 p-4">
+            <div className="flex flex-col space-y-2 p-4 joyride-solver-sidebar-solvertyp">
                 <Select onValueChange={handleSolverChange} value={currentSolver || undefined}>
                     <SelectTrigger>
                         <SelectValue placeholder={t('sidebar.solvertype')} />
@@ -95,7 +95,7 @@ export default function Sidebar({
             <div className="flex flex-col space-y-2 p-4">
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <div>
+                        <div className="joyride-solver-sidebar-export">
                             <FileExport currentProblem={currentProblem} currentInputVariant={currentLpFormat}></FileExport>
                         </div>
                     </TooltipTrigger>

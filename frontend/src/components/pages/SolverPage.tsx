@@ -83,8 +83,47 @@ const SolverPage = () => {
             placement: "right-start"
         },
         {
+            target:'.joyride-solver-sidebar-masks',
+            content: 'choose an input mask',
+            placement: "right-start"
+        },
+        {
+            target:'.joyride-solver-sidebar-solvertyp',
+            content: 'choose a solver',
+            placement: "right-start"
+        },
+        {
+            target:'.joyride-solver-sidebar-export',
+            content: 'click to export your problem into a file',
+            placement: "right-start"
+        },
+        {
             target: '.joyride-solver-input',
             content: t('guidedTour.solverPage.input'),
+        },
+        {
+            target: '.joyride-solver-input-tabs',
+            content:'input tabs to choose the format',
+        },
+        {
+            target: '.joyride-solver-input-editor',
+            content:'to enter your problem',
+        },
+        {
+            target: '.joyride-solver-upload-button',
+            content:' to uplaod a file with a problem',
+        },
+        {
+            target: '.joyride-solver-solve-button',
+            content:' to start solving your problem',
+        },
+        {
+            target: '.joyride-solver-share-button',
+            content:'for creating a sharable link',
+        },
+        {
+            target: '.joyride-solver-state-button',
+            content:'to safe the current state',
         },
         {
             target: '.joyride-solver-result',

@@ -335,5 +335,8 @@
         "restorePreviousStateQuestion": "Do you want to restore the last saved state?",
         "restore": "Restore",
         "decline": "Decline"
+    },
+    "extended_joyride":{
+        
     }
 }
