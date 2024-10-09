@@ -324,8 +324,7 @@
         "transport": "Spezialisierte Eingabe für Transportprobleme",
         "knapsack": "Spezialisierte Eingabe für Rucksackprobleme",
         "workforce": "Spezialisierte Eingabe für Personaleinsatzplanung",
-        "fileExport": "Exportiere dein aktuelles Problem in eine Datei",
-        "openMobileSidebar": "Seitenleistenoptionen öffnen"
+        "fileExport": "Exportiere dein aktuelles Problem in eine Datei"
     },
     "store": {
         "name": "Im Browser Speichern",

@@ -324,8 +324,7 @@
         "transport": "Specialized input for transportation problems",
         "knapsack": "Specialized input for knapsack problems",
         "workforce": "Specialized input for workforce scheduling problems",
-        "fileExport": "Export your current problem to a file",
-        "openMobileSidebar": "Open sidebar options"
+        "fileExport": "Export your current problem to a file"
     },
     "store": {
         "name": "Save in Browser",
