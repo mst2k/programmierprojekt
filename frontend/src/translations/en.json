@@ -299,12 +299,26 @@
         }
     },
     "easyInput":{
-        "bound": "Bound"
+        "bound": "Bound",
+        "Continuous": "Continuous",
+        "Integer": "Integer",
+        "Binary": "Binary",
+        "Variables": "Variables",
+        "Non-negative": "Non-negative"
     },
     "sharableLink":{
         "linkGenerated": "Link generated!",
         "linkCopied": "Link was copied!",
         "close": "Close",
         "copy": "Copy"
+    },
+    "store": {
+        "name": "Save in Browser",
+        "saved": "Saved!",
+        "savedDescription": "Your changes have been saved in the browser. To export the file, use the sidebar",
+        "restorePreviousState": "Restore Previous State",
+        "restorePreviousStateQuestion": "Do you want to restore the last saved state?",
+        "restore": "Restore",
+        "decline": "Decline"
     }
 }
