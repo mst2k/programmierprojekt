@@ -300,7 +300,12 @@
         }
     },
     "easyInput":{
-        "bound": "Bound"
+        "bound": "Bound",
+        "Continuous": "Continuous",
+        "Integer": "Integer",
+        "Binary": "Binary",
+        "Variables": "Variables",
+        "Non-negative": "Non-negative"
     },
     "sharableLink":{
         "linkGenerated": "Link generated!",
@@ -321,5 +326,14 @@
         "workforce": "Specialized input for workforce scheduling problems",
         "fileExport": "Export your current problem to a file",
         "openMobileSidebar": "Open sidebar options"
+    },
+    "store": {
+        "name": "Save in Browser",
+        "saved": "Saved!",
+        "savedDescription": "Your changes have been saved in the browser. To export the file, use the sidebar",
+        "restorePreviousState": "Restore Previous State",
+        "restorePreviousStateQuestion": "Do you want to restore the last saved state?",
+        "restore": "Restore",
+        "decline": "Decline"
     }
 }
