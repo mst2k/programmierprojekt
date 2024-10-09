@@ -134,18 +134,9 @@ export default function Sidebar({
             <div className="md:hidden">
                 <Sheet>
                     <SheetTrigger asChild>
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button variant="outline" size="icon" className="absolute top-[4rem] left-2 z-40">
-                                        <ArrowRightFromLine className="h-4 w-4" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
-                                    <p className="text-sm">{t('tooltip.openMobileSidebar')}</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        <Button variant="outline" size="icon" className="absolute top-[4rem] left-2 z-40">
+                            <ArrowRightFromLine className="h-4 w-4" />
+                        </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                         <div className="py-4">

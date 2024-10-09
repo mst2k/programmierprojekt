@@ -143,8 +143,8 @@ const CodeExecutionPage: React.FC = () => {
                             placeholder={t('converterPage.codePlaceholder')}
                         />
                     </div>
-                    <div className="flex mb-4">
-                        <div className="inline-flex space-x-4 joyride-converter-format">
+                    <div className="flex flex-col sm:flex-row mb-4">
+                        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full joyride-converter-format">
                             <Select onValueChange={(e) => setOptionFrom(e)}>
                                 <SelectTrigger className="w-[280px]">
                                     <SelectValue placeholder={t('converterPage.from')} />

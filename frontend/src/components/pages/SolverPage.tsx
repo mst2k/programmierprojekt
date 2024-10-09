@@ -84,17 +84,17 @@ const SolverPage = () => {
         },
         {
             target:'.joyride-solver-sidebar-masks',
-            content: 'choose an input mask',
+            content: t('extended_joyride.sidebar.masks'),
             placement: "right-start"
         },
         {
             target:'.joyride-solver-sidebar-solvertyp',
-            content: 'choose a solver',
+            content: t('extended_joyride.sidebar.solvertype'),
             placement: "right-start"
         },
         {
             target:'.joyride-solver-sidebar-export',
-            content: 'click to export your problem into a file',
+            content: t('extended_joyride.sidebar.export'),
             placement: "right-start"
         },
         {
@@ -103,27 +103,27 @@ const SolverPage = () => {
         },
         {
             target: '.joyride-solver-input-tabs',
-            content:'input tabs to choose the format',
+            content: t('extended_joyride.solverInput.tabs'),
         },
         {
             target: '.joyride-solver-input-editor',
-            content:'to enter your problem',
+            content: t('extended_joyride.solverInput.editor'),
         },
         {
             target: '.joyride-solver-upload-button',
-            content:' to uplaod a file with a problem',
+            content: t('extended_joyride.solverButtons.upload'),
         },
         {
             target: '.joyride-solver-solve-button',
-            content:' to start solving your problem',
+            content: t('extended_joyride.solverButtons.solve'),
         },
         {
             target: '.joyride-solver-share-button',
-            content:'for creating a sharable link',
+            content: t('extended_joyride.solverButtons.share'),
         },
         {
             target: '.joyride-solver-state-button',
-            content:'to safe the current state',
+            content: t('extended_joyride.solverButtons.state'),
         },
         {
             target: '.joyride-solver-result',

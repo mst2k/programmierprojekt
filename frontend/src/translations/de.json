@@ -336,6 +336,23 @@
         "restore": "Wiederherstellen",
         "decline": "Ablehnen"
 
+    },
+    "extended_joyride":{
+        "sidebar":{
+            "masks": "Wähle einen Eingabemodus aus.",
+            "solvertype": "Wähle einen Löser.",
+            "export": "Klicke hier, um das Problem zu exportieren."
+        },
+        "solverInput":{
+            "tabs": "Wähle das Fromat des Problems.",
+            "editor": "Gib hier das Problem ein."
+        },
+        "solverButtons":{
+            "upload": "Klicke hier, um eine Datei mit einem Problem hochzuladen.",
+            "solve": "Klicke zum Lösen.",
+            "share": "Klicke hier, um das Problem über einen Link zu teilen.",
+            "state": "Klicke hier, um den aktuellen Stand im Browser zu speichern."
+        }
     }
 }
 
