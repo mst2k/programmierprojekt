@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { useTranslation } from "react-i18next"
-import { Save } from 'lucide-react';
+import { Save, Trash2Icon } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
 
@@ -23,25 +23,28 @@ export const StatePersistence: React.FC<StatePersistenceProps> = ({ pageIdentifi
     const [isSaving, setIsSaving] = useState(false)
 
     useEffect(() => {
-        const storedState = localStorage.getItem(`${STORAGE_KEY_PREFIX}${pageIdentifier}`);
-        if (storedState) {
-            setLastState(JSON.parse(storedState));
-            setShowRestoreDialog(true);
+        const hash = window.location.hash;
+        const queryStartIndex = hash.indexOf('?');
+        if (queryStartIndex === -1) {
+            const storedState = localStorage.getItem(`${STORAGE_KEY_PREFIX}${pageIdentifier}`);
+            if (storedState) {
+
+                setLastState(JSON.parse(storedState));
+                setShowRestoreDialog(true);
+            }
         }
     }, [pageIdentifier]);
 
     const handleSave = () => {
         const stateToSave = onSave();
         setIsSaving(true)
-        setTimeout(() => {
-            localStorage.setItem(`${STORAGE_KEY_PREFIX}${pageIdentifier}`, JSON.stringify(stateToSave));
-            setIsSaving(false)
-            toast({
-                title: t('store.saved'),
-                description: t('store.savedDescription'),
-                duration: 3000,
-            })
-        }, 1000)
+        localStorage.setItem(`${STORAGE_KEY_PREFIX}${pageIdentifier}`, JSON.stringify(stateToSave));
+        setIsSaving(false)
+        toast({
+            title: t('store.saved'),
+            description: t('store.savedDescription'),
+            duration: 3000,
+        })
     };
 
     const handleRestore = () => {
@@ -54,6 +57,10 @@ export const StatePersistence: React.FC<StatePersistenceProps> = ({ pageIdentifi
     };
 
     const handleDecline = () => {
+        setShowRestoreDialog(false);
+    };
+
+    const handleDelete = () => {
         localStorage.removeItem(`${STORAGE_KEY_PREFIX}${pageIdentifier}`);
         setShowRestoreDialog(false);
     };
@@ -88,6 +95,7 @@ export const StatePersistence: React.FC<StatePersistenceProps> = ({ pageIdentifi
                     <DialogFooter>
                         <Button onClick={handleRestore}>{t('store.restore')}</Button>
                         <Button variant="outline" onClick={handleDecline}>{t('store.decline')}</Button>
+                        <Button variant="outline" size={"icon"} onClick={handleDelete}><Trash2Icon className="h-4 w-4"/></Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

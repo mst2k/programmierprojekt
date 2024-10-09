@@ -44,7 +44,6 @@ export default function BasicModelInput(states:any) {
     const {
         currentSolver,
         setCurrentLpFormat,
-        currentProblem,
         setCurrentProblem,
         currentLpFormat,
         solveTrigger,
@@ -131,7 +130,7 @@ export default function BasicModelInput(states:any) {
     const handleSaveState = () => {
         return {
             currentLPFormat: currentLpFormat,
-            currentProblem: currentProblem,
+            currentProblem: modelInput,
             currentSolver: currentSolver,
             currentPage: "basic"
         };
@@ -356,7 +355,7 @@ export default function BasicModelInput(states:any) {
                                 parameters={{
                                     currentSolver: currentSolver,
                                     currentLpFormat: currentLpFormat,
-                                    currentProblem: currentProblem,
+                                    currentProblem: modelInput,
                                     currentPage: "general"
                                 }}
                                 onParametersLoaded={handleParametersLoaded}
