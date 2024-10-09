@@ -173,7 +173,8 @@
             "contact": "Ready to start? Click here to begin solving problems!"
         },
         "solverPage": {
-            "input": "Here you can input your problem in various formats.",
+            "sidebar": "This sidebar allows you to change the input mode, select the solver, and export your problem in different formats to work more flexibly and individually.",
+            "input": "Simply enter your problem in various formats.",
             "result": "The results of your solved problem will appear here.",
             "solv-conv": "Let's move to the Converter Page to convert between different formats."
         },
@@ -311,6 +312,20 @@
         "linkCopied": "Link was copied!",
         "close": "Close",
         "copy": "Copy"
+    },
+    "tooltip":{
+        "solverPage":{
+            "inputHeader": "Enter your optimisation problem in here and the details of the problem in the sidebar."
+        },
+        "shareButton": "Click to create a sharable link.",
+        "solveButton": "Click to solve the problem.",
+        "general": "General input mode for optimization problems",
+        "easy": "Simplified input mode for basic optimization problems",
+        "transport": "Specialized input for transportation problems",
+        "knapsack": "Specialized input for knapsack problems",
+        "workforce": "Specialized input for workforce scheduling problems",
+        "fileExport": "Export your current problem to a file",
+        "openMobileSidebar": "Open sidebar options"
     },
     "store": {
         "name": "Save in Browser",

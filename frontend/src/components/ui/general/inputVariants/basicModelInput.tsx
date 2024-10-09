@@ -292,7 +292,7 @@ export default function BasicModelInput(states:any) {
 
     return (
         <TooltipProvider>
-            <div className="w-full h-3 md:hidden"></div>
+            {/* <div className="w-full h-3 md:hidden"></div> */}
             <div className="flex items-center justify-center">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[62vh]">
                     <Tabs
@@ -350,17 +350,33 @@ export default function BasicModelInput(states:any) {
                         <div className="pt-2">
                             <UploadButton/>
                         </div>
-                        <div className="flex space-x-2 pt-2">
-                            <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
-                            <AdvancedShareButton
-                                parameters={{
-                                    currentSolver: currentSolver,
-                                    currentLpFormat: currentLpFormat,
-                                    currentProblem: currentProblem,
-                                    currentPage: "general"
-                                }}
-                                onParametersLoaded={handleParametersLoaded}
-                            />
+                        <div className="flex justify-end pt-2">
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                                </TooltipTrigger>
+                                <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                                    <p className="text-sm">{t('tooltip.solveButton')}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                <span>
+                                    <AdvancedShareButton
+                                    parameters={{
+                                        currentSolver: currentSolver , 
+                                        currentLpFormat:currentLpFormat, 
+                                        currentProblem:currentProblem, 
+                                        currentPage: "general" 
+                                    }}
+                                    onParametersLoaded={handleParametersLoaded}
+                                    />
+                                </span>
+                                </TooltipTrigger>
+                                <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                                    <p className="text-sm">{t('tooltip.shareButton')}</p>
+                                </TooltipContent>
+                            </Tooltip>
                             <StatePersistence
                                 pageIdentifier="basic"
                                 onSave={handleSaveState}
