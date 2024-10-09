@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { Button } from "@/components/ui/button.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import {
@@ -21,6 +21,7 @@ import {useTranslation} from "react-i18next";
 import { ProblemEditor } from '../../custom/ProblemEditor/ProblemEditor.tsx'
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
+import {StatePersistence} from "@/components/ui/custom/keepState.tsx";
 
 type Item = {
     id: number;
@@ -124,6 +125,27 @@ export default function BasicModelInput(states:any) {
             }else{
                 setCurrentInputVariant(loadedParams.currentPage)
             }
+        }
+    };
+
+    const handleSaveState = () => {
+        return {
+            currentLPFormat: currentLpFormat,
+            currentProblem: currentProblem,
+            currentSolver: currentSolver,
+            currentPage: "basic"
+        };
+    };
+
+    const handleRestoreState = (state: { [key: string]: string }) => {
+        if (state.currentSolver) {
+            setCurrentSolver(state.currentSolver as Solvers);
+        }
+        if (state.currentProblem) {
+            setModelInput(state.currentProblem);
+        }
+        if (state.currentLPFormat) {
+            setCurrentLpFormat(state.currentLPFormat as ProblemFormats);
         }
     };
 
@@ -266,6 +288,8 @@ export default function BasicModelInput(states:any) {
         );
     };
 
+
+
     return (
         <TooltipProvider>
             <div className="w-full h-3 md:hidden"></div>
@@ -336,6 +360,11 @@ export default function BasicModelInput(states:any) {
                                     currentPage: "general"
                                 }}
                                 onParametersLoaded={handleParametersLoaded}
+                            />
+                            <StatePersistence
+                                pageIdentifier="basic"
+                                onSave={handleSaveState}
+                                onRestore={handleRestoreState}
                             />
                         </div>
                     </div>

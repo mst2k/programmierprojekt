@@ -11,6 +11,7 @@ import {DialogHeader} from "@/components/ui/dialog.tsx";
 import {ProblemEditor} from "@/components/ui/custom/ProblemEditor/ProblemEditor.tsx";
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
+import {StatePersistence} from "@/components/ui/custom/keepState.tsx";
 
 export default function TransportationProblemUI(states:any) {
     const gmplInit = `
@@ -174,40 +175,39 @@ data;\n`
     const generateGMPL = (plants, markets, distances, freightCost) => {
         let gmplCode = gmplInit;
 
-
         // Generate sets
-        // @ts-expect-error
-        gmplCode += `set I := ${plants.map(p => p.name).join(' ')};\n\n`;
-        // @ts-expect-error
-        gmplCode += `set J := ${markets.map(m => m.name).join(' ')};\n\n`;
+        //@ts-expect-error
+        gmplCode += `set I := ${plants.map(p => `"${p.name}"`).join(' ')};\n\n`;
+        //@ts-expect-error
+        gmplCode += `set J := ${markets.map(m => `"${m.name}"`).join(' ')};\n\n`;
 
         // Generate plant capacities
         gmplCode += 'param a :=\n';
-        // @ts-expect-error
+        //@ts-expect-error
         plants.forEach(plant => {
-            gmplCode += `           ${plant.name.padEnd(10)} ${plant.capacity}\n`;
+            gmplCode += `           "${plant.name}"${' '.repeat(Math.max(0, 10 - plant.name.length))} ${plant.capacity}\n`;
         });
         gmplCode += ';\n\n';
 
         // Generate market demands
         gmplCode += 'param b :=\n';
-        // @ts-expect-error
+        //@ts-expect-error
         markets.forEach(market => {
-            gmplCode += `           ${market.name.padEnd(10)} ${market.demand}\n`;
+            gmplCode += `           "${market.name}"${' '.repeat(Math.max(0, 10 - market.name.length))} ${market.demand}\n`;
         });
         gmplCode += ';\n\n';
 
         // Generate distances
         gmplCode += 'param d :';
-        // @ts-expect-error
+        //@ts-expect-error
         markets.forEach(market => {
-            gmplCode += `${market.name.padStart(12)}`;
+            gmplCode += `"${market.name}"${' '.repeat(Math.max(0, 11 - market.name.length))}`;
         });
         gmplCode += ' :=\n';
-        // @ts-expect-error
+        //@ts-expect-error
         plants.forEach((plant, i) => {
-            gmplCode += `           ${plant.name.padEnd(10)}`;
-            // @ts-expect-error
+            gmplCode += `           "${plant.name}"${' '.repeat(Math.max(0, 10 - plant.name.length))}`;
+            //@ts-expect-error
             distances[i].forEach(distance => {
                 gmplCode += `${distance.padStart(12)}`;
             });
@@ -219,7 +219,7 @@ data;\n`
         gmplCode += `param f := ${freightCost};\n`;
 
         triggerSolving(gmplCode);
-        return gmplCode
+        return gmplCode;
     };
 
     const handleGenerateGMPL = () => {
@@ -258,6 +258,31 @@ data;\n`
             } else {
                 setCurrentInputVariant(loadedParams.currentPage)
             }
+        }
+    };
+
+    const handleSaveState = () => {
+        return {
+            plants: JSON.stringify(plants),
+            markets: JSON.stringify(markets),
+            distances: JSON.stringify(distances),
+            freightCost: freightCost,
+            currentPage: "transport"
+        };
+    };
+
+    const handleRestoreState = (state: { [key: string]: string }) => {
+        if (state.plants) {
+            setPlants(JSON.parse(state.plants));
+        }
+        if (state.markets) {
+            setMarkets(JSON.parse(state.markets));
+        }
+        if (state.distances) {
+            setDistances(JSON.parse(state.distances));
+        }
+        if (state.freightCost) {
+            setFreightCost(state.freightCost);
         }
     };
 
@@ -378,6 +403,11 @@ data;\n`
                         currentPage: "transport"
                     }}
                     onParametersLoaded={handleParametersLoaded}
+                />
+                <StatePersistence
+                    pageIdentifier="transport"
+                    onSave={handleSaveState}
+                    onRestore={handleRestoreState}
                 />
             </div>
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>

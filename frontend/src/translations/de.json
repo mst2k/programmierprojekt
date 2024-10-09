@@ -299,13 +299,27 @@
         }
     },
     "easyInput":{
-        "bound": "Beschränkung"
+        "bound": "Beschränkung",
+        "Continuous": "Durchgehend",
+        "Integer": "Ganzzahlig",
+        "Binary": "Binär",
+        "Variables": "Variablen",
+        "Non-negative": "Nicht-Negativ"
     },
     "sharableLink":{
         "linkGenerated": "Link generiert!",
         "linkCopied": "Link wurde kopiert!",
         "close": "Schließen",
         "copy": "Kopieren"
+    },
+    "store": {
+        "name": "Im Browser Speichern",
+        "saved": "Gespeichert!",
+        "savedDescription": "Ihre Änderungen wurden im Browser gespeichert. Um die Datei zu Exportieren nutze die Sidebar",
+        "restorePreviousState": "Vorherigen Zustand wiederherstellen",
+        "restorePreviousStateQuestion": "Möchten Sie den zuletzt gespeicherten Zustand wiederherstellen?",
+        "restore": "Wiederherstellen",
+        "decline": "Ablehnen"
     }
 }
 
