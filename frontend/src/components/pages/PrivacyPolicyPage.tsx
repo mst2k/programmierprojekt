@@ -69,10 +69,9 @@ export default function Datenschutz() {
                             Gemäß Art. 4 Nr. 7 DSGVO ist der Verantwortliche für die Verarbeitung personenbezogener Daten:
                         </p>
                         <p className="mt-2">
-                            [Ihr Name oder Firmenname]<br />
-                            [Ihre Adresse]<br />
-                            E-Mail: [Ihre E-Mail-Adresse]<br />
-                            Telefon: [Ihre Telefonnummer]
+                            Marcel Strohm<br />
+                            Kaiserstrasse 10C 49809 Lingen<br />
+                            E-Mail: marcel.strohm@hs-osnabrueck.de<br />
                         </p>
                     </section>
                 </CardContent>
