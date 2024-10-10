@@ -83,8 +83,47 @@ const SolverPage = () => {
             placement: "right-start"
         },
         {
+            target:'.joyride-solver-sidebar-masks',
+            content: t('extended_joyride.sidebar.masks'),
+            placement: "right-start"
+        },
+        {
+            target:'.joyride-solver-sidebar-solvertyp',
+            content: t('extended_joyride.sidebar.solvertype'),
+            placement: "right-start"
+        },
+        {
+            target:'.joyride-solver-sidebar-export',
+            content: t('extended_joyride.sidebar.export'),
+            placement: "right-start"
+        },
+        {
             target: '.joyride-solver-input',
             content: t('guidedTour.solverPage.input'),
+        },
+        {
+            target: '.joyride-solver-input-tabs',
+            content: t('extended_joyride.solverInput.tabs'),
+        },
+        {
+            target: '.joyride-solver-input-editor',
+            content: t('extended_joyride.solverInput.editor'),
+        },
+        {
+            target: '.joyride-solver-upload-button',
+            content: t('extended_joyride.solverButtons.upload'),
+        },
+        {
+            target: '.joyride-solver-solve-button',
+            content: t('extended_joyride.solverButtons.solve'),
+        },
+        {
+            target: '.joyride-solver-share-button',
+            content: t('extended_joyride.solverButtons.share'),
+        },
+        {
+            target: '.joyride-solver-state-button',
+            content: t('extended_joyride.solverButtons.state'),
         },
         {
             target: '.joyride-solver-result',
