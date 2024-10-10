@@ -72,6 +72,7 @@ export function FileExport({ currentProblem, currentInputVariant }: { currentPro
                 }
             }catch (er){
                 console.log(t('fileExport.conversionNotPossible'));
+                alert(t('fileExport.exportFailed'));
             }
         }
         let fileExtension;

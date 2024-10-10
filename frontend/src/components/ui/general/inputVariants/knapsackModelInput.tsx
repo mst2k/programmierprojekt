@@ -11,6 +11,7 @@ import { DialogHeader } from "@/components/ui/dialog"
 import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
+import {StatePersistence} from "@/components/ui/custom/keepState.tsx";
 
 export default function KnapsackProblemUI(states: any) {
     const gmplInit = `
@@ -97,7 +98,7 @@ data;
 
         gmplCode += 'param value :=\n';
         items.forEach(item => {
-            gmplCode += `  ${item.name} ${item.value}\n`;
+            gmplCode += `  "${item.name}" ${item.value}\n`;
         });
         gmplCode += ';\n\n';
 
@@ -122,6 +123,25 @@ data;
     const handleSaveGMPL = () => {
         setIsGmplDialogOpen(false);
         triggerSolving(gmplCodeState);
+    };
+
+
+    const handleSaveState = () => {
+        return {
+            items: JSON.stringify(items),
+            capacity: capacity,
+            currentPage: "knapsack"
+        };
+    };
+
+    const handleRestoreState = (state: { [key: string]: string }) => {
+        if (state.items) {
+            setItems(JSON.parse(state.items));
+        }
+        if (state.capacity) {
+            setCapacity(state.capacity);
+        }
+        // Weitere Zustandswiederherstellungen hier hinzufügen, falls nötig
     };
 
     const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
@@ -219,6 +239,11 @@ data;
                         currentPage:"knapsack"
                     }}
                     onParametersLoaded={handleParametersLoaded}
+                />
+                <StatePersistence
+                    pageIdentifier="knapsack"
+                    onSave={handleSaveState}
+                    onRestore={handleRestoreState}
                 />
             </div>
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>

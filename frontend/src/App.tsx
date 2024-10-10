@@ -12,6 +12,7 @@ import { ThemeProvider } from './hooks/themeProvider.tsx';
 import LicensePage from "@/components/pages/LicensePage.tsx";
 import ImpressumPage from "@/components/pages/ImpressumPage";
 import PrivacyPolicyPage from "@/components/pages/PrivacyPolicyPage";
+import { Toaster } from "@/components/ui/toaster"
 
 const Layout = () => {
     return (
@@ -26,6 +27,7 @@ const Layout = () => {
             </main>
             <Separator className="my-1 mb-0"/>
             <Footer></Footer>
+            <Toaster />
         </>
     )
 }

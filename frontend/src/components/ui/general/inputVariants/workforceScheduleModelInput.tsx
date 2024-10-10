@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import  { useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,7 @@ import { DialogHeader } from "@/components/ui/dialog"
 import { ProblemEditor } from "@/components/ui/custom/ProblemEditor/ProblemEditor"
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
 import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
+import {StatePersistence} from "@/components/ui/custom/keepState.tsx";
 
 export default function WorkforceSchedulingUI(states: any) {
     const gmplInit = `
@@ -121,31 +122,32 @@ data;
     const generateGMPL = (employees: { name: string; maxHours: string }[], shifts: { name: string; required: string }[], preferences: string[][]) => {
         let gmplCode = gmplInit;
 
-        gmplCode += `\nset EMPLOYEES := ${employees.map(e => e.name).join(' ')};\n`;
-        gmplCode += `set SHIFTS := ${shifts.map(s => s.name).join(' ')};\n\n`;
+        gmplCode += `\nset EMPLOYEES := ${employees.map(e => `"${e.name}"`).join(' ')};\n`;
+        gmplCode += `set SHIFTS := ${shifts.map(s => `"${s.name}"`).join(' ')};\n\n`;
 
         gmplCode += 'param maxHours :=\n';
         employees.forEach(e => {
-            gmplCode += `  ${e.name} ${e.maxHours}\n`;
+            gmplCode += `  "${e.name}"${' '.repeat(Math.max(0, 15 - e.name.length))}${e.maxHours}\n`;
         });
         gmplCode += ';\n\n';
 
         gmplCode += 'param required :=\n';
         shifts.forEach(s => {
-            gmplCode += `  ${s.name} ${s.required}\n`;
+            gmplCode += `  "${s.name}"${' '.repeat(Math.max(0, 15 - s.name.length))}${s.required}\n`;
         });
         gmplCode += ';\n\n';
 
         gmplCode += 'param preference :\n    ';
-        gmplCode += shifts.map(e => e.name).join(' ');
+        gmplCode += ' '.repeat(15)
+        gmplCode += shifts.map(s => `"${s.name}"`).join(' ');
         gmplCode += ' :=\n';
         employees.forEach((e, i) => {
-            gmplCode += `  ${e.name} ${preferences[i].join(' ')}\n`;
+            gmplCode += `  "${e.name}"${' '.repeat(Math.max(0, 15 - e.name.length))}${preferences[i].join(' ')}\n`;
         });
         gmplCode += ';\n\n';
 
         gmplCode += 'end;\n';
-        setGmplCode(gmplCode)
+        setGmplCode(gmplCode);
         return gmplCode;
     };
 
@@ -165,6 +167,8 @@ data;
         triggerSolving(gmplCodeState);
     };
 
+
+
     const handleParametersLoaded = (loadedParams: { [key: string]: string }) => {
         console.log('Geladene Parameter:', loadedParams);
         if (loadedParams.currentPage) {
@@ -182,6 +186,27 @@ data;
             } else {
                 setCurrentInputVariant(loadedParams.currentPage)
             }
+        }
+    };
+
+    const handleSaveState = () => {
+        return {
+            employees: JSON.stringify(employees),
+            shifts: JSON.stringify(shifts),
+            preferences: JSON.stringify(preferences),
+            currentPage: "workforce"
+        };
+    };
+
+    const handleRestoreState = (state: { [key: string]: string }) => {
+        if (state.employees) {
+            setEmployees(JSON.parse(state.employees));
+        }
+        if (state.shifts) {
+            setPreferences(JSON.parse(state.shifts));
+        }
+        if (state.preferences) {
+            setShifts(JSON.parse(state.preferences));
         }
     };
 
@@ -321,7 +346,11 @@ data;
                     }}
                     onParametersLoaded={handleParametersLoaded}
                 />
-
+                <StatePersistence
+                    pageIdentifier="workforce"
+                    onSave={handleSaveState}
+                    onRestore={handleRestoreState}
+                />
             </div>
 
             <Dialog open={isGmplDialogOpen} onOpenChange={setIsGmplDialogOpen}>

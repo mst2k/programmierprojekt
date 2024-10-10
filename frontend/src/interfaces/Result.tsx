@@ -9,6 +9,7 @@ export interface SolverResult {
     Rows: RowData[];
     Output?:string;
     Duration?:number
+    DurationSolving?:number
 }
 
 /**

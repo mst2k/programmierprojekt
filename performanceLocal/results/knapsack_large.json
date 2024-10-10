@@ -1,0 +1,18 @@
+{
+  "glpkHgourvest": {
+    "executionTime": 55.5,
+    "durationSolving": 55.327
+  },
+  "highs": {
+    "executionTime": 0.888,
+    "durationSolving": 0.717
+  },
+  "glpk(Backend)": {
+    "executionTime": 9.704279899597168,
+    "durationSolving": 9.655279159545898
+  },
+  "highs(Backend)": {
+    "executionTime": 0.323793888092041,
+    "durationSolving": 0.24844908714294434
+  }
+}
