@@ -10,6 +10,8 @@ import AboutPage from './components/pages/AboutPage';
 import BenchmarkComponent from './components/pages/Benchmark';
 import { ThemeProvider } from './hooks/themeProvider.tsx';
 import LicensePage from "@/components/pages/LicensePage.tsx";
+import ImpressumPage from "@/components/pages/ImpressumPage";
+import PrivacyPolicyPage from "@/components/pages/PrivacyPolicyPage";
 import { Toaster } from "@/components/ui/toaster"
 
 const Layout = () => {
@@ -40,8 +42,10 @@ function App() {
               <Route path="/solver/" element={<SolverPage />} /> {/* /solver route */}
               <Route path="/converter" element={<ConverterPage />} /> {/* /converter route */}
               <Route path="/about" element={<AboutPage />} /> {/* about route */}
-              <Route path="/benchmark" element={<BenchmarkComponent />} /> {/* about route */}
-              <Route path="/license" element={<LicensePage />} /> {/* about route */}
+              <Route path="/benchmark" element={<BenchmarkComponent />} /> {/* benchmark route */}
+              <Route path="/license" element={<LicensePage />} /> {/* license route */}
+              <Route path="/impressum" element={<ImpressumPage />} /> {/* impressum route */}
+              <Route path="/privacypolicy" element={<PrivacyPolicyPage />} /> {/* privacypolicy route */}
             </Route>
           </Routes>
       </HashRouter>

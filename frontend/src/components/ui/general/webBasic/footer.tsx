@@ -22,6 +22,16 @@ export default function Footer() {
                                     {t('about')}
                                 </Link>
                             </li>
+                            <li>
+                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/impressum/"} onClick={() => window.scrollTo(0, 0)}>
+                                    Impressum
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="text-sm text-muted-foreground hover:text-primary transition-colors" to={"/privacypolicy/"} onClick={() => window.scrollTo(0, 0)}>
+                                    Datenschutzerklärung
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="space-y-4">
