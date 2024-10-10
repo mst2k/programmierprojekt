@@ -120,7 +120,7 @@ const SolverPage = () => {
                 </aside>
 
                 <main className="flex-1 flex flex-col p-4 overflow-auto">
-                    <section className="min-h-[50%] border-b-2 border-gray-300 p-4">
+                    <section className="h-auto border-b-2 border-gray-300 p-4">
                         <div className="joyride-solver-input">
                             <div className="flex justify-start items-center mb-4">
                                 <h2 className="text-lg font-semibold">{t('modelInput')}</h2>
