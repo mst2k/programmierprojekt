@@ -23,6 +23,8 @@ export const GMPLTokens = {
   
     tokenizer: {
       root: [
+        [/s\.t\./, 'keyword'],
+        [/subject to/, 'keyword'],
         [/[a-z_$][\w$]*/, { cases: { '@keywords': 'keyword',
                                      '@default': 'identifier' } }],
         { include: '@whitespace' },
@@ -65,12 +67,19 @@ export const GMPLTokens = {
     const errors: { message: string; line: number }[] = [];
     const lines = code.split('\n');
 
-    const keywordRequiringSemicolon = ['set', 'param', 'var'];
+    const keywordRequiringSemicolon = [
+      'set',
+      'param',
+      'var',
+      'subject to',
+      'maximize',
+      'minimize',
+      'solve',
+      'display',
+      'printf'
+  ];
     const validIdentifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
     let inDataSection = false;
-    let hasObjective = false;
-    let hasRestrictions = false;
-    let hasNonNegativity = false;
     let inComment = false;
     let openDeclaration: { keyword: string, line: number } | null = null as { keyword: string, line: number } | null;
     let actualLineNumber = 0;
@@ -101,9 +110,6 @@ export const GMPLTokens = {
       }
   
       if (!inDataSection) {
-        // Model section checks
-        
-
 
         // Check for declarations without semicolons
         const declarationKeyword = tokens.find(token => keywordRequiringSemicolon.includes(token.value));
@@ -120,14 +126,8 @@ export const GMPLTokens = {
           openDeclaration = null;
         }
   
-        // Check for objective function
-        if (tokens.some(token => token.type === 'keyword' && (token.value === 'maximize' || token.value === 'minimize'))) {
-          hasObjective = true;
-        }
-  
         // Check for restrictions (constraints)
         if (tokens.some(token => token.type === 'keyword' && (token.value === 's.t.' || token.value === 'subject to'))) {
-          hasRestrictions = true;
           if (!tokens.some(token => token.type === 'identifier')) {
             errors.push({
               message: t("editorComponent.errors.gmpl.constraintMustHaveName"),
@@ -135,12 +135,6 @@ export const GMPLTokens = {
             });
           }
         }
-  
-        // Check for non-negativity constraints
-        if (line.toLowerCase().includes('>= 0') || line.toLowerCase().includes('&gt;= 0')) {
-          hasNonNegativity = true;
-        }
-  
         // Check for invalid identifiers
         tokens.forEach(token => {
           if (token.type === 'identifier' && !validIdentifierRegex.test(token.value)) {
@@ -163,20 +157,9 @@ export const GMPLTokens = {
         line: openDeclaration.line,
       });
     }
-  
-    // Uncomment if you want to enforce the presence of an objective function
-    // if (!hasObjective && !inDataSection) {
-    //   errors.push({
-    //     message: 'Model must have an objective function (maximize or minimize)',
-    //     line: actualLineNumber,
-    //   });
-    // }
-  
+
     return {
       errors,
-      hasObjective,
-      hasRestrictions,
-      hasNonNegativity
     };
   }
   
@@ -241,4 +224,3 @@ function tokenizeLine(line: string): { type: string; value: string }[] {
   
     return tokens;
   }
-

@@ -363,10 +363,10 @@ export default function BasicModelInput(states:any) {
                                 <span>
                                     <AdvancedShareButton
                                     parameters={{
-                                        currentSolver: currentSolver ,
-                                        currentLpFormat:currentLpFormat,
-                                        currentProblem:currentProblem,
-                                        currentPage: "general"
+                                        currentSolver: currentSolver , 
+                                        currentLpFormat:currentLpFormat, 
+                                        currentProblem:currentProblem, 
+                                        currentPage: "general" 
                                     }}
                                     onParametersLoaded={handleParametersLoaded}
                                     />

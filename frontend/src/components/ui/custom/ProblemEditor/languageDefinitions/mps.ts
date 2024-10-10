@@ -149,8 +149,5 @@ export const checkMPSErrors: ErrorCheckFunction = (code: string, t: TFunction): 
 
   return {
     errors,
-    hasObjective: true, // MPS always has an objective (N row in ROWS section)
-    hasRestrictions: hasRows, // If it has a ROWS section, it has restrictions
-    hasNonNegativity: true, // MPS assumes non-negativity by default
   };
 };

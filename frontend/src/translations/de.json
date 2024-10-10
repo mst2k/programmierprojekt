@@ -67,6 +67,9 @@
     "settings": "Einstellungen",
     "bounds": "Beschränkungen",
     "solver": "Löser",
+    "orsolverf": "OR Solver",
+    "devwith": "Entwickelt mit ❤️ von Studierenden der Hochschule Osnabrück",
+    "lic": "Programmierprojekt. Veröffentlicht unter ",
     "basicModelInput" : {
         "solve": "Lösen",
         "upload": "Problem Hochladen"

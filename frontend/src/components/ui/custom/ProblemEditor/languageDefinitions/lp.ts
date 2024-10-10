@@ -86,9 +86,6 @@ export const checkLPErrors: ErrorCheckFunction = (code: string, t: TFunction): E
   let inObjectiveSection = false;
   let inConstraintSection = false;
   let inBoundsSection = false;
-  let hasObjective = false;
-  let hasRestrictions = false;
-  let hasNonNegativity = false;
   let actualLineNumber = 0;
 
   lines.forEach((line) => {
@@ -105,7 +102,6 @@ export const checkLPErrors: ErrorCheckFunction = (code: string, t: TFunction): E
       inObjectiveSection = true;
       inConstraintSection = false;
       inBoundsSection = false;
-      hasObjective = true;
       return;
     }
 
@@ -135,29 +131,17 @@ export const checkLPErrors: ErrorCheckFunction = (code: string, t: TFunction): E
           line: actualLineNumber,
         });
       }
-      hasRestrictions = true;
     }
 
     if (inBoundsSection) {
       //TODO: überarbeitunen, auch bei den anderen langs
       if (trimmedLine.includes('>= 0')) {
-        hasNonNegativity = true;
       }
   };
 
 });
 
-  if (!hasObjective) {
-    errors.push({
-      message: t("editorComponent.errors.lp.missingObjectiveFunction"),
-      line: 1,
-    });
-  }
-
   return {
     errors,
-    hasObjective,
-    hasRestrictions,
-    hasNonNegativity
   };
 };

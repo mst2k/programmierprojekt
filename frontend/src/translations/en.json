@@ -63,7 +63,10 @@
     "description_lp": "The CPLEX LP format is used to represent linear optimization problems. It uses a line-based syntax to define the objective function and constraints. Example:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
     "description_mps": "MPS is a widely used file format for representing linear and integer optimization problems. It is column-oriented and consists of sections like ROWS, COLUMNS, and RHS. Example:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
     "bounds": "Bounds",
+    "lic": "Programmierprojekt. Published under ",
     "solver": "Solver",
+    "orsolverf": "OR Solver",
+    "devwith": "Developed with ❤️ by students at the University of Applied Sciences Osnabrück",
     "basicModelInput" : {
         "solve": "Sovle",
         "upload": "Upload Problem"
