@@ -7,13 +7,12 @@
 Powerful web-based Operations Research problem solver interface
 [running in your browser](https://mst2k.github.io/programmierprojekt/)
 
-[![GitHub last release](https://img.shields.io/github/v/release/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues-raw/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/pulls)
 [![License](https://img.shields.io/github/license/mst2k/programmierprojekt)](https://github.com/mst2k/programmierprojekt/blob/main/LICENSE)
 
-[Features](#features) • [Demo](#demo) • [Installation](#installation) • [Usage](#usage) • [Performance Testing](#performance-testing) • [Development](#development) • [Contributing](#contributing) • [License](#license)
+[Features](#features) • [Demo](#demo) • [Installation](#installation) • [Usage](#usage) • [Performance Testing](#performance-testing) • [Development](#development) •  [Testing](#testing) • [Contributing](#contributing) • [License](#license)
 
 </div>
 
@@ -50,23 +49,8 @@ Access the application at `http://localhost:5174`
 
 ### Local Installation
 
-Alternatively, you can run the application locally. Follow the steps below.
+Alternatively, you can run the application locally. Please refer to the [Development](#development) section for more details.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/mst2k/programmierprojekt.git
-   cd programmierprojekt/frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
 
 ## Usage
 
@@ -104,17 +88,93 @@ To setup the development environment, follow the steps below.
 
 ### Prerequisites
 
-- Node.js (v14 or later)
-- npm (v6 or later)
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
 ### Setup
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mst2k/programmierprojekt.git
+   ```
+
+2. Change to the `frontend` directory:
+   ```bash
+   cd frontend
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Access the application at `http://localhost:5173/`
+
+## Testing
+
+Our project employs two types of tests to ensure code quality and functionality:
+
+1. Unit Tests: For individual functions and methods
+2. End-to-End (E2E) Tests: For full application workflows
+
+Ensuring all tests pass before submitting a pull request is crucial for maintaining project stability.
+
+#### Unit Tests
+
+We use [Vitest](https://vitest.dev/) for unit testing.
+
+To run unit tests:
 ```bash
-git clone https://github.com/mst2k/programmierprojekt.git
-cd programmierprojekt/frontend
-npm install
-npm run dev
+npm run test
 ```
+
+To generate a coverage report:
+```bash
+npm run coverage
+```
+
+#### E2E Tests
+
+We use [Playwright](https://playwright.dev/) for E2E testing.
+
+To run E2E tests:
+```bash
+npm run test-ct
+```
+
+To view the test report in your browser:
+```bash
+npx playwright show-report
+```
+
+#### Troubleshooting
+
+If you encounter issues during testing:
+
+- check if you are in the correct directory (`frontend`)
+
+- Check the CLI output for specific error messages
+
+- Consult the documentation of the testing libraries for more information:
+   - [Vitest Documentation](https://vitest.dev/guide/)
+   - [Playwright Documentation](https://playwright.dev/docs/test-components)
+
+- Ensure all dependencies are correctly installed:
+
+   ```bash
+   npm i
+   ```
+
+#### Continuous Integration
+
+Our CI pipeline runs all tests automatically for each pull request. Check the CI status and address any failures before requesting a review.
+
+If you need assistance with testing or have questions about our testing strategy, don't hesitate to reach out to the project maintainers.
 
 ## Contributing
 
@@ -131,9 +191,14 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/) guideline
 ## Tech Stack
 
 - [Vite](https://vitejs.dev/) - Fast build tool
-- [React](https://reactjs.org/) - UI library
+- [React](https://reactjs.org/) - JavaScript library
+- [TypeScript](https://www.typescriptlang.org/) - Static typing
 - [shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [react-i18next](https://react.i18next.com/) - Internationalization
+- [Vitest](https://vitest.dev/) - Unit testing
+- [Playwright](https://playwright.dev/) - E2E testing
+- [Docker](https://www.docker.com/) - Containerization
 
 ## License
 
