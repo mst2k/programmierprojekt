@@ -1,7 +1,7 @@
-// src/components/ThemeProvider.tsx
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+
+//THIS file is used to toggle between light an dark mode. It also automatically detects the system state
 type Theme = 'light' | 'dark' | 'system';
 
 interface ThemeContextType {

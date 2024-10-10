@@ -87,12 +87,12 @@ export default function ResultComponent({ lpProblem, problemType, lpSolver }: GL
                     <p className="text-lg font-semibold mb-4">{t('objective_value')}: {result.ObjectiveValue}</p>
                 )}
                 <Tabs value={activeTab} onValueChange={setActiveTab} className={""}>
-                    <TabsList className="grid w-full grid-cols-5">
-                        <TabsTrigger value="columns">{t('tab_columns')}</TabsTrigger>
-                        <TabsTrigger value="rows">{t('tab_rows')}</TabsTrigger>
-                        <TabsTrigger value="json">{t('tab_json')}</TabsTrigger>
-                        <TabsTrigger value="logs">{t('tab_logs')}</TabsTrigger>
-                        <TabsTrigger value="output">{t('tab_output')}</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 h-auto">
+                        <TabsTrigger value="columns" className="w-full">{t('tab_columns')}</TabsTrigger>
+                        <TabsTrigger value="rows" className="w-full">{t('tab_rows')}</TabsTrigger>
+                        <TabsTrigger value="json" className="w-full">{t('tab_json')}</TabsTrigger>
+                        <TabsTrigger value="logs" className="w-full">{t('tab_logs')}</TabsTrigger>
+                        <TabsTrigger value="output" className="w-full">{t('tab_output')}</TabsTrigger>
                     </TabsList>
                     <TabsContent value="columns">
                         <ScrollArea className="h-[400px]">

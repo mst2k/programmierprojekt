@@ -10,6 +10,37 @@ import { Input } from '@/components/ui/input';
 import { buildUrlParameter, parseUrlParameter } from "@/hooks/urlBuilder.tsx";
 import { useTranslation } from 'react-i18next';
 
+
+/**
+ * AdvancedShareButton Component
+ *
+ * A React component that generates and manages sharable links for application state.
+ * It provides functionality to create, display, and copy a URL that encodes the current state parameters.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {Object} props.parameters - An object containing the current state parameters to be shared
+ * @param {Function} props.onParametersLoaded - A callback function that handles the loaded parameters from a shared URL
+ *
+ * @example
+ * <AdvancedShareButton
+ *   parameters={{ key1: 'value1', key2: 'value2' }}
+ *   onParametersLoaded={(loadedParams) => handleLoadedParams(loadedParams)}
+ * />
+ *
+ * @returns {JSX.Element} A button that, when clicked, generates a sharable link and displays it in an alert dialog
+ *
+ * @description
+ * This component offers the following features:
+ * - Generates a compressed URL parameter string from the provided state
+ * - Displays the generated link in a modal dialog
+ * - Provides a copy-to-clipboard functionality for the generated link
+ * - Parses and loads parameters from the URL on component mount
+ *
+ * The component uses custom hooks for URL parameter building and parsing,
+ * and integrates with UI components from a custom library.
+ * It manages its own state for showing/hiding the share dialog and copy success message.
+ */
 const AdvancedShareButton = ({
     parameters,
     onParametersLoaded
