@@ -178,7 +178,16 @@ If you need assistance with testing or have questions about our testing strategy
 
 ## Contributing
 
-We welcome any contributions to the project.
+We welcome any contributions to the project. Whether you want to fix a bug, add a new feature, or improve the documentation, your help is appreciated. Please follow the guidelines below to contribute effectively. If you have any questions or need assistance, feel free to contact the project maintainers.
+
+### How to Contribute
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-branch-name`)
+3. Make your changes
+4. Commit your changes (`git commit -am 'Add new feature'`)
+5. Push to the branch (`git push origin feature/your-branch-name`)
+6. Create a new Pull Request
 
 ### Commit Conventions
 
