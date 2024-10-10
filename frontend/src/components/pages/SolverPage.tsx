@@ -36,8 +36,6 @@ const SolverPage = () => {
     const [resultComponent, setResultComponent] = useState(<></>)
     const [inputComponent, setInputComponent] = useState(<></>)
     const [runTour, setRunTour] = useState(false);
-
-    const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     
     const allStates =  {  
         currentSolver, setCurrentSolver,
@@ -60,6 +58,10 @@ const SolverPage = () => {
         else if(currentInputVariant === 'workforce') setInputComponent(<WorkforceSchedulingUI states={allStates}></WorkforceSchedulingUI>);
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant, currentSolver, solveTrigger]);
+
+    useEffect(() => {
+        setResultComponent(<></>)
+    }, [currentInputVariant]);
 
 
 
@@ -142,51 +144,49 @@ const SolverPage = () => {
 
     return (
         <TooltipProvider>
-            <div className="flex min-h-screen w-full"> {/* flex h-min-screen w-screen */}
-                <GuidedTour 
+            <div className="flex min-h-screen w-full">
+                <GuidedTour
                     steps={steps}
                     run={runTour}
-                    setRun={setRunTour} 
+                    setRun={setRunTour}
                 />
-                <div className="joyride-solver-sidebar">
+
+                <aside className="joyride-solver-sidebar">
                     <Sidebar
                         currentInputVariant={currentInputVariant}
                         setCurrentInputVariant={setCurrentInputVariant}
                         currentSolver={currentSolver}
                         setCurrentSolver={setCurrentSolver}
                         currentProblem={currentProblem}
-                        currentLpFormat={currentLpFormat}/>
-                </div>
-                <div className="flex-1 flex flex-col">
-                    <main className="flex-1 p-4 overflow-auto">
-                        <div className="min-h-[50%] border-b-2 border-gray-300 p-4">  {/*h-min-1/2 h-auto border-b-2 border-gray-300 p-4*/}
-                            <div className="joyride-solver-input">
-                                <div className="flex justify-start items-center mb-4">
-                                    <h2 className="text-lg font-semibold">{t('modelInput')}</h2>
-                                    <Tooltip open={isTooltipOpen}>
-                                            <TooltipTrigger 
-                                                className="-top-1 -right-6 p-1 text-muted-foreground hover:text-foreground"
-                                                onClick={() => setIsTooltipOpen(!isTooltipOpen) }>
-                                                <InfoIcon className="h-3 w-3" />
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                                className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap"
-                                                sideOffset={5}
-                                            >
-                                                <p className="text-sm">{t('tooltip.solverPage.inputHeader')}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                </div>
-                                {inputComponent}
+                        currentLpFormat={currentLpFormat}
+                    />
+                </aside>
+
+                <main className="flex-1 flex flex-col p-4 overflow-auto">
+                    <section className="h-auto border-b-2 border-gray-300 p-4">
+                        <div className="joyride-solver-input">
+                            <div className="flex justify-start items-center mb-4">
+                                <h2 className="text-lg font-semibold">{t('modelInput')}</h2>
+                                <Tooltip>
+                                    <TooltipTrigger className="-top-1 -right-6 p-1 text-muted-foreground hover:text-foreground">
+                                        <InfoIcon className="h-3 w-3" />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="max-w-xs p-2 bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap">
+                                        <p className="text-sm">{t('tooltip.solverPage.inputHeader')}</p>
+                                    </TooltipContent>
+                                </Tooltip>
                             </div>
+                            {inputComponent}
                         </div>
-                        <div className="min-h-[25%] p-4 joyride-solver-result">
-                            <h2 className="text-lg font-semibold joyride-solv-conv">{t('displaySolution')}</h2>
-                            {resultComponent}
-                        </div>
-                        <div className="joyride-converter"/>
-                    </main>
-                </div>
+                    </section>
+
+                    <section className="min-h-[25%] p-4 joyride-solver-result">
+                        <h2 className="text-lg font-semibold joyride-solv-conv mb-4">{t('displaySolution')}</h2>
+                        {resultComponent}
+                    </section>
+
+                    <section className="joyride-converter" />
+                </main>
             </div>
         </TooltipProvider>
     );

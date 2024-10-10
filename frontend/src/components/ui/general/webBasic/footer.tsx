@@ -45,10 +45,32 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="mt-8 pt-8 border-t border-muted-foreground/20">
-                    <p className="text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} Programmierprojekt. Veröffentlicht unter der JOA NECH, kommt noch!.
-                    </p>
-                </div>
+    <p className="text-center text-sm text-muted-foreground space-y-2">
+        <span className="block">
+            <strong className="text-primary">
+            <a 
+                href="https://github.com/mst2k/programmierprojekt" 
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {t('orsolverf')}
+            </a>
+            </strong> - {t('devwith')}
+        </span>
+        <span className="block">
+            {`${new Date().getFullYear()} ${t('lic')} `}
+            <a 
+                href="https://github.com/mst2k/programmierprojekt/blob/main/LICENSE" 
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GNU General Public License
+            </a>
+        </span>
+    </p>
+</div>
             </div>
         </footer>
     )

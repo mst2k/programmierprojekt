@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -27,8 +27,17 @@ export function NavigationMenuDemo() {
     const [isOpen, setIsOpen] = useState(false);
     const { theme, setTheme } = useTheme();
 
+
+    useEffect(() => {
+        const storedState = localStorage.getItem(`LANGUAGE`);
+        if (storedState) {
+            i18n.changeLanguage(storedState);
+        }
+    }, []);
+
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
+        localStorage.setItem('LANGUAGE', lng)
     }
 
     const toggleTheme = () => {

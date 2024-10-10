@@ -141,8 +141,12 @@ data;
         gmplCode += ' '.repeat(15)
         gmplCode += shifts.map(s => `"${s.name}"`).join(' ');
         gmplCode += ' :=\n';
-        employees.forEach((e, i) => {
-            gmplCode += `  "${e.name}"${' '.repeat(Math.max(0, 15 - e.name.length))}${preferences[i].join(' ')}\n`;
+        employees.forEach((e, employeeIndex) => {
+            gmplCode += `  "${e.name}"${' '.repeat(Math.max(0, 15 - e.name.length))}`;
+            shifts.forEach((_, shiftIndex) => {
+                gmplCode += `${preferences[shiftIndex][employeeIndex] || '0'} `;
+            });
+            gmplCode += '\n';
         });
         gmplCode += ';\n\n';
 
@@ -203,10 +207,10 @@ data;
             setEmployees(JSON.parse(state.employees));
         }
         if (state.shifts) {
-            setPreferences(JSON.parse(state.shifts));
+            setShifts(JSON.parse(state.shifts));
         }
         if (state.preferences) {
-            setShifts(JSON.parse(state.preferences));
+            setPreferences(JSON.parse(state.preferences));
         }
     };
 

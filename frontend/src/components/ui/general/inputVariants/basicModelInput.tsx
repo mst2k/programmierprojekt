@@ -131,7 +131,7 @@ export default function BasicModelInput(states:any) {
     const handleSaveState = () => {
         return {
             currentLPFormat: currentLpFormat,
-            currentProblem: currentProblem,
+            currentProblem: modelInput,
             currentSolver: currentSolver,
             currentPage: "basic"
         };
@@ -292,8 +292,7 @@ export default function BasicModelInput(states:any) {
 
     return (
         <TooltipProvider>
-            {/* <div className="w-full h-3 md:hidden"></div> */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[62vh]">
                     <Tabs
                         value={selectedItem?.id.toString() || "1"}
