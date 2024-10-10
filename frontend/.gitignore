@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+
+# ka aber das nervt
+*.tsbuildinfo

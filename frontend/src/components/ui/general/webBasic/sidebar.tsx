@@ -9,6 +9,8 @@ import { ProblemFormats, Solvers } from "@/interfaces/SolverConstants.tsx"
 import { FileExport } from "@/components/ui/custom/fileExport.tsx"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx"
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
 interface SidebarProps {
     currentInputVariant: string
     setCurrentInputVariant: (variant: string) => void
@@ -48,17 +50,24 @@ export default function Sidebar({
     }
 
     const SidebarContent = () => (
-        <>
+        <TooltipProvider>
             <div className="flex flex-col space-y-2 p-4">
                 {inputModes.map((itype) => (
-                    <Button
-                        key={itype}
-                        variant={currentInputVariant === itype ? "default" : "outline"}
-                        onClick={() => setCurrentInputVariant(itype)}
-                        className="justify-start"
-                    >
-                        {t(itype)}
-                    </Button>
+                    <Tooltip key={itype}>
+                        <TooltipTrigger asChild>
+                            <Button
+                                key={itype}
+                                variant={currentInputVariant === itype ? "default" : "outline"}
+                                onClick={() => setCurrentInputVariant(itype)}
+                                className="justify-start"
+                            >
+                                {t(itype)}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                            <p className="text-sm">{t(`tooltip.${itype}`)}</p>
+                        </TooltipContent>
+                    </Tooltip>
                 ))}
             </div>
             <div className="space-y-2 p-2">
@@ -84,9 +93,18 @@ export default function Sidebar({
                 <Separator className="my-2 mx-auto h-[1%]" />
             </div>
             <div className="flex flex-col space-y-2 p-4">
-                <FileExport currentProblem={currentProblem} currentInputVariant={currentLpFormat}></FileExport>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div>
+                            <FileExport currentProblem={currentProblem} currentInputVariant={currentLpFormat}></FileExport>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                        <p className="text-sm">{t('tooltip.fileExport')}</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
-        </>
+        </TooltipProvider>
     )
 
     return (

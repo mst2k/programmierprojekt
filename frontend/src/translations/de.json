@@ -190,7 +190,8 @@
             "contact": "Bereit, loszulegen? Klicke hier, um mit dem Lösen zu beginnen."
         },
         "solverPage": {
-            "input": "Hier kannst du dein Problem ganz bequem in verschiedenen Formaten eingeben.",
+            "sidebar": "Hier kannst du den Eingabemodus ändern, den Löser auswählen und dein Problem in verschiedene Formate exportieren, um flexibler und individuell zu arbeiten.",
+            "input": "Gib dein Problem hier ganz bequem in verschiedenen Formaten ein.",
             "result": "Deine Ergebnisse erscheinen hier.",
             "solv-conv": "Wechseln wir zur nun Konvertierer-Seite. Hier kannst du dein Problem automatisch in verschiedene Formaten umwandeln."
         },
@@ -312,6 +313,19 @@
         "close": "Schließen",
         "copy": "Kopieren"
     },
+    "tooltip":{
+        "solverPage":{
+            "inputHeader": "Gib hier dein Optimierungsproblem und die Details zum Probelm in der Seitenleiste ein."
+        },
+        "shareButton": "Klicke, um einen teilbaren Link zu erstellen.",
+        "solveButton": "Klicke, um das Problem zu lösen.",
+        "general": "Allgemeiner Eingabemodus für Optimierungsprobleme",
+        "easy": "Vereinfachter Eingabemodus für grundlegende Optimierungsprobleme",
+        "transport": "Spezialisierte Eingabe für Transportprobleme",
+        "knapsack": "Spezialisierte Eingabe für Rucksackprobleme",
+        "workforce": "Spezialisierte Eingabe für Personaleinsatzplanung",
+        "fileExport": "Exportiere dein aktuelles Problem in eine Datei"
+    },
     "store": {
         "name": "Im Browser Speichern",
         "saved": "Gespeichert!",
@@ -320,6 +334,7 @@
         "restorePreviousStateQuestion": "Möchten Sie den zuletzt gespeicherten Zustand wiederherstellen?",
         "restore": "Wiederherstellen",
         "decline": "Ablehnen"
+
     }
 }
 
