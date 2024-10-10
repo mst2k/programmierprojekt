@@ -302,7 +302,7 @@ export default function EnhancedStatusSelect(states: any) {
     );
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center joyride-solver-sidebar-modi-easy">
             <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
                 <div className="relative pt-8">
                     {renderTabContent()}

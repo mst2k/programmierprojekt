@@ -337,5 +337,22 @@
         "restorePreviousStateQuestion": "Do you want to restore the last saved state?",
         "restore": "Restore",
         "decline": "Decline"
+    },
+    "extended_joyride":{
+        "sidebar":{
+            "masks": "Choose an input mask.",
+            "solvertype": "Choose a solver.",
+            "export": "Click to export your problem."
+        },
+        "solverInput":{
+            "tabs": "Choose the format for your problem.",
+            "editor": "Enter your problem here."
+        },
+        "solverButtons":{
+            "upload": "Click to upload a file with a problem.",
+            "solve": "Click to solve.",
+            "share": "Click to share your problem via link.",
+            "state": "Click to save the current status in the browser."
+        }
     }
 }

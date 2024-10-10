@@ -297,7 +297,7 @@ export default function BasicModelInput(states:any) {
                     <Tabs
                         value={selectedItem?.id.toString() || "1"}
                         onValueChange={(value) => setSelectedItem(items.find(item => item.id === parseInt(value)) || null)}
-                        className="w-full mb-1"
+                        className="w-full mb-1 joyride-solver-input-tabs"
                     >
                         <TabsList className="grid w-full grid-cols-3 gap-2">
                             {items.map((item) => (
@@ -319,7 +319,7 @@ export default function BasicModelInput(states:any) {
                             ))}
                         </TabsList>
                     </Tabs>
-                    <div className="relative flex-grow border rounded-lg p-1">
+                    <div className="relative flex-grow border rounded-lg p-1 joyride-solver-input-editor">
                         <ProblemEditor
                             problemFormat={selectedItem?.content || 'GMPL'}
                             value={modelInput}
@@ -346,21 +346,23 @@ export default function BasicModelInput(states:any) {
                         )}
                     </div>
                     <div className="flex justify-between w-full">
-                        <div className="pt-2">
+                        <div className="pt-2 joyride-solver-upload-button">
                             <UploadButton/>
                         </div>
                         <div className="flex justify-end pt-2">
+                            <div className='joyride-solver-solve-button'>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
+                                        <p className="text-sm">{t('tooltip.solveButton')}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button onClick={triggerSolving}>{t('basicModelInput.solve')}</Button>
-                                </TooltipTrigger>
-                                <TooltipContent className='bg-gray-800 text-white rounded-md shadow-lg whitespace-pre-wrap'>
-                                    <p className="text-sm">{t('tooltip.solveButton')}</p>
-                                </TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                <span>
+                                <span className="joyride-solver-share-button">
                                     <AdvancedShareButton
                                     parameters={{
                                         currentSolver: currentSolver , 
@@ -376,11 +378,13 @@ export default function BasicModelInput(states:any) {
                                     <p className="text-sm">{t('tooltip.shareButton')}</p>
                                 </TooltipContent>
                             </Tooltip>
-                            <StatePersistence
-                                pageIdentifier="basic"
-                                onSave={handleSaveState}
-                                onRestore={handleRestoreState}
-                            />
+                            <div className="joyride-solver-state-button">
+                                <StatePersistence
+                                    pageIdentifier="basic"
+                                    onSave={handleSaveState}
+                                    onRestore={handleRestoreState}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
