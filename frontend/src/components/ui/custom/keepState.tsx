@@ -14,6 +14,33 @@ interface StatePersistenceProps {
 
 const STORAGE_KEY_PREFIX = 'lastState_';
 
+/**
+ * StatePersistence Component
+ *
+ * A React component that provides functionality for saving and restoring application state.
+ * It uses local storage for persistence and offers a user interface for state management.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {string} props.pageIdentifier - A unique identifier for the page or component state
+ * @param {Function} props.onSave - A function that returns the current state to be saved
+ * @param {Function} props.onRestore - A function that handles the restoration of a saved state
+ *
+ * @example
+ * <StatePersistence
+ *   pageIdentifier="uniquePageId"
+ *   onSave={() => ({ someData: JSON.stringify(someData) })}
+ *   onRestore={(state) => setSomeData(JSON.parse(state.someData))}
+ * />
+ *
+ * @returns {JSX.Element} A button for saving state and a dialog for restoring state
+ *
+ * @description
+ * This component provides the following features:
+ * - Automatic state saving to local storage
+ * - Dialog prompt for state restoration on page load
+ * - Toast notifications for save confirmation
+ */
 export const StatePersistence: React.FC<StatePersistenceProps> = ({ pageIdentifier, onSave, onRestore }) => {
     const { t } = useTranslation();
     const [showRestoreDialog, setShowRestoreDialog] = useState(false);

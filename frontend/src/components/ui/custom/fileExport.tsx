@@ -108,7 +108,7 @@ export function FileExport({ currentProblem, currentInputVariant }: { currentPro
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline">{t('fileExport.exportFiles')}</Button>
+                <Button className={"w-full"} variant="outline">{t('fileExport.exportFiles')}</Button>
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>
