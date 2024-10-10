@@ -1,4 +1,3 @@
-
 import { useState, useEffect, KeyboardEvent } from 'react'
 import { Button } from "@/components/ui/button.tsx"
 import {
@@ -10,21 +9,22 @@ import {
 } from "@/components/ui/select.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { Trash2, Plus } from 'lucide-react'
-import {ProblemFormats, Solvers} from "@/interfaces/SolverConstants.tsx"
+import { ProblemFormats } from "@/interfaces/SolverConstants.tsx"
 import { useTranslation } from 'react-i18next'
 import AdvancedShareButton from "@/components/ui/custom/shareFunction.tsx";
-import {clearUrlParams} from "@/hooks/urlBuilder.tsx";
+import { clearUrlParams } from "@/hooks/urlBuilder.tsx";
+import { capitalize } from "@/lib/utils.ts";
+import {StatePersistence} from "@/components/ui/custom/keepState.tsx";
 
-/**
- * Eays Input
- *
- * Returns easy input mask to the user. The user is guided through a process where he needs to add all information
- * about a specific lp problem (objective, constraints, non zero, etc)
- *
- * @param states various states that need to be synced about various pages (sidebar, result, etc.)
- *
- * */
-export default function EnhancedStatusSelect(states:any) {
+type VariableType = 'continuous' | 'integer' | 'binary';
+
+interface VariableInfo {
+    name: string;
+    type: VariableType;
+    nonNegative: boolean;
+}
+
+export default function EnhancedStatusSelect(states: any) {
     const { t } = useTranslation();
     const {
         setCurrentLpFormat,
@@ -32,27 +32,18 @@ export default function EnhancedStatusSelect(states:any) {
         solveTrigger,
         setSolveTrigger,
         setCurrentInputVariant
-    }: {
-        currentSolver: Solvers; setCurrentSolver: (solver: Solvers) => void;
-        currentLpFormat: ProblemFormats; setCurrentLpFormat: (format: ProblemFormats) => void;
-        currentProblem: string; setCurrentProblem: (problem: string) => void;
-        solveTrigger: number, setSolveTrigger: (problem:number) => void;
-        setCurrentInputVariant: (variant: string) => void
     } = states.states;
 
-    const [currentFormat, setCurrentFormat] = useState<ProblemFormats>('LP')
-
+    const [, setCurrentFormat] = useState<ProblemFormats>('LP')
     const [optimizationType, setOptimizationType] = useState<'maximize' | 'minimize'>('maximize');
     const [objectiveFunction, setObjectiveFunction] = useState('');
     const [restrictions, setRestrictions] = useState<string[]>(['']);
     const [bounds, setBounds] = useState<string[]>(['']);
-    const [selectedVariables, setSelectedVariables] = useState<string[]>([]); // State for selected checkboxes
+    const [variables, setVariables] = useState<VariableInfo[]>([]);
 
     useEffect(() => {
-        // Set LP as the default format
         setCurrentLpFormat('LP');
         setCurrentFormat('LP');
-        console.log("Selected language:", currentFormat);
     }, []);
 
     const updateOptimizationType = (value: 'maximize' | 'minimize') => {
@@ -61,6 +52,7 @@ export default function EnhancedStatusSelect(states:any) {
 
     const updateObjectiveFunction = (value: string) => {
         setObjectiveFunction(value);
+        updateVariables();
     };
 
     const addRestriction = () => {
@@ -69,6 +61,7 @@ export default function EnhancedStatusSelect(states:any) {
 
     const updateRestriction = (index: number, value: string) => {
         setRestrictions(prev => prev.map((r, i) => i === index ? value : r));
+        updateVariables();
     };
 
     const removeRestriction = (index: number) => {
@@ -81,13 +74,13 @@ export default function EnhancedStatusSelect(states:any) {
 
     const updateBound = (index: number, value: string) => {
         setBounds(prev => prev.map((b, i) => i === index ? value : b));
+        updateVariables();
     };
 
     const removeBound = (index: number) => {
         setBounds(prev => prev.filter((_, i) => i !== index));
     };
 
-    //automatically adds restriction/bound when pressing enter
     const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>, type: 'restriction' | 'bound', index: number) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -107,43 +100,58 @@ export default function EnhancedStatusSelect(states:any) {
         }
     };
 
-    //extracts vars with regex, return var-list without duplicates
     const extractVariables = (): string[] => {
         const objectiveVars = objectiveFunction.match(/[a-zA-Z_]\w*/g) || [];
         const restrictionVars = restrictions.flatMap(restriction => restriction.match(/[a-zA-Z_]\w*/g) || []);
         const boundVars = bounds.flatMap(bound => bound.match(/[a-zA-Z_]\w*/g) || []);
-        return Array.from(new Set([...objectiveVars, ...restrictionVars, ...boundVars])); // deletes duplicates
+        return Array.from(new Set([...objectiveVars, ...restrictionVars, ...boundVars]));
     };
 
-    // includes all checked vars, updates dynamically
-    const toggleVariableSelection = (variable: string) => {
-        setSelectedVariables(prev => 
-            prev.includes(variable)
-                ? prev.filter(v => v !== variable)
-                : [...prev, variable]
-        );
+    const updateVariables = () => {
+        const extractedVars = extractVariables();
+        setVariables(prev => {
+            const newVars = extractedVars.filter(v => !prev.some(pv => pv.name === v));
+            const existingVars = prev.filter(v => extractedVars.includes(v.name));
+            return [...existingVars, ...newVars.map(v => ({ name: v, type: 'continuous' as VariableType, nonNegative: true }))];
+        });
     };
 
-    function triggerSolving( ) {
-        //format problem in LP
-        let problem = `${optimizationType}\n`;
-        problem += `obj: ${objectiveFunction}\n`;
+    const updateVariableType = (varName: string, type: VariableType) => {
+        setVariables(prev => prev.map(v => v.name === varName ? { ...v, type } : v));
+    };
+
+    const toggleNonNegative = (varName: string) => {
+        setVariables(prev => prev.map(v => v.name === varName ? { ...v, nonNegative: !v.nonNegative } : v));
+    };
+
+    function triggerSolving() {
+        let problem = `${capitalize(optimizationType)}\n`;
+        problem += ` obj: ${objectiveFunction}\n`;
         problem += "Subject To\n";
         restrictions.forEach((restriction, index) => {
-            problem += `c${index + 1}: ${restriction}\n`;
+            problem += ` c${index + 1}: ${restriction}\n`;
         });
         problem += "Bounds\n";
         bounds.forEach((bound) => {
             problem += `${bound}\n`;
         });
-        selectedVariables.forEach(variable => {
-            if (!bounds.some(bound => bound.includes(variable))) {
-                problem += ` ${variable} >= 0\n`;
+        variables.forEach(variable => {
+            if (variable.nonNegative && !bounds.some(bound => bound.includes(variable.name))) {
+                problem += ` ${variable.name} >= 0\n`;
             }
         });
-        problem += "end";
+        problem += "General\n";
+        variables.filter(v => v.type === 'integer').forEach(v => {
+            problem += ` ${v.name}\n`;
+        });
+        problem += "Binary\n";
+        variables.filter(v => v.type === 'binary').forEach(v => {
+            problem += ` ${v.name}\n`;
+        });
+        problem += "End";
 
         setCurrentProblem(problem);
+        setCurrentLpFormat("LP")
         console.log("Problem:\n", problem);
         setSolveTrigger(solveTrigger + 1);
     }
@@ -164,14 +172,44 @@ export default function EnhancedStatusSelect(states:any) {
                 if (loadedParams.bounds) {
                     setBounds(JSON.parse(loadedParams.bounds));
                 }
-                if (loadedParams.selectedVariables) {
-                    setSelectedVariables(JSON.parse(loadedParams.selectedVariables));
+                if (loadedParams.variables) {
+                    setVariables(JSON.parse(loadedParams.variables));
                 }
                 clearUrlParams()
-            }else{
-                    setCurrentInputVariant(loadedParams.currentPage);
+            } else {
+                setCurrentInputVariant(loadedParams.currentPage);
             }
         }
+    };
+
+    const handleSaveState = () => {
+        return {
+            restrictions: JSON.stringify(restrictions),
+            bounds: JSON.stringify(bounds),
+            variables: JSON.stringify(variables),
+            optimizationType: optimizationType,
+            objectiveFunction: objectiveFunction,
+            currentPage: "easy"
+        };
+    };
+
+    const handleRestoreState = (state: { [key: string]: string }) => {
+        if (state.variables) {
+            setVariables(JSON.parse(state.variables));
+        }
+        if (state.bounds) {
+            setBounds(JSON.parse(state.bounds));
+        }
+        if (state.restrictions) {
+            setRestrictions(JSON.parse(state.restrictions));
+        }
+        if (state.optimizationType) {
+            setOptimizationType(state.optimizationType as "maximize" | "minimize");
+        }
+        if (state.objectiveFunction) {
+            setObjectiveFunction(state.objectiveFunction);
+        }
+
     };
 
     const renderTabContent = () => (
@@ -187,8 +225,8 @@ export default function EnhancedStatusSelect(states:any) {
                 </SelectContent>
             </Select>
             <h3 className="font-bold mb-2">{t('orFunction')}</h3>
-            <Input 
-                placeholder= {t('enterOFunc')}
+            <Input
+                placeholder={t('enterOFunc')}
                 value={objectiveFunction}
                 onChange={(e) => updateObjectiveFunction(e.target.value)}
             />
@@ -196,8 +234,8 @@ export default function EnhancedStatusSelect(states:any) {
             {restrictions.map((restriction, index) => (
                 <div key={index} className="flex items-center space-x-2">
                     <Input
-                        key={index}
-                        placeholder={ t('Res') + `${index + 1}`}
+                        id={`restriction-${index}`}
+                        placeholder={t('Res') + `${index + 1}`}
                         value={restriction}
                         onChange={(e) => updateRestriction(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'restriction', index)}
@@ -216,9 +254,9 @@ export default function EnhancedStatusSelect(states:any) {
             {bounds.map((bound, index) => (
                 <div key={index} className="flex items-center space-x-2">
                     <Input
-                        key ={index}
-                        placeholder={ t('easyInput.bound') + `${index + 1}`} //z.B. 0 <= x1 <= 40
-                        value={bound} 
+                        id={`bound-${index}`}
+                        placeholder={t('easyInput.bound') + `${index + 1}`}
+                        value={bound}
                         onChange={(e) => updateBound(index, e.target.value)}
                         onKeyDown={(e) => handleKeyPress(e, 'bound', index)}
                     />
@@ -232,18 +270,31 @@ export default function EnhancedStatusSelect(states:any) {
             <Button onClick={addBound} className="py-2 text-sm ml-auto block">
                 <Plus className="h-4 w-4" />
             </Button>
-            <h3 className="font-bold mb-2">{t("nnb")}</h3>
+            <h3 className="font-bold mb-2">{t("easyInput.Variables")}</h3>
             <div className="space-y-2">
-                {extractVariables().map(variable => (
-                    <div key={variable} className="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            id={variable}
-                            checked={selectedVariables.includes(variable)}
-                            onChange={() => toggleVariableSelection(variable)}
-                            className='h-4 w-4 bg-black'
-                        />
-                        <label htmlFor={variable}>{variable}</label>
+                {variables.map(variable => (
+                    <div key={variable.name} className="flex items-center space-x-2">
+                        <div className="w-24 overflow-hidden text-ellipsis">{variable.name}</div>
+                        <Select value={variable.type} onValueChange={(value: VariableType) => updateVariableType(variable.name, value)}>
+                            <SelectTrigger className="w-32">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="continuous">{t('easyInput.Continuous')}</SelectItem>
+                                <SelectItem value="integer">{t('easyInput.Integer')}</SelectItem>
+                                <SelectItem value="binary">{t('easyInput.Binary')}</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <div className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                id={`nonNegative-${variable.name}`}
+                                checked={variable.nonNegative}
+                                onChange={() => toggleNonNegative(variable.name)}
+                                className="h-4 w-4"
+                            />
+                            <label htmlFor={`nonNegative-${variable.name}`}>{t("easyInput.Non-negative")}</label>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -251,26 +302,31 @@ export default function EnhancedStatusSelect(states:any) {
     );
 
     return (
-            <div className="flex items-center justify-center">
-                <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
-                    <div className="relative pt-8">
-                        {renderTabContent()}
-                    </div>
-                    <div className="flex justify-end">
-                        <Button onClick={triggerSolving}>{t('solve')}</Button>
-                        <AdvancedShareButton
-                            parameters={{
-                                optimizationType: optimizationType,
-                                objectiveFunction: objectiveFunction,
-                                restrictions: JSON.stringify(restrictions),
-                                bounds: JSON.stringify(bounds),
-                                selectedVariables: JSON.stringify(selectedVariables),
-                                currentPage:"easy"
-                            }}
-                            onParametersLoaded={handleParametersLoaded}
-                        />
-                    </div>
+        <div className="flex items-center justify-center">
+            <div className="w-full max-w-4xl p-0 flex flex-col space-y-4">
+                <div className="relative pt-8">
+                    {renderTabContent()}
+                </div>
+                <div className="flex justify-end">
+                    <Button onClick={triggerSolving}>{t('solve')}</Button>
+                    <AdvancedShareButton
+                        parameters={{
+                            optimizationType: optimizationType,
+                            objectiveFunction: objectiveFunction,
+                            restrictions: JSON.stringify(restrictions),
+                            bounds: JSON.stringify(bounds),
+                            variables: JSON.stringify(variables),
+                            currentPage: "easy"
+                        }}
+                        onParametersLoaded={handleParametersLoaded}
+                    />
+                    <StatePersistence
+                        pageIdentifier="knapsack"
+                        onSave={handleSaveState}
+                        onRestore={handleRestoreState}
+                    />
                 </div>
             </div>
+        </div>
     )
 }

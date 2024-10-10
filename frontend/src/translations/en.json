@@ -59,7 +59,7 @@
     "column_dual": "Dual",
     "column_index": "Index",
     "settings": "Settings",
-    "description_gmpl": "GMPL is a modeling language used to describe linear and mixed-integer optimization problems. It allows defining variables, constraints, and objective functions. Example:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
+    "description_gmpl": "GMPL is a modeling language used to describe linear and mixed-integer optimization problems. It allows defining variables, constraints, and objective functions. Example:\n\nvar x >=0;\nvar y >=0;\nmaximize z: 3 * x + 2 * y;\nsubject to c1: x + y <= 10;\nsolve;",
     "description_lp": "The CPLEX LP format is used to represent linear optimization problems. It uses a line-based syntax to define the objective function and constraints. Example:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
     "description_mps": "MPS is a widely used file format for representing linear and integer optimization problems. It is column-oriented and consists of sections like ROWS, COLUMNS, and RHS. Example:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
     "bounds": "Bounds",
@@ -173,7 +173,8 @@
             "contact": "Ready to start? Click here to begin solving problems!"
         },
         "solverPage": {
-            "input": "Here you can input your problem in various formats.",
+            "sidebar": "This sidebar allows you to change the input mode, select the solver, and export your problem in different formats to work more flexibly and individually.",
+            "input": "Simply enter your problem in various formats.",
             "result": "The results of your solved problem will appear here.",
             "solv-conv": "Let's move to the Converter Page to convert between different formats."
         },
@@ -299,12 +300,39 @@
         }
     },
     "easyInput":{
-        "bound": "Bound"
+        "bound": "Bound",
+        "Continuous": "Continuous",
+        "Integer": "Integer",
+        "Binary": "Binary",
+        "Variables": "Variables",
+        "Non-negative": "Non-negative"
     },
     "sharableLink":{
         "linkGenerated": "Link generated!",
         "linkCopied": "Link was copied!",
         "close": "Close",
         "copy": "Copy"
+    },
+    "tooltip":{
+        "solverPage":{
+            "inputHeader": "Enter your optimisation problem in here and the details of the problem in the sidebar."
+        },
+        "shareButton": "Click to create a sharable link.",
+        "solveButton": "Click to solve the problem.",
+        "general": "General input mode for optimization problems",
+        "easy": "Simplified input mode for basic optimization problems",
+        "transport": "Specialized input for transportation problems",
+        "knapsack": "Specialized input for knapsack problems",
+        "workforce": "Specialized input for workforce scheduling problems",
+        "fileExport": "Export your current problem to a file"
+    },
+    "store": {
+        "name": "Save in Browser",
+        "saved": "Saved!",
+        "savedDescription": "Your changes have been saved in the browser. To export the file, use the sidebar",
+        "restorePreviousState": "Restore Previous State",
+        "restorePreviousStateQuestion": "Do you want to restore the last saved state?",
+        "restore": "Restore",
+        "decline": "Decline"
     }
 }

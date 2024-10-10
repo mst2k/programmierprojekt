@@ -61,7 +61,7 @@
     "column_primal": "Primal",
     "column_dual": "Dual",
     "column_index": "Index",
-    "description_gmpl": "GMPL ist eine Modellierungssprache zur Beschreibung von linearen und gemischt-ganzzahligen Optimierungsproblemen. Sie erlaubt die Definition von Variablen, Nebenbedingungen und Zielfunktionen. Beispiel:\n\nvar x;\nvar y;\nmaximize z: 3 * x + 2 * y;\ns.t. c1: x + y <= 10;\ns.t. c2: x >= 0;\ns.t. c3: y >= 0;\nsolve;",
+    "description_gmpl": "GMPL ist eine Modellierungssprache zur Beschreibung von linearen und gemischt-ganzzahligen Optimierungsproblemen. Sie erlaubt die Definition von Variablen, Nebenbedingungen und Zielfunktionen. Beispiel:\n\nvar x >=0;\nvar y >=0;\nmaximize z: 3 * x + 2 * y;\nsubject to c1: x + y <= 10;\nsolve;",
     "description_lp": "Das CPLEX LP-Format wird zur Darstellung von linearen Optimierungsproblemen verwendet. Es verwendet eine zeilenbasierte Syntax zur Definition der Zielfunktion und der Nebenbedingungen. Beispiel:\n\nMaximize\n  obj: 3 x + 2 y\nSubject To\n  c1: x + y <= 10\nBounds\n  0 <= x\n  0 <= y\nEnd",
     "description_mps": "MPS ist ein weit verbreitetes Dateiformat zur Darstellung von linearen und ganzzahligen Optimierungsproblemen. Es ist spaltenorientiert und besteht aus verschiedenen Abschnitten wie ROWS, COLUMNS und RHS. Beispiel:\n\nNAME  SimpleProblem\nROWS\n N  OBJ\n L  C1\nCOLUMNS\n    x  OBJ  3\n    x  C1   1\n    y  OBJ  2\n    y  C1   1\nRHS\n    RHS1 C1 10\nBOUNDS\n UP BND1 x 10\n UP BND1 y 10\nENDATA",
     "settings": "Einstellungen",
@@ -190,7 +190,8 @@
             "contact": "Bereit, loszulegen? Klicke hier, um mit dem Lösen zu beginnen."
         },
         "solverPage": {
-            "input": "Hier kannst du dein Problem ganz bequem in verschiedenen Formaten eingeben.",
+            "sidebar": "Hier kannst du den Eingabemodus ändern, den Löser auswählen und dein Problem in verschiedene Formate exportieren, um flexibler und individuell zu arbeiten.",
+            "input": "Gib dein Problem hier ganz bequem in verschiedenen Formaten ein.",
             "result": "Deine Ergebnisse erscheinen hier.",
             "solv-conv": "Wechseln wir zur nun Konvertierer-Seite. Hier kannst du dein Problem automatisch in verschiedene Formaten umwandeln."
         },
@@ -299,13 +300,41 @@
         }
     },
     "easyInput":{
-        "bound": "Beschränkung"
+        "bound": "Beschränkung",
+        "Continuous": "Durchgehend",
+        "Integer": "Ganzzahlig",
+        "Binary": "Binär",
+        "Variables": "Variablen",
+        "Non-negative": "Nicht-Negativ"
     },
     "sharableLink":{
         "linkGenerated": "Link generiert!",
         "linkCopied": "Link wurde kopiert!",
         "close": "Schließen",
         "copy": "Kopieren"
+    },
+    "tooltip":{
+        "solverPage":{
+            "inputHeader": "Gib hier dein Optimierungsproblem und die Details zum Probelm in der Seitenleiste ein."
+        },
+        "shareButton": "Klicke, um einen teilbaren Link zu erstellen.",
+        "solveButton": "Klicke, um das Problem zu lösen.",
+        "general": "Allgemeiner Eingabemodus für Optimierungsprobleme",
+        "easy": "Vereinfachter Eingabemodus für grundlegende Optimierungsprobleme",
+        "transport": "Spezialisierte Eingabe für Transportprobleme",
+        "knapsack": "Spezialisierte Eingabe für Rucksackprobleme",
+        "workforce": "Spezialisierte Eingabe für Personaleinsatzplanung",
+        "fileExport": "Exportiere dein aktuelles Problem in eine Datei"
+    },
+    "store": {
+        "name": "Im Browser Speichern",
+        "saved": "Gespeichert!",
+        "savedDescription": "Ihre Änderungen wurden im Browser gespeichert. Um die Datei zu Exportieren nutze die Sidebar",
+        "restorePreviousState": "Vorherigen Zustand wiederherstellen",
+        "restorePreviousStateQuestion": "Möchten Sie den zuletzt gespeicherten Zustand wiederherstellen?",
+        "restore": "Wiederherstellen",
+        "decline": "Ablehnen"
+
     }
 }
 
