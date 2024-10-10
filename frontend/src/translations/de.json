@@ -183,7 +183,8 @@
         "parseError": "Parsing-Fehler",
         "unknownParseError": "Unbekannter Parsing-Fehler aufgetreten",
         "noValidLpObject": "Kein gültiges LP-Objekt erstellt",
-        "unknownError": "Ein unbekannter Fehler ist aufgetreten"
+        "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+        "warn": "Bei der Konvertierung von Problemformaten ist das Auftreten von Fehlern nicht auszuschließen."
     },
     "guidedTour": {
         "welcomePage": {

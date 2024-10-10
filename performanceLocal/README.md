@@ -2,7 +2,7 @@
 
 ## Description
 
-The OR Solver Benchmarking Tool is an integral part of the main OR Solver project, designed to compare the performance of various Operations Research solvers. When the benchmarking API is running locally on port 8080, the main project's `/benchmark/` page will query this API and include its results in the performance comparison. If the API is not accessible, the benchmark will only consider results from browser-based solver implementations.
+The OR Solver Benchmarking Tool is an integral part of the main OR Solver project, designed to compare the performance of various Operations Research solvers. When the benchmarking API is running locally on port 8080, the main project's `api/benchmark/` page will query this API and include its results in the performance comparison. If the API is not accessible, the benchmark will only consider results from browser-based solver implementations.
 
 This tool provides valuable insights into solver efficiency across various problem types and sizes, supporting both native installations and web-based implementations. Currently, it supports LP and GMPL problem formats.
 
@@ -60,7 +60,7 @@ This tool provides valuable insights into solver efficiency across various probl
    ```
    This will start the API on port 8080.
 
-3. Access the benchmarking results through the main OR Solver web interface at `/benchmark/`.
+3. Access the benchmarking results through the main OR Solver web interface at `api/benchmark/`.
 
 ## Contributing
 

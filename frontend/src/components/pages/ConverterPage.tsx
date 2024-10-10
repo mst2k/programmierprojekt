@@ -134,7 +134,7 @@ const CodeExecutionPage: React.FC = () => {
             />
             <main className="flex-grow">
                 <div className="mb-4">
-                    <h1 className="text-xl font-bold mb-2">{t('converterPage.title')}</h1>   
+                    <h1 className="text-xl font-bold mb-2">{t('converterPage.title')} <span className={"text-xs text align-text-top"}>*</span></h1>
                     <div className="joyride-converter-input">
                         <Textarea
                             value={code}
@@ -146,7 +146,7 @@ const CodeExecutionPage: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4 mb-4 max-w-xl">
                         <div className="flex-1 min-w-[150px]">
                             <Select onValueChange={(e) => setOptionFrom(e)}>
-                                <SelectTrigger className="w-[280px]">
+                                <SelectTrigger className="w-full">
                                     <SelectValue placeholder={t('converterPage.from')} />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -158,9 +158,11 @@ const CodeExecutionPage: React.FC = () => {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
+                        </div>
 
+                        <div className="flex-1 min-w-[280px]">
                             <Select value={to} onValueChange={(e) => setOptionTo(e)}>
-                                <SelectTrigger className="w-[280px]">
+                                <SelectTrigger className="w-full">
                                     <SelectValue placeholder={t('converterPage.to')} />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -179,6 +181,7 @@ const CodeExecutionPage: React.FC = () => {
                     </Button>
                 </div>
                 <CodeArea className="joyride-converter-output" data={output} />
+                <p className={"text-xs mt-4"}>*{t('converterPage.warn')}</p>
                 <div className='joyride-bye'/>
                 <div className='joyride-last'/>
             </main>

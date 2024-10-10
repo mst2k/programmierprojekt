@@ -59,6 +59,10 @@ const SolverPage = () => {
         else setInputComponent(<p>CURRENTLY NOT SUPPORTED</p>)
     }, [currentInputVariant, currentSolver, solveTrigger]);
 
+    useEffect(() => {
+        setResultComponent(<></>)
+    }, [currentInputVariant]);
+
 
 
     useEffect(() => {
@@ -177,7 +181,7 @@ const SolverPage = () => {
                     </section>
 
                     <section className="min-h-[25%] p-4 joyride-solver-result">
-                        <h2 className="text-lg font-semibold joyride-solv-conv">{t('displaySolution')}</h2>
+                        <h2 className="text-lg font-semibold joyride-solv-conv mb-4">{t('displaySolution')}</h2>
                         {resultComponent}
                     </section>
 

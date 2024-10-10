@@ -107,8 +107,10 @@ export function parseGMPL(lpString: string): LP {
 
 
     // Erkennung von Integer- und Binary-Variablen
-    const integerMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+integer\s*(?:[<>]=?\s*\d*|=\s*\d*);/g)].map(match => match[1]);
-    const binaryMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+binary\s*(?:[<>]=?\s*\d*|=\s*\d*)?;/g)].map(match => match[1]);
+    const integerMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+integer\s*(?:[<>]=?\s*\d*|=\s*\d*)?\s*[^;]*;/g)].map(match => match[1]);
+
+    const binaryMatches = [...cleanedInput.matchAll(/var\s+(\w+)\s+binary\s*(?:[<>]=?\s*\d*|=\s*\d*)?\s*[^;]*;/g)].map(match => match[1]);
+
 
     return {
         name: 'LP_Model',
@@ -152,7 +154,7 @@ export function convertToGMPL(lp: LP): string {
                     glpmString += ` binary`;
                 }
                 // Falls es eine Ganzzahlvariable ist
-                else if (bound.type === GLP_FX || bound.type === GLP_LO || bound.type === GLP_UP) {
+                else if (bound.type === GLP_FX || bound.type === GLP_LO || bound.type === GLP_UP || bound.type === GLP_DB) {
                     // Ganzzahligkeit prüfen
                     if (lp.generals && lp.generals.includes(variable)) {
                         glpmString += ` integer`;

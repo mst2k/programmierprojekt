@@ -131,7 +131,7 @@ export default function BasicModelInput(states:any) {
     const handleSaveState = () => {
         return {
             currentLPFormat: currentLpFormat,
-            currentProblem: currentProblem,
+            currentProblem: modelInput,
             currentSolver: currentSolver,
             currentPage: "basic"
         };

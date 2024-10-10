@@ -166,7 +166,8 @@
         "parseError": "Parse error",
         "unknownParseError": "Unknown parsing error occurred",
         "noValidLpObject": "No valid LP object created",
-        "unknownError": "An unknown error occurred"
+        "unknownError": "An unknown error occurred",
+        "warn": "The occurrence of errors cannot be ruled out when converting problem formats."
     },
     "guidedTour": {
         "welcomePage": {
