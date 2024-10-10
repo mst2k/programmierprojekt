@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Editor, useMonaco } from "@monaco-editor/react";
 import { ProblemFormats } from '@/interfaces/SolverConstants';
 import { checkGMPLErrors, GMPLTokens } from './languageDefinitions/gmpl';
 import { checkLPErrors, LPTokens } from './languageDefinitions/lp';
-import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { checkMPSErrors, MPSTokens } from './languageDefinitions/mps';
 
 import { TFunction } from 'i18next';
