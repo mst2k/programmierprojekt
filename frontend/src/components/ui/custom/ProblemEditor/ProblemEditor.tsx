@@ -11,15 +11,10 @@ import { useTranslation } from 'react-i18next';
 import {useTheme} from "@/hooks/themeProvider.tsx";
 
 
-export interface EditorLanguage {
-  // TODO: Define the language tokens, erst wenn ich die Tokens von LP und GMPL verglichen habe
-}
+export interface EditorLanguage {}
 
 export interface EditorErrorInfo {
   errors: { message: string; line: number }[];
-  hasObjective: boolean;
-  hasRestrictions: boolean;
-  hasNonNegativity: boolean;
 }
 
 export interface ErrorCheckFunction {
@@ -41,11 +36,6 @@ const formatConfigs: Record<ProblemFormats, { tokens: EditorLanguage; checkError
 export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
 
   const { tokens, checkErrors } = formatConfigs[props.problemFormat];
-  const [modelProperties, setModelProperties] = useState({
-    hasObjective: false,
-    hasRestrictions: false,
-    hasNonNegativity: false
-  });
   const editorRef = useRef<any>(null);
   const monaco = useMonaco();
   const { t, i18n } = useTranslation();
@@ -60,16 +50,11 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
 
   const updateErrors = useCallback((code: string, editor: any, monaco: any) => {
     if (!code) {
-      setModelProperties({
-        hasObjective: false,
-        hasRestrictions: false,
-        hasNonNegativity: false
-      });
       clearMarkers(editor, monaco);
       return;
     }
 
-    const { errors, hasObjective, hasRestrictions, hasNonNegativity } = checkErrors(code, t);
+    const { errors } = checkErrors(code, t);
     const model = editor.getModel();
     monaco.editor.setModelMarkers(model, MARKER_OWNER, errors.map(err => ({
       severity: monaco.MarkerSeverity.Error,
@@ -79,7 +64,6 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
       endLineNumber: err.line,
       endColumn: model.getLineMaxColumn(err.line),
     })));
-    setModelProperties({ hasObjective, hasRestrictions, hasNonNegativity });
   }, [checkErrors, t, clearMarkers]);
 
   useEffect(() => {
@@ -130,7 +114,7 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
         <Editor
           onMount={handleEditorDidMount}
           defaultLanguage={props.problemFormat}
-          theme={colorTheme==="dark" ? "vs-dark": "vs-light"}
+          theme={colorTheme==="dark" || colorTheme==="system" ? "vs-dark": "vs-light"}
           value={props.value}
           onChange={(value) => props.onChange(value || '')}
           options={{
@@ -140,14 +124,6 @@ export const ProblemEditor: React.FC<ProblemEditorProps> = (props) => {
             renderLineHighlight: "none"
           }}
         />
-      </div>
-      <div className='flex justify-around mt-2'>
-          {
-            Object.keys(modelProperties).map((key) => (
-              // @ts-expect-error
-              <p key={key} className='flex items-center gap-2'>{t(`editorComponent.${key}`)}: {modelProperties[key] ? <CheckIcon className="text-green-500" /> : <Cross1Icon className="text-red-500" />}</p>
-            ))
-          }
       </div>
     </div>
   );

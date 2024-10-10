@@ -292,7 +292,7 @@ export default function BasicModelInput(states:any) {
 
     return (
         <TooltipProvider>
-            {/* <div className="w-full h-3 md:hidden"></div> */}
+            <div className="w-full h-3 md:hidden"></div>
             <div className="flex items-center justify-center">
                 <div className="w-full max-w-4xl p-0 flex flex-col space-y-0 h-[62vh]">
                     <Tabs
